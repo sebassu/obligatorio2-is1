@@ -1,0 +1,18 @@
+Columnas Fecha:
+m1
+m2
+m3
+m5
+m8
+-
+Vacunas:
+Antitetanica
+a12
+ca10
++
+Polio
+m5
+cm10
+-
+No sistematicas:
+Alguna 2015

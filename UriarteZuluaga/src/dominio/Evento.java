@@ -8,7 +8,6 @@ package dominio;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  *
@@ -16,15 +15,17 @@ import java.util.Objects;
  */
 public class Evento implements Serializable, Comparable {
 
+    private int id;
     private String titulo;
     private String tipo;
     private String lugar;
     private String descripcion;
-    private Date fecha;
+    private Calendar fecha;
     private Hijo cualHijo;
 
-    public Evento(String elTitulo, String elTipo, String laDescripcion,
-            Date laFecha, Hijo hijo, String elLugar) {
+    public Evento(int laId, String elTitulo, String elTipo, String laDescripcion,
+            Calendar laFecha, Hijo hijo, String elLugar) {
+        this.id = laId;
         this.titulo = elTitulo;
         this.tipo = elTipo;
         this.descripcion = laDescripcion;
@@ -33,8 +34,9 @@ public class Evento implements Serializable, Comparable {
         this.lugar = elLugar;
     }
 
-    public Evento(String elTitulo, String elTipo, String laDescripcion,
+    public Evento(int laId, String elTitulo, String elTipo, String laDescripcion,
             Calendar laFecha, Hijo hijo) {
+        this.id = laId;
         this.titulo = elTitulo;
         this.tipo = elTipo;
         this.descripcion = laDescripcion;
@@ -43,8 +45,9 @@ public class Evento implements Serializable, Comparable {
         this.lugar = "";
     }
 
-    public Evento(String elTitulo, String elTipo, Calendar laFecha, Hijo hijo,
+    public Evento(int laId, String elTitulo, String elTipo, Calendar laFecha, Hijo hijo,
             String elLugar) {
+        this.id = laId;
         this.titulo = elTitulo;
         this.tipo = elTipo;
         this.descripcion = "";
@@ -53,7 +56,8 @@ public class Evento implements Serializable, Comparable {
         this.lugar = elLugar;
     }
 
-    public Evento(String elTitulo, String elTipo, Calendar laFecha, Hijo hijo) {
+    public Evento(int laId, String elTitulo, String elTipo, Calendar laFecha, Hijo hijo) {
+        this.id = laId;
         this.titulo = elTitulo;
         this.tipo = elTipo;
         this.descripcion = "";
@@ -61,13 +65,24 @@ public class Evento implements Serializable, Comparable {
         this.cualHijo = hijo;
         this.lugar = "";
     }
-
-    protected Evento() {
+    
+    public Evento(int laId) {
+        this.id = laId;
         this.titulo = "";
         this.tipo = "";
         this.descripcion = "";
         this.fecha.setTime(new Date());
-        this.cualHijo = new Hijo("", fecha, 'x', "9.999.999-9", "");
+        this.cualHijo = null;
+        this.lugar = "";
+    }
+
+    protected Evento() {
+        this.id = 0;
+        this.titulo = "";
+        this.tipo = "";
+        this.descripcion = "";
+        this.fecha.setTime(new Date());
+        this.cualHijo = null;
         this.lugar = "";
     }
 
@@ -95,6 +110,14 @@ public class Evento implements Serializable, Comparable {
         return cualHijo;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int laId) {
+        this.id = laId;
+    }
+    
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
@@ -121,12 +144,8 @@ public class Evento implements Serializable, Comparable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.tipo);
-        hash = 89 * hash + Objects.hashCode(this.lugar);
-        hash = 89 * hash + Objects.hashCode(this.descripcion);
-        hash = 89 * hash + Objects.hashCode(this.fecha);
-        hash = 89 * hash + Objects.hashCode(this.cualHijo);
+        int hash = 7;
+        hash = 23 * hash + this.id;
         return hash;
     }
 
@@ -139,23 +158,13 @@ public class Evento implements Serializable, Comparable {
             return false;
         }
         final Evento other = (Evento) obj;
-        if (!Objects.equals(this.tipo, other.tipo)) {
-            return false;
-        }
-        if (!Objects.equals(this.lugar, other.lugar)) {
-            return false;
-        }
-        if (!Objects.equals(this.descripcion, other.descripcion)) {
-            return false;
-        }
-        if (!Objects.equals(this.fecha, other.fecha)) {
-            return false;
-        }
-        if (!Objects.equals(this.cualHijo, other.cualHijo)) {
+        if (this.id != other.id) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public int compareTo(Object obj) {

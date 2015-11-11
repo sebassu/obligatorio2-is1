@@ -6,6 +6,7 @@
 package dominio;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  *
@@ -15,9 +16,9 @@ public class Consulta extends Evento {
     
     private String medico;
 
-    public Consulta(String elTitulo, String elTipo, String laDescripcion,
+    public Consulta(int laId, String elTitulo, String elTipo, String laDescripcion,
             Calendar laFecha, Hijo hijo, String elLugar, String elMedico) {
-        super(elTitulo, elTipo, laDescripcion, laFecha, hijo, elLugar);
+        super(laId, elTitulo, elTipo, laDescripcion, laFecha, hijo, elLugar);
         this.medico = elMedico;
     }
     
@@ -28,4 +29,28 @@ public class Consulta extends Evento {
     public void setVacuna(String elMedico) {
         this.medico = elMedico;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.medico);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Consulta other = (Consulta) obj;
+        if (!Objects.equals(this.medico, other.medico)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }
