@@ -1,7 +1,6 @@
 package dominio;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Vacuna implements Serializable, Comparable<Vacuna> {
@@ -9,21 +8,23 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     //Variables de instancia.
     private String nombre;
     private boolean sistematca;
-    private ArrayList<Integer> vacunacionMeses;
-    private ArrayList<Integer> vacunacionAños;
+    private int primeraAplicacion;
+    private int expiracion;
+    private int cantidadAplicaciones;
 
     //Constructor.
-    public Vacuna(String unNombre, boolean unBooleano) throws IllegalArgumentException {
-        this.setNombre(unNombre);
-        this.setSistematca(unBooleano);
+    public Vacuna(String nom, boolean bool, int primeraAp,
+            int exp, int cantAp) throws IllegalArgumentException {
+        this.setNombre(nom);
+        this.setSistematca(bool);
+        this.setExpiracion(exp);
+        this.setCantidadAplicaciones(cantAp);
     }
 
     //Constructor privado para pruebas.
     protected Vacuna() {
         this.nombre = "";
         this.sistematca = false;
-        this.vacunacionAños = null;
-        this.vacunacionMeses = null;
     }
 
     //Métodos de Acceso y Modificación.
@@ -47,12 +48,28 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
         return sistematca;
     }
 
-    public ArrayList<Integer> getVacunacionMeses() {
-        return vacunacionMeses;
+    public int getPrimeraAplicacion() {
+        return primeraAplicacion;
     }
 
-    public ArrayList<Integer> getVacunacionAños() {
-        return vacunacionAños;
+    public final void setPrimeraAplicacion(int primeraAplicacion) {
+        this.primeraAplicacion = primeraAplicacion;
+    }
+
+    public int getExpiracion() {
+        return expiracion;
+    }
+
+    public final void setExpiracion(int expiracion) {
+        this.expiracion = expiracion;
+    }
+
+    public int getCantidadAplicaciones() {
+        return cantidadAplicaciones;
+    }
+
+    public final void setCantidadAplicaciones(int cantidadAplicaciones) {
+        this.cantidadAplicaciones = cantidadAplicaciones;
     }
 
     /**
