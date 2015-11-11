@@ -6,7 +6,10 @@
 package dominio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Objects;
 
 /**
@@ -16,37 +19,46 @@ import java.util.Objects;
 public class Hijo implements Serializable, Comparable {
     
     private String nombre;
-    private Date fechaNacimiento;
+    private Calendar fechaNacimiento;
     private char sexo;
     private String cedulaId;
     private String sociedadMedica;
-
-    public String getSociedadMedica() {
-        return sociedadMedica;
-    }
+    private String medicoCabecilla;
+    private ArrayList<Par<Calendar, Integer>> listaPesos;
+    private ArrayList<Par<Calendar, Integer>> listaPerimetrosCefalicos;
+    private ArrayList<Par<Calendar, Integer>> listaAlturas;
+    private ArrayList<Par<Calendar, Vacuna>> historialVacunaciones;
     
     private Hijo() {
         nombre = "";
-	fechaNacimiento = new Date();
+	fechaNacimiento.setTime(new Date());
         sexo = 'x';
         cedulaId = "9.999.999-9";
         sociedadMedica = "";
+        listaPesos = new ArrayList<>();
+        listaPerimetrosCefalicos = new ArrayList<>();
+        listaAlturas = new ArrayList<>();
+        historialVacunaciones = new ArrayList<>();
     }
     
-    public Hijo(String elNombre, Date laFecha, char elSexo, String laCedulaId, 
+    public Hijo(String elNombre, Calendar laFecha, char elSexo, String laCedulaId, 
             String laSociedadMedica) {
         nombre = elNombre;
 	fechaNacimiento = laFecha;
         sexo = elSexo;
         cedulaId = laCedulaId;
         sociedadMedica = laSociedadMedica;
+        listaPesos = new ArrayList<>();
+        listaPerimetrosCefalicos = new ArrayList<>();
+        listaAlturas = new ArrayList<>();
+        historialVacunaciones = new ArrayList<>();
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public Date getFechaNacimiento() {
+    public Calendar getFechaNacimiento() {
         return fechaNacimiento;
     }
 
@@ -58,11 +70,25 @@ public class Hijo implements Serializable, Comparable {
         return cedulaId;
     }
 
+     public String getSociedadMedica() {
+        return sociedadMedica;
+    }
+
+    public String getMedicoCabecilla() {
+        return medicoCabecilla;
+    }
+
+    public void setMedicoCabecilla(String elMedicoCabecilla) {
+        this.medicoCabecilla = elMedicoCabecilla;
+    }
+    
+    
+    
     public void setNombre(String elNombre) {
         this.nombre = elNombre;
     }
 
-    public void setFechaNacimiento(Date laFechaNacimiento) {
+    public void setFechaNacimiento(Calendar laFechaNacimiento) {
         this.fechaNacimiento = laFechaNacimiento;
     }
 
@@ -78,7 +104,59 @@ public class Hijo implements Serializable, Comparable {
         this.sociedadMedica = laSociedadMedica;
     }
 
+    public void agregarPeso(int dato, Calendar dia) {
+        listaPesos.add(new Par<>(dia, dato));
+    }
     
+    public void modificarPeso(int dato, Calendar dia) {
+        Par<Calendar, Integer> datoBuscado = new Par<>(dia, 0);
+        listaPesos.set(listaPesos.indexOf(datoBuscado), new Par<>(dia, dato));
+    }
+    
+    public Iterator<Par<Calendar, Integer>> getIteradorListaPesos() {
+        return listaPesos.iterator();
+    }
+    
+    public void agregarAltura(int dato, Calendar dia) {
+        listaAlturas.add(new Par<>(dia, dato));
+    }
+    
+    public void modificarAltura(int dato, Calendar dia) {
+        Par<Calendar, Integer> datoBuscado = new Par<>(dia, 0);
+        listaAlturas.set(listaAlturas.indexOf(datoBuscado), new Par<>(dia, dato));
+    }
+    
+    public Iterator<Par<Calendar, Integer>> getIteradorListaAlturas() {
+        return listaAlturas.iterator();
+    }
+    
+    public void agregarPerimetroCefalico(int dato, Calendar dia) {
+        listaPerimetrosCefalicos.add(new Par<>(dia, dato));
+    }
+    
+    public void modificarPerimetroCefalico(int dato, Calendar dia) {
+        Par<Calendar, Integer> datoBuscado = new Par<>(dia, 0);
+        listaPerimetrosCefalicos.set(listaPerimetrosCefalicos.indexOf(datoBuscado),
+                new Par<>(dia, dato));
+    }
+    
+    public Iterator<Par<Calendar, Integer>> getIteradorListaPerimetrosCefalicos() {
+        return listaPerimetrosCefalicos.iterator();
+    }
+    
+    public void agregarVacuna(Vacuna v, Calendar dia) {
+        historialVacunaciones.add(new Par<>(dia, v));
+    }
+    
+    public void modificarVacuna(Vacuna v, Calendar dia) {
+        Par<Calendar, Vacuna> vacunaBuscada = new Par<>(dia, v);
+        historialVacunaciones.set(historialVacunaciones.indexOf(vacunaBuscada),
+                new Par<>(dia, v));
+    }
+    
+    public Iterator<Par<Calendar, Vacuna>> getIteradorHistorialVacunaciones() {
+        return historialVacunaciones.iterator();
+    }
     
     @Override
     public boolean equals(Object obj) {

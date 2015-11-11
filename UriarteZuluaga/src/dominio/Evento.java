@@ -6,6 +6,7 @@
 package dominio;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class Evento implements Serializable, Comparable {
     }
 
     public Evento(String elTitulo, String elTipo, String laDescripcion,
-            Date laFecha, Hijo hijo) {
+            Calendar laFecha, Hijo hijo) {
         this.titulo = elTitulo;
         this.tipo = elTipo;
         this.descripcion = laDescripcion;
@@ -42,7 +43,7 @@ public class Evento implements Serializable, Comparable {
         this.lugar = "";
     }
 
-    public Evento(String elTitulo, String elTipo, Date laFecha, Hijo hijo,
+    public Evento(String elTitulo, String elTipo, Calendar laFecha, Hijo hijo,
             String elLugar) {
         this.titulo = elTitulo;
         this.tipo = elTipo;
@@ -52,7 +53,7 @@ public class Evento implements Serializable, Comparable {
         this.lugar = elLugar;
     }
 
-    public Evento(String elTitulo, String elTipo, Date laFecha, Hijo hijo) {
+    public Evento(String elTitulo, String elTipo, Calendar laFecha, Hijo hijo) {
         this.titulo = elTitulo;
         this.tipo = elTipo;
         this.descripcion = "";
@@ -61,12 +62,12 @@ public class Evento implements Serializable, Comparable {
         this.lugar = "";
     }
 
-    private Evento() {
+    protected Evento() {
         this.titulo = "";
         this.tipo = "";
         this.descripcion = "";
-        this.fecha = new Date();
-        this.cualHijo = new Hijo("", new Date(), 'x', "9.999.999-9", "");
+        this.fecha.setTime(new Date());
+        this.cualHijo = new Hijo("", fecha, 'x', "9.999.999-9", "");
         this.lugar = "";
     }
 
@@ -86,7 +87,7 @@ public class Evento implements Serializable, Comparable {
         return descripcion;
     }
 
-    public Date getFecha() {
+    public Calendar getFecha() {
         return fecha;
     }
 
@@ -102,7 +103,7 @@ public class Evento implements Serializable, Comparable {
         this.descripcion = descripcion;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(Calendar fecha) {
         this.fecha = fecha;
     }
 
