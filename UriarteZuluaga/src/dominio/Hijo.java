@@ -14,7 +14,7 @@ import java.util.Objects;
  * @author UriarteZuluaga
  */
 public class Hijo implements Serializable, Comparable {
-    
+
     private String nombre;
     private Date fechaNacimiento;
     private char sexo;
@@ -24,19 +24,19 @@ public class Hijo implements Serializable, Comparable {
     public String getSociedadMedica() {
         return sociedadMedica;
     }
-    
+
     protected Hijo() {
         nombre = "";
-	fechaNacimiento = new Date();
+        fechaNacimiento = new Date();
         sexo = 'x';
         cedulaId = "9.999.999-9";
         sociedadMedica = "";
     }
-    
-    public Hijo(String elNombre, Date laFecha, char elSexo, String laCedulaId, 
+
+    public Hijo(String elNombre, Date laFecha, char elSexo, String laCedulaId,
             String laSociedadMedica) {
         nombre = elNombre;
-	fechaNacimiento = laFecha;
+        fechaNacimiento = laFecha;
         sexo = elSexo;
         cedulaId = laCedulaId;
         sociedadMedica = laSociedadMedica;
@@ -78,8 +78,6 @@ public class Hijo implements Serializable, Comparable {
         this.sociedadMedica = laSociedadMedica;
     }
 
-    
-    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -90,15 +88,17 @@ public class Hijo implements Serializable, Comparable {
         }
         final Hijo other = (Hijo) obj;
         return Objects.equals(this.cedulaId, other.cedulaId);
-    }  
-    
+    }
+
     @Override
-     public int compareTo(Object obj) {
-        Hijo otroHijo = (Hijo)obj;
+    public int compareTo(Object obj) {
+        Hijo otroHijo = (Hijo) obj;
         if (this.getNombre().equals(otroHijo.getNombre())) {
             return this.getCedulaId().compareTo(otroHijo.getCedulaId());
-        } else return this.getNombre().compareTo(otroHijo.getNombre());
-    } 
+        } else {
+            return this.getNombre().compareTo(otroHijo.getNombre());
+        }
+    }
 
     @Override
     public int hashCode() {
