@@ -25,7 +25,7 @@ public class Hijo implements Serializable, Comparable {
         return sociedadMedica;
     }
     
-    private Hijo() {
+    protected Hijo() {
         nombre = "";
 	fechaNacimiento = new Date();
         sexo = 'x';
@@ -89,10 +89,7 @@ public class Hijo implements Serializable, Comparable {
             return false;
         }
         final Hijo other = (Hijo) obj;
-        if (!Objects.equals(this.cedulaId, other.cedulaId)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.cedulaId, other.cedulaId);
     }  
     
     @Override
