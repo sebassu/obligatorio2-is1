@@ -1,8 +1,11 @@
 package dominio;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import persistencia.ArchivoLectura;
 
 public class Sistema implements Serializable {
 
@@ -130,7 +133,7 @@ public class Sistema implements Serializable {
             if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
                 Vacunacion vacunacionAModificar = new Vacunacion(laId, elTitulo,
                         elTipo, laDescripcion, laFecha, hijo, elLugar, vacuna);
-               modificarEventoEnListaCorrespondiente(vacunacionAModificar);
+                modificarEventoEnListaCorrespondiente(vacunacionAModificar);
             }
         }
     }
@@ -274,7 +277,102 @@ public class Sistema implements Serializable {
         }
     }
 
-    public void agregarVacunas(String ubicacion) throws IllegalArgumentException {
+    public int cargarVacunasSistematicas(ArchivoLectura archivoLeido,
+            int numeroLinea) throws IOException, IllegalArgumentException {
 
+        String linea = archivoLeido.linea().trim();
+        String nombre = "";
+        String meses = "";
+        String anios = "";
+        String descripcion = "";
+        int cantRenglones = 0;
+        boolean error = false;
+        boolean vacunaTerminada = false;
+        while (archivoLeido.hayMasLineas() && !linea.equals("-No sistemáticas-")) {
+
+            linea = archivoLeido.linea().trim();
+            numeroLinea++;
+            String[] datosEnLinea = linea.split(":");
+            switch (datosEnLinea[0]) {
+                case "Nombre":
+                    if (nombre.equals("")) {
+                        nombre = datosEnLinea[1].trim();
+                    } else error = true;
+                    break;
+                case "Meses":
+                    if (meses.equals("")) {
+                        meses = datosEnLinea[1].trim();
+                    } else error = true;
+                    break;
+                case "Años":
+                    if (anios.equals("")) {
+                        anios = datosEnLinea[1].trim();
+                    } else error = true;
+                    break;
+                case "Descripción":
+                    if (descripcion.equals("")) {
+                        descripcion = datosEnLinea[1].trim();
+                        vacunaTerminada = true;
+                    } else error = true;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Una vacuna no tiene "
+                            + "el campo de información '" + datosEnLinea[0]);
+            }
+            cantRenglones++;
+            if (cantRenglones == 4) vacunaTerminada = true;
+            if (vacunaTerminada && !nombre.equals("") && !meses.equals("")
+                    && !anios.equals("") && !descripcion.equals("")) {
+
+                procesarVacunaSistematica(nombre, meses, anios, descripcion);
+                vacunaTerminada = false;
+                nombre = "";
+                meses = "";
+                anios = "";
+                descripcion = "";
+            } else {
+                throw new IllegalArgumentException("Una vacuna tenia un formato "
+                        + "incorrecto y no se pudo procesar");
+            }
+            if (error) {
+                throw new IllegalArgumentException("Error en linea " + numeroLinea
+                        + ", no se esperaba '" + linea + "'");
+            }
+        }
+        return numeroLinea;
+    }
+
+    public void procesarVacunaSistematica(String nombre, String meses, String anios,
+            String descripcion) throws IllegalArgumentException {
+
+        Vacuna vacunaNueva;
+        if (!esNombreInvalido(nombre.trim())){
+            vacunaNueva = new Vacuna(nombre, true);
+            
+        } else {
+            
+        }
+        
+    }
+
+    public void cargarVacunasDeArchivo(String ubicacion) throws IllegalArgumentException,
+            FileNotFoundException, IOException {
+        ArchivoLectura archivoLeido = new ArchivoLectura(ubicacion);
+        int numeroLinea = 0;
+        String linea = archivoLeido.linea().trim();
+        while (archivoLeido.hayMasLineas()) {
+            numeroLinea++;
+            switch (linea) {
+                case "-Sistemáticas-":
+                    numeroLinea = cargarVacunasSistematicas(archivoLeido, numeroLinea);
+                    break;
+                case "-No sistemáticas-":
+
+                    break;
+                default:
+                    throw new IllegalArgumentException("Error en línea "
+                            + numeroLinea + ", no se esperaba '" + linea + "'");
+            }
+        }
     }
 }

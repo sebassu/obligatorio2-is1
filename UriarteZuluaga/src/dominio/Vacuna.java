@@ -1,6 +1,7 @@
 package dominio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Vacuna implements Serializable, Comparable<Vacuna> {
@@ -8,23 +9,23 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     //Variables de instancia.
     private String nombre;
     private boolean sistematca;
-    private int primeraAplicacion;
-    private int expiracion;
-    private int cantidadAplicaciones;
+    private ArrayList<Integer> vencimientoEnMeses;
+    private ArrayList<Integer> vencimientoEnAnios;
 
     //Constructor.
-    public Vacuna(String nom, boolean bool, int primeraAp,
-            int exp, int cantAp) throws IllegalArgumentException {
+    public Vacuna(String nom, boolean bool) throws IllegalArgumentException {
         this.setNombre(nom);
         this.setSistematca(bool);
-        this.setExpiracion(exp);
-        this.setCantidadAplicaciones(cantAp);
+        vencimientoEnMeses = new ArrayList<>();
+        vencimientoEnAnios = new ArrayList<>();
     }
 
     //Constructor privado para pruebas.
     protected Vacuna() {
         this.nombre = "";
         this.sistematca = false;
+        vencimientoEnMeses = new ArrayList<>();
+        vencimientoEnAnios = new ArrayList<>();
     }
 
     //Métodos de Acceso y Modificación.
@@ -48,30 +49,34 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
         return sistematca;
     }
 
-    public int getPrimeraAplicacion() {
-        return primeraAplicacion;
+    public void agregarVencimientoEnMeses(int dato) 
+            throws IllegalStateException {
+        if (!vencimientoEnMeses.contains(dato)) {
+            vencimientoEnMeses.add(dato);
+        } else throw new IllegalStateException();
+    }
+    
+    public void eliminarVencimientoEnMeses(int dato) 
+            throws IllegalStateException {
+        Integer integerAuxiliar = dato;
+        if (!vencimientoEnMeses.remove(integerAuxiliar)) 
+            throw new IllegalStateException();
     }
 
-    public final void setPrimeraAplicacion(int primeraAplicacion) {
-        this.primeraAplicacion = primeraAplicacion;
+    public void agregarVencimientoEnAnios(int dato) 
+            throws IllegalStateException {
+        if (!vencimientoEnAnios.contains(dato)) {
+            vencimientoEnAnios.add(dato);
+        } else throw new IllegalStateException();
     }
-
-    public int getExpiracion() {
-        return expiracion;
+    
+    public void eliminarVencimientoEnAnios(int dato) 
+            throws IllegalStateException {
+        Integer integerAuxiliar = dato;
+        if (!vencimientoEnAnios.remove(integerAuxiliar)) 
+            throw new IllegalStateException();
     }
-
-    public final void setExpiracion(int expiracion) {
-        this.expiracion = expiracion;
-    }
-
-    public int getCantidadAplicaciones() {
-        return cantidadAplicaciones;
-    }
-
-    public final void setCantidadAplicaciones(int cantidadAplicaciones) {
-        this.cantidadAplicaciones = cantidadAplicaciones;
-    }
-
+    
     /**
      * Comparación entre vacunas - Se valida la unicidad del nombre.
      *

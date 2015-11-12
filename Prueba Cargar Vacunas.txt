@@ -1,18 +1,19 @@
-Columnas Fecha:
-m1
-m2
-m3
-m5
-m8
--
-Vacunas:
-Antitetanica
-a12
-ca10
-+
-Polio
-m5
-cm10
--
-No sistematicas:
-Alguna 2015
+-Sistemáticas-
+
+Nombre: Antitetanica
+Meses: 10 10 99 100 550 c/80
+Años: -
+Descripción: -
+
+Nombre: Polio
+Meses: 0 10 15 100
+Años: 10
+Descripción: -
+
+-No sistemáticas-
+
+Nombre: Alguna 2015
+Descripción: -
+
+Nombre: Otra 1999
+Descripción: Es una caca

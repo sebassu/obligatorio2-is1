@@ -20,7 +20,8 @@ public class Serializacion {
      * @throws java.io.IOException
      */
     public static void serializar(Sistema s) throws IOException {
-        try (ObjectOutputStream aux = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("DatosSistema.dat")))) {
+        try (ObjectOutputStream aux = new ObjectOutputStream(
+                new BufferedOutputStream(new FileOutputStream("DatosSistema.dat")))) {
             aux.writeObject(s);
             aux.flush();
             aux.close();
@@ -37,7 +38,8 @@ public class Serializacion {
      */
     public static Sistema deserializar() throws IOException, ClassNotFoundException {
         Sistema retorno;
-        try (ObjectInputStream aux = new ObjectInputStream(new BufferedInputStream(new FileInputStream("DatosSistema.dat")))) {
+        try (ObjectInputStream aux = new ObjectInputStream(
+                new BufferedInputStream(new FileInputStream("DatosSistema.dat")))) {
             retorno = (Sistema) aux.readObject();
             aux.close();
         }
