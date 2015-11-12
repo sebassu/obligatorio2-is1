@@ -65,7 +65,7 @@ public class Evento implements Serializable, Comparable {
         this.cualHijo = hijo;
         this.lugar = "";
     }
-    
+
     public Evento(int laId) {
         this.id = laId;
         this.titulo = "";
@@ -117,7 +117,7 @@ public class Evento implements Serializable, Comparable {
     public void setId(int laId) {
         this.id = laId;
     }
-    
+
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
@@ -151,20 +151,12 @@ public class Evento implements Serializable, Comparable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         final Evento other = (Evento) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        return true;
+        return this.id == other.id;
     }
-
-    
 
     @Override
     public int compareTo(Object obj) {

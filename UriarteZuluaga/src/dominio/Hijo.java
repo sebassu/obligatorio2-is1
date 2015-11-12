@@ -40,8 +40,8 @@ public class Hijo implements Serializable, Comparable {
         listaAlturas = new ArrayList<>();
         historialVacunaciones = new ArrayList<>();
     }
-    
-     public Hijo(String laCedulaId) {
+
+    public Hijo(String laCedulaId) {
         nombre = "";
         fechaNacimiento.setTime(new Date());
         esHombre = true;
@@ -170,17 +170,11 @@ public class Hijo implements Serializable, Comparable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         final Hijo other = (Hijo) obj;
-        if (!Objects.equals(this.cedulaId, other.cedulaId)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.cedulaId, other.cedulaId);
     }
 
     @Override
