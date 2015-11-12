@@ -79,8 +79,9 @@ public class Hijo implements Serializable, Comparable {
         return esHombre;
     }
 
-    public int getEdad() {
-        return new GregorianCalendar().get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
+    public boolean esBebe() {
+        return new GregorianCalendar().get(Calendar.YEAR)
+                - fechaNacimiento.get(Calendar.YEAR) < 4;
     }
 
     public String getCedulaId() {
