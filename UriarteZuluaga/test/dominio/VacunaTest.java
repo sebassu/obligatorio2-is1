@@ -24,7 +24,8 @@ public class VacunaTest {
 
     @Parameters
     public static Collection<Object[]> data() {
-        Object[][] data = new Object[][]{{"12345"}, {""}, {"-2-2--"}, {"!&%&$="}, {"::"}};
+        Object[][] data = new Object[][]{{"12345"}, {""}, {"-2-2--"},
+        {"!&%&$="}, {"::"}};
         return Arrays.asList(data);
     }
 
@@ -59,19 +60,19 @@ public class VacunaTest {
 
     @Test
     public void testConstructorOK1() {
-        Vacuna v = new Vacuna("HPV", false);
+        Vacuna v = new Vacuna("HPV", false, 0, 0, 0);
         assertEquals(v.getNombre(), "HPV");
     }
 
     @Test
     public void testConstructorOK2() {
-        Vacuna v = new Vacuna("Triple Bacteriana 55", true);
+        Vacuna v = new Vacuna("Triple Bacteriana 55", true, 0, 0, 0);
         assertEquals(v.getNombre(), "Triple Bacteriana 55");
     }
 
     @Test
     public void testConstructorOK3() {
-        Vacuna v = new Vacuna("CPV1321 A3", false);
+        Vacuna v = new Vacuna("CPV1321 A3", false, 0, 0, 0);
         assertEquals(v.getNombre(), "CPV1321 A3");
     }
 
@@ -79,26 +80,26 @@ public class VacunaTest {
     public void testConstructorError() {
         ex.expect(IllegalArgumentException.class);
         ex.expectMessage("Nombre inválido");
-        Vacuna v = new Vacuna(nom, false);
+        Vacuna v = new Vacuna(nom, false, 0, 0, 0);
     }
 
     @Test
     public void testEquals1() {
-        Vacuna v = new Vacuna("HPV", false);
+        Vacuna v = new Vacuna("HPV", false, 0, 0, 0);
         assertTrue(v.equals(v));
     }
 
     @Test
     public void testEquals2() {
-        Vacuna v1 = new Vacuna("BCG", false);
-        Vacuna v2 = new Vacuna("BCG", false);
+        Vacuna v1 = new Vacuna("BCG", false, 0, 0, 0);
+        Vacuna v2 = new Vacuna("BCG", false, 0, 0, 0);
         assertTrue(v1.equals(v2));
     }
 
     @Test
     public void testEquals3() {
-        Vacuna v1 = new Vacuna("ABC", false);
-        Vacuna v2 = new Vacuna("H1N1", false);
+        Vacuna v1 = new Vacuna("ABC", false, 0, 0, 0);
+        Vacuna v2 = new Vacuna("H1N1", false, 0, 0, 0);
         assertFalse(v1.equals(v2));
     }
 }

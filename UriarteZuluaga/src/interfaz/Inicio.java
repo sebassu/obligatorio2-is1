@@ -1,5 +1,6 @@
 package interfaz;
 
+
 import dominio.Sistema;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -17,10 +18,8 @@ import persistencia.Serializacion;
  */
 public class Inicio {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
+
         Sistema s;
         final Sistema elSistema;
         try {
@@ -40,5 +39,7 @@ public class Inicio {
             }
         });
     }
-
+        VentanaPrincipal a = new VentanaPrincipal();
+        a.setVisible(true);
+    }
 }

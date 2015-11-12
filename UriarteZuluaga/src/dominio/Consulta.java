@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dominio;
 
 import java.util.Calendar;
 import java.util.Objects;
 
-/**
- *
- * @author UriarteZuluaga
- */
 public class Consulta extends Evento {
     
     private String medico;
@@ -46,11 +37,6 @@ public class Consulta extends Evento {
             return false;
         }
         final Consulta other = (Consulta) obj;
-        if (!Objects.equals(this.medico, other.medico)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.medico, other.medico);
     }
-    
-    
 }

@@ -14,14 +14,14 @@ import java.util.Objects;
  * @param <D2>
  */
 public class Par<D1, D2> {
-    
-   private D1 dato1;
-   private D2 dato2;
-   
-   public Par(D1 d1, D2 d2) {
-       this.dato1 = d1;
-       this.dato2 = d2;
-   }
+
+    private D1 dato1;
+    private D2 dato2;
+
+    public Par(D1 d1, D2 d2) {
+        this.dato1 = d1;
+        this.dato2 = d2;
+    }
 
     public D1 getDato1() {
         return dato1;
@@ -48,18 +48,10 @@ public class Par<D1, D2> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         final Par<?, ?> other = (Par<?, ?>) obj;
-        if (!Objects.equals(this.dato1, other.dato1)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.dato1, other.dato1);
     }
-   
-   
 }

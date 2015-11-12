@@ -9,10 +9,10 @@ import persistencia.ArchivoLectura;
 
 public class Sistema implements Serializable {
 
-    private ArrayList<Hijo> listaHijos;
-    private ArrayList<Vacuna> listaVacunas;
-    private ArrayList<Evento> eventosRealizados;
-    private ArrayList<Evento> eventosARealizar;
+    private final ArrayList<Hijo> listaHijos;
+    private final ArrayList<Vacuna> listaVacunas;
+    private final ArrayList<Evento> eventosRealizados;
+    private final ArrayList<Evento> eventosARealizar;
     private int proximaIdAAsignar;
 
     public Sistema() {
@@ -24,7 +24,6 @@ public class Sistema implements Serializable {
     }
 
     public void agregarEventoAListaCorrespondiente(Evento elEvento) {
-
         if (esFechaFutura(elEvento.getFecha())) {
             eventosARealizar.add(elEvento);
         } else {
@@ -35,22 +34,24 @@ public class Sistema implements Serializable {
 
     public void modificarEventoEnListaCorrespondiente(Evento elEvento)
             throws IllegalStateException {
-        if (eventosARealizar.contains(elEvento)) {
-            eventosARealizar.remove(elEvento);
-            eventosARealizar.add(elEvento);
-        } else if (eventosRealizados.contains(elEvento)) {
-            eventosRealizados.remove(elEvento);
-            eventosRealizados.add(elEvento);
+        int pos = eventosARealizar.indexOf(elEvento);
+        if (pos == -1) {
+            pos = eventosRealizados.indexOf(elEvento);
+            if (pos == -1) {
+                throw new IllegalStateException("No existe un evento con esta ID");
+            } else {
+                eventosRealizados.remove(pos);
+                eventosRealizados.add(elEvento);
+            }
         } else {
-            throw new IllegalStateException("Un evento con esta ID "
-                    + "no existe");
+            eventosARealizar.remove(pos);
+            eventosARealizar.add(elEvento);
         }
     }
 
     public void agregarEvento(String elTitulo, String elTipo,
             String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
             throws IllegalArgumentException {
-
         if (esEsteTipo(elTipo, "Vacunación") || esEsteTipo(elTipo, "Consulta")) {
             throw new IllegalArgumentException("Este tipo de evento debe ser "
                     + "creado con otro método");
@@ -66,7 +67,6 @@ public class Sistema implements Serializable {
     public void modificarEvento(int laId, String elTitulo, String elTipo,
             String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
             throws IllegalArgumentException, IllegalStateException {
-
         if (esEsteTipo(elTipo, "Vacunación") || esEsteTipo(elTipo, "Consulta")) {
             throw new IllegalArgumentException("Este tipo de evento debe ser "
                     + "buscado con otro método");
@@ -80,14 +80,12 @@ public class Sistema implements Serializable {
     }
 
     public boolean esEsteTipo(String elTipo, String tipoEsperado) {
-
         return elTipo.replaceAll("\\W", "").replaceAll("\\d+", "").equals(tipoEsperado);
     }
 
     public void agregarConsulta(String medico, String elTitulo, String elTipo,
             String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
             throws IllegalArgumentException {
-
         if (!esEsteTipo(elTipo, "Consulta")) {
             throw new IllegalArgumentException("Este tipo de evento debe ser "
                     + "creado con otro método");
@@ -105,7 +103,6 @@ public class Sistema implements Serializable {
     public void modificarConsulta(int laId, String medico, String elTitulo, String elTipo,
             String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
             throws IllegalArgumentException, IllegalStateException {
-
         if (!esEsteTipo(elTipo, "Consulta")) {
             throw new IllegalArgumentException("Este tipo de evento debe ser "
                     + "buscado con otro método");
@@ -123,7 +120,6 @@ public class Sistema implements Serializable {
     public void modificarVacunacion(int laId, Vacuna vacuna, String elTitulo, String elTipo,
             String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
             throws IllegalArgumentException, IllegalStateException {
-
         if (!esEsteTipo(elTipo, "Vacunación")) {
             throw new IllegalArgumentException("Este tipo de evento debe ser "
                     + "creado con otro método");
@@ -140,7 +136,6 @@ public class Sistema implements Serializable {
 
     public void agregarVacunacion(int laId, Vacuna vacuna, String elTitulo, String elTipo,
             String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar) {
-
         if (!esEsteTipo(elTipo, "Vacunación")) {
             throw new IllegalArgumentException("Este tipo de evento debe ser "
                     + "creado con otro método");
@@ -157,7 +152,6 @@ public class Sistema implements Serializable {
     }
 
     public void eliminarEvento(int laId) throws IllegalStateException {
-
         Evento eventoAEliminar = new Evento(laId);
         if (eventosRealizados.contains(eventoAEliminar)) {
             eventosRealizados.remove(eventoAEliminar);
@@ -168,7 +162,7 @@ public class Sistema implements Serializable {
         }
     }
 
-    public boolean esEventoValido(String elTitulo, String laDescripcion,
+    protected boolean esEventoValido(String elTitulo, String laDescripcion,
             Calendar laFecha, Hijo hijo, String elLugar)
             throws IllegalArgumentException {
         boolean esValido = false;
@@ -178,7 +172,7 @@ public class Sistema implements Serializable {
             throw new IllegalArgumentException("El lugar es inválido");
         } else if (esFechaAntesDeNacimiento(hijo.getFechaNacimiento(), laFecha)) {
             throw new IllegalArgumentException("Esa fecha es antes del nacimiento"
-                    + "de su hij@");
+                    + "de su hijo/a");
         } else {
             esValido = true;
         }
@@ -186,36 +180,43 @@ public class Sistema implements Serializable {
     }
 
     public boolean esNombreInvalido(String nombre) {
-
         return nombre.replaceAll("\\W", "").replaceAll("\\d+", "").isEmpty();
     }
 
     public boolean esCedulaInvalida(String cedula) {
-
-        for (int i = 0; i < cedula.length(); i++) {
-            if (cedula.charAt(i) != '.' && !Character.isDigit(cedula.charAt(i))
-                    && cedula.charAt(i) != '-') {
-                return false;
-            }
+        if (cedula.length() != 11 || cedula.charAt(1) != '.'
+                || cedula.charAt(5) != '.' || cedula.charAt(5) != '-') {
+            return false;
+        } else {
+            return cedula.replaceAll("\\D", "").length() == 8;
         }
-        return true;
     }
 
-    public boolean esFechaAntesDeNacimiento(Calendar laFechaNacimiento,
+    protected boolean esFechaAntesDeNacimiento(Calendar laFechaNacimiento,
             Calendar otraFecha) {
-
         return laFechaNacimiento.getTime().compareTo(otraFecha.getTime()) > 0;
     }
 
-    public boolean esFechaFutura(Calendar laFecha) {
-
+    protected boolean esFechaFutura(Calendar laFecha) {
         return laFecha.getTime().compareTo(Calendar.getInstance().getTime()) > 0;
     }
 
-    public boolean esHijoValido(String elNombre, Calendar laFecha, boolean esHombre,
+    /**
+     * esFechaValida:
+     *
+     * @param laFecha Fecha a ser validada.
+     * @return Retorna true si la fecha recibida no es una futura comparada con
+     * la actual y además resulta en una edad menor a los doce años para el
+     * niño/a.
+     */
+    public boolean esFechaValida(Calendar laFecha) {
+        return !esFechaFutura(laFecha)
+                && Calendar.getInstance().get(Calendar.YEAR) - laFecha.get(Calendar.YEAR) < 12;
+    }
+
+    protected boolean esHijoValido(String elNombre, Calendar laFecha,
             String laCedulaId, String laSociedadMedica)
             throws IllegalArgumentException {
-        boolean esValido = false;
         if (esFechaFutura(laFecha)) {
             throw new IllegalArgumentException("La fecha ingresada es inválida");
         } else if (esNombreInvalido(elNombre)) {
@@ -225,20 +226,16 @@ public class Sistema implements Serializable {
         } else if (esNombreInvalido(laSociedadMedica)) {
             throw new IllegalArgumentException("El nombre de la sociedad Médica "
                     + "es inválido");
-        } else {
-            esValido = true;
         }
-        return esValido;
+        return true;
     }
 
     public void agregarHijo(String elNombre, Calendar laFecha, boolean esHombre,
-            String laCedulaId, String laSociedadMedica)
+            String laCedulaId, String laSociedadMedica, String medicoCab)
             throws IllegalArgumentException, IllegalStateException {
-
-        if (esHijoValido(elNombre, laFecha, esHombre, laCedulaId,
-                laSociedadMedica)) {
+        if (esHijoValido(elNombre, laFecha, laCedulaId, laSociedadMedica)) {
             Hijo hijoAAgregar = new Hijo(elNombre, laFecha, esHombre, laCedulaId,
-                    laSociedadMedica);
+                    laSociedadMedica, medicoCab);
             if (listaHijos.contains(hijoAAgregar)) {
                 throw new IllegalStateException("Los datos ingresados corresponden "
                         + "a un hijo ya ingresado.");
@@ -249,11 +246,9 @@ public class Sistema implements Serializable {
     }
 
     public void modificarHijo(String elNombre, Calendar laFecha, boolean esHombre,
-            String laCedulaId, String laSociedadMedica, String laCedulaAnterior)
+            String laCedulaId, String laSociedadMedica, String elMedico, String laCedulaAnterior)
             throws IllegalArgumentException, IllegalStateException {
-
-        if (esHijoValido(elNombre, laFecha, esHombre, laCedulaId,
-                laSociedadMedica)) {
+        if (esHijoValido(elNombre, laFecha, laCedulaId, laSociedadMedica)) {
             Hijo hijoAModificar = new Hijo(laCedulaAnterior);
             if (!listaHijos.contains(hijoAModificar)) {
                 throw new IllegalStateException("Los datos ingresados no corresponden "
@@ -261,13 +256,12 @@ public class Sistema implements Serializable {
             } else {
                 listaHijos.remove(hijoAModificar);
                 listaHijos.add(new Hijo(elNombre, laFecha, esHombre, laCedulaId,
-                        laSociedadMedica));
+                        laSociedadMedica, elMedico));
             }
         }
     }
 
     public void eliminarHijo(String laCedulaId) throws IllegalStateException {
-
         Hijo hijoABorrar = new Hijo(laCedulaId);
         if (listaHijos.contains(hijoABorrar)) {
             listaHijos.remove(hijoABorrar);

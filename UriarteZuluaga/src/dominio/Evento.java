@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package dominio;
 
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- *
- * @author UriarteZuluaga
- */
 public class Evento implements Serializable, Comparable {
 
     private int id;
@@ -22,6 +14,7 @@ public class Evento implements Serializable, Comparable {
     private String descripcion;
     private Calendar fecha;
     private Hijo cualHijo;
+    private String notas;
 
     public Evento(int laId, String elTitulo, String elTipo, String laDescripcion,
             Calendar laFecha, Hijo hijo, String elLugar) {
@@ -65,7 +58,7 @@ public class Evento implements Serializable, Comparable {
         this.cualHijo = hijo;
         this.lugar = "";
     }
-    
+
     public Evento(int laId) {
         this.id = laId;
         this.titulo = "";
@@ -117,7 +110,7 @@ public class Evento implements Serializable, Comparable {
     public void setId(int laId) {
         this.id = laId;
     }
-    
+
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
@@ -151,20 +144,12 @@ public class Evento implements Serializable, Comparable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         final Evento other = (Evento) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        return true;
+        return this.id == other.id;
     }
-
-    
 
     @Override
     public int compareTo(Object obj) {
