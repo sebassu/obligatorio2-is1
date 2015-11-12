@@ -82,10 +82,6 @@ public class Hijo implements Serializable, Comparable {
         return cedulaId;
     }
 
-    public String getSociedadMedica() {
-        return sociedadMedica;
-    }
-
     public String getMedicoCabecilla() {
         return medicoCabecilla;
     }
