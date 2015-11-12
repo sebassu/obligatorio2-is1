@@ -8,7 +8,7 @@ package dominio;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ public class Hijo implements Serializable, Comparable {
     private boolean esHombre;
     private String cedulaId;
     private String sociedadMedica;
-    private String medicoCabecilla;
+    private String medicoDeCabecera;
     private final ArrayList<Par<Calendar, Integer>> listaPesos;
     private final ArrayList<Par<Calendar, Integer>> listaPerimetrosCefalicos;
     private final ArrayList<Par<Calendar, Integer>> listaAlturas;
@@ -31,30 +31,30 @@ public class Hijo implements Serializable, Comparable {
 
     private Hijo() {
         nombre = "";
-        fechaNacimiento.setTime(new Date());
-        esHombre = true;
+        fechaNacimiento = new GregorianCalendar();
         cedulaId = "9.999.999-9";
         sociedadMedica = "";
         listaPesos = new ArrayList<>();
         listaPerimetrosCefalicos = new ArrayList<>();
         listaAlturas = new ArrayList<>();
         historialVacunaciones = new ArrayList<>();
+        medicoDeCabecera = "";
     }
 
     public Hijo(String laCedulaId) {
         nombre = "";
-        fechaNacimiento.setTime(new Date());
-        esHombre = true;
+        fechaNacimiento = new GregorianCalendar();
         cedulaId = laCedulaId;
         sociedadMedica = "";
         listaPesos = new ArrayList<>();
         listaPerimetrosCefalicos = new ArrayList<>();
         listaAlturas = new ArrayList<>();
         historialVacunaciones = new ArrayList<>();
+        medicoDeCabecera = "";
     }
 
     public Hijo(String elNombre, Calendar laFecha, boolean elSexo, String laCedulaId,
-            String laSociedadMedica) {
+            String laSociedadMedica, String unMedico) {
         nombre = elNombre;
         fechaNacimiento = laFecha;
         esHombre = elSexo;
@@ -64,6 +64,7 @@ public class Hijo implements Serializable, Comparable {
         listaPerimetrosCefalicos = new ArrayList<>();
         listaAlturas = new ArrayList<>();
         historialVacunaciones = new ArrayList<>();
+        medicoDeCabecera = unMedico;
     }
 
     public String getNombre() {
@@ -78,16 +79,20 @@ public class Hijo implements Serializable, Comparable {
         return esHombre;
     }
 
+    public int getEdad() {
+        return new GregorianCalendar().get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
+    }
+
     public String getCedulaId() {
         return cedulaId;
     }
 
-    public String getMedicoCabecilla() {
-        return medicoCabecilla;
+    public String getMedicoDeCabecera() {
+        return medicoDeCabecera;
     }
 
-    public void setMedicoCabecilla(String elMedicoCabecilla) {
-        this.medicoCabecilla = elMedicoCabecilla;
+    public void setMedicoDeCabecera(String elMedicoCabecilla) {
+        this.medicoDeCabecera = elMedicoCabecilla;
     }
 
     public void setNombre(String elNombre) {
