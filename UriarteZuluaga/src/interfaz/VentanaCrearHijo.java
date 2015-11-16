@@ -1,22 +1,26 @@
 package interfaz;
 
+import auxiliar.Validaciones;
 import dominio.Hijo;
 import dominio.Sistema;
+import java.awt.event.KeyEvent;
 import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 public class VentanaCrearHijo extends javax.swing.JFrame {
-    
+
     public VentanaCrearHijo(Sistema sis, Hijo h, boolean esParaEditar) {
         this.modelo = sis;
         this.edicion = esParaEditar;
         this.cedulaAnt = "";
         initComponents();
         ((JLabel) jComboBoxGenero.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        jDateChooserNac.setSelectableDateRange(null, new Date());
+        jDateChooserNac.setCalendar(Calendar.getInstance());
         jLabelErrorCedula.setVisible(false);
-        jLabelErrorFecha.setVisible(false);
         jLabelErrorMed.setVisible(false);
         jLabelErrorNomSoc.setVisible(false);
         jLabelErrorNombre.setVisible(false);
@@ -34,7 +38,7 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
             }
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -54,7 +58,6 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabelErrorCedula = new javax.swing.JLabel();
         jDateChooserNac = new com.toedter.calendar.JDateChooser();
-        jLabelErrorFecha = new javax.swing.JLabel();
         jLabelErrorNombre = new javax.swing.JLabel();
         jPanelEstadisticas = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -125,6 +128,11 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
                 txtNombreFocusLost(evt);
             }
         });
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setLabelFor(jDateChooserNac);
@@ -132,6 +140,16 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
 
         txtCedula.setToolTipText("Formato: N.NNN.NNN-N");
         txtCedula.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+        txtCedula.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCedulaFocusLost(evt);
+            }
+        });
+        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCedulaKeyTyped(evt);
+            }
+        });
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("CI:");
@@ -153,16 +171,6 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
         });
 
         jDateChooserNac.setToolTipText("Seleccionar una fecha anterior a la actual");
-        jDateChooserNac.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jDateChooserNacFocusLost(evt);
-            }
-        });
-
-        jLabelErrorFecha.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelErrorFecha.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabelErrorFecha.setText("Fecha inválida");
-        jLabelErrorFecha.setFocusable(false);
 
         jLabelErrorNombre.setForeground(new java.awt.Color(255, 0, 0));
         jLabelErrorNombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -194,7 +202,6 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelErrorCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelErrorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelErrorNombre))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -208,9 +215,9 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabelErrorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jDateChooserNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jDateChooserNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,11 +236,21 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
         jLabel8.setText("Sociedad médica:");
 
         txtSociedad.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+        txtSociedad.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtSociedadFocusLost(evt);
+            }
+        });
 
         txtMedico.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));
         txtMedico.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtMedicoFocusLost(evt);
+            }
+        });
+        txtMedico.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMedicoKeyTyped(evt);
             }
         });
 
@@ -244,11 +261,6 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
         jLabelErrorNomSoc.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabelErrorNomSoc.setText("Entrada inválida");
         jLabelErrorNomSoc.setFocusable(false);
-        jLabelErrorNomSoc.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jLabelErrorNomSocFocusLost(evt);
-            }
-        });
 
         jLabelErrorMed.setForeground(new java.awt.Color(255, 0, 0));
         jLabelErrorMed.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -270,7 +282,8 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelErrorNomSoc)
-                    .addComponent(jLabelErrorMed)))
+                    .addComponent(jLabelErrorMed))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelEstadisticasLayout.setVerticalGroup(
             jPanelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,21 +306,20 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelEstadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanelEstadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jPanelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelEstadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanelEstadisticas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jPanelDatos.getAccessibleContext().setAccessibleName("Datos personales");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -315,9 +327,8 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -334,27 +345,24 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
         boolean error = false;
         String[] aux = new String[4];
         aux[0] = txtNombre.getText();
-        if (modelo.esNombreInvalido(aux[0])) {
+        if (Validaciones.noContieneCaracterAlfabetico(aux[0])) {
             jLabelErrorNombre.setVisible(error = true);
         }
         aux[1] = txtCedula.getText();
-        if (modelo.esCedulaInvalida(aux[1])) {
+        if (Validaciones.esCedulaInvalida(aux[1])) {
             jLabelErrorCedula.setVisible(error = true);
         }
         aux[2] = txtSociedad.getText();
-        if (modelo.esNombreInvalido(aux[2])) {
+        if (Validaciones.noContieneCaracterAlfabetico(aux[2])) {
             jLabelErrorNomSoc.setVisible(error = true);
         }
         aux[3] = txtMedico.getText();
-        if (modelo.esNombreInvalido(aux[3])) {
+        if (Validaciones.noContieneCaracterAlfabetico(aux[3])) {
             jLabelErrorMed.setVisible(error = true);
-        }
-        Calendar c = jDateChooserNac.getCalendar();
-        if (!modelo.esFechaValida(c)) {
-            jLabelErrorFecha.setVisible(error = true);
         }
         if (!error) {
             try {
+                Calendar c = jDateChooserNac.getCalendar();
                 if (edicion) {
                     modelo.modificarHijo(aux[0], c,
                             jComboBoxGenero.getSelectedIndex() == 0, aux[1],
@@ -364,8 +372,9 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
                             jComboBoxGenero.getSelectedIndex() == 0, aux[1], aux[2], aux[3]);
                 }
             } catch (IllegalArgumentException | IllegalStateException e) {
-                JOptionPane.showMessageDialog(this, "Error", "Los datos ingresados "
-                        + "corresponden a un hijo ya ingresado.", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Los datos ingresados "
+                        + "corresponden a un hijo ya ingresado.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Error", VentanaPrincipal.ERR_INGRESO,
@@ -378,24 +387,40 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusLost
-        jLabelErrorNombre.setVisible(modelo.esNombreInvalido(txtNombre.getText()));
+        jLabelErrorNombre.setVisible(Validaciones.noContieneCaracterAlfabetico(txtNombre.getText()));
     }//GEN-LAST:event_txtNombreFocusLost
 
     private void txtMedicoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMedicoFocusLost
-        jLabelErrorMed.setVisible(modelo.esNombreInvalido(txtMedico.getText()));
+        jLabelErrorMed.setVisible(Validaciones.noContieneCaracterAlfabetico(txtMedico.getText()));
     }//GEN-LAST:event_txtMedicoFocusLost
 
-    private void jDateChooserNacFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jDateChooserNacFocusLost
-        jLabelErrorFecha.setVisible(!modelo.esFechaValida(jDateChooserNac.getCalendar()));
-    }//GEN-LAST:event_jDateChooserNacFocusLost
-
-    private void jLabelErrorNomSocFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jLabelErrorNomSocFocusLost
-        jLabelErrorNomSoc.setVisible(modelo.esNombreInvalido(txtSociedad.getText()));
-    }//GEN-LAST:event_jLabelErrorNomSocFocusLost
-
     private void jLabelErrorCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jLabelErrorCedulaFocusLost
-        jLabelErrorCedula.setVisible(modelo.esCedulaInvalida(txtCedula.getText()));
+        jLabelErrorCedula.setVisible(Validaciones.esCedulaInvalida(txtCedula.getText()));
     }//GEN-LAST:event_jLabelErrorCedulaFocusLost
+
+    private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
+        char caracter = evt.getKeyChar();
+        if (!Character.isDigit(caracter) && caracter != '-' && caracter != '.'
+                && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCedulaKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        validarEntradaAlfabetica(evt);
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtMedicoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedicoKeyTyped
+        validarEntradaAlfabetica(evt);
+    }//GEN-LAST:event_txtMedicoKeyTyped
+
+    private void txtCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCedulaFocusLost
+        jLabelErrorCedula.setVisible(Validaciones.esCedulaInvalida(txtCedula.getText()));
+    }//GEN-LAST:event_txtCedulaFocusLost
+
+    private void txtSociedadFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSociedadFocusLost
+        jLabelErrorNomSoc.setVisible(Validaciones.noContieneCaracterAlfabetico(txtSociedad.getText()));
+    }//GEN-LAST:event_txtSociedadFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
@@ -409,7 +434,6 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelErrorCedula;
-    private javax.swing.JLabel jLabelErrorFecha;
     private javax.swing.JLabel jLabelErrorMed;
     private javax.swing.JLabel jLabelErrorNomSoc;
     private javax.swing.JLabel jLabelErrorNombre;
@@ -426,4 +450,12 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
     private final Sistema modelo;
     private final boolean edicion;
     private String cedulaAnt;
+
+    private void validarEntradaAlfabetica(KeyEvent evt) {
+        char caracter = evt.getKeyChar();
+        if (!Character.isAlphabetic(caracter) && caracter != ' ' && caracter != '-'
+                && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
+    }
 }

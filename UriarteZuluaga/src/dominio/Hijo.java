@@ -1,5 +1,6 @@
 package dominio;
 
+import auxiliar.Par;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -188,5 +189,10 @@ public class Hijo implements Serializable, Comparable {
         int hash = 7;
         hash = 53 * hash + Objects.hashCode(this.cedulaId);
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

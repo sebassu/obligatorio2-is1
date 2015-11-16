@@ -16,7 +16,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public static final Color niñoClaro = new Color(135, 186, 19);
     public static final Color Amarillo = new Color(233, 224, 40);
     public static final Color niña = new Color(246, 168, 40);
-
+    
     public VentanaPrincipal(Sistema sis) {
         this.modelo = sis;
         initComponents();
@@ -28,6 +28,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jProgressBar1 = new javax.swing.JProgressBar();
+        buttonGroupHijos = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         btnAgregarHijo = new javax.swing.JButton();
         btnEditarHijo = new javax.swing.JButton();
@@ -35,7 +36,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         btnEliminarHijo = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        panelBotonesHijos = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jCalendar1 = new com.toedter.calendar.JCalendar();
@@ -53,16 +54,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         mnuSalir = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        mnuRegistrarCarne = new javax.swing.JMenuItem();
-        mnuModificarRegistro = new javax.swing.JMenuItem();
-        mnuEliminarCarne = new javax.swing.JMenuItem();
+        opcRegistrarCarne = new javax.swing.JMenuItem();
+        opcModificarRegistro = new javax.swing.JMenuItem();
+        opcEliminarCarne = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        mnuEventos = new javax.swing.JMenu();
+        opcRegistrarEvento = new javax.swing.JMenuItem();
+        opcModificarEvento = new javax.swing.JMenuItem();
+        opcEliminarEvento = new javax.swing.JMenuItem();
+        jSeparator8 = new javax.swing.JPopupMenu.Separator();
         jMenu2 = new javax.swing.JMenu();
-        mnuAyuda = new javax.swing.JMenuItem();
+        opcGraficaPeso = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        mnuAcercaDe = new javax.swing.JMenuItem();
+        opcGraficaAltura = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        opcGraficaPerimetroCefalico = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 153, 255));
@@ -103,9 +109,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnEliminarHijo.setFocusable(false);
         btnEliminarHijo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEliminarHijo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminarHijo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarHijoActionPerformed(evt);
+            }
+        });
 
-        jScrollPane1.setBackground(new java.awt.Color(135, 186, 19));
-        jScrollPane1.setBorder(null);
+        panelBotonesHijos.setBackground(new java.awt.Color(135, 186, 19));
+        panelBotonesHijos.setBorder(null);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -124,7 +135,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(btnEliminarHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(158, Short.MAX_VALUE))
             .addComponent(jSeparator3)
-            .addComponent(jScrollPane1)
+            .addComponent(panelBotonesHijos)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,7 +151,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1))
+                .addComponent(panelBotonesHijos))
         );
 
         jPanel3.setBackground(new java.awt.Color(60, 154, 40));
@@ -266,66 +277,96 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu3);
 
         jMenu1.setText("Carnés");
-        jMenu1.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                jMenu1MenuSelected(evt);
-            }
-        });
 
-        mnuRegistrarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
-        mnuRegistrarCarne.setText("Registrar Carné");
-        mnuRegistrarCarne.setToolTipText("Crear un juego nuevo");
-        mnuRegistrarCarne.addActionListener(new java.awt.event.ActionListener() {
+        opcRegistrarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
+        opcRegistrarCarne.setText("Registrar Carné");
+        opcRegistrarCarne.setToolTipText("Crear un juego nuevo");
+        opcRegistrarCarne.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuRegistrarCarneActionPerformed(evt);
+                opcRegistrarCarneActionPerformed(evt);
             }
         });
-        jMenu1.add(mnuRegistrarCarne);
+        jMenu1.add(opcRegistrarCarne);
 
-        mnuModificarRegistro.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
-        mnuModificarRegistro.setText("Modificar Registro");
-        mnuModificarRegistro.addActionListener(new java.awt.event.ActionListener() {
+        opcModificarRegistro.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+        opcModificarRegistro.setText("Modificar Registro");
+        opcModificarRegistro.setEnabled(false);
+        opcModificarRegistro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuModificarRegistroActionPerformed(evt);
+                opcModificarRegistroActionPerformed(evt);
             }
         });
-        jMenu1.add(mnuModificarRegistro);
+        jMenu1.add(opcModificarRegistro);
 
-        mnuEliminarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
-        mnuEliminarCarne.setText("Eliminar Carné");
-        mnuEliminarCarne.addActionListener(new java.awt.event.ActionListener() {
+        opcEliminarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
+        opcEliminarCarne.setText("Eliminar Carné");
+        opcEliminarCarne.setEnabled(false);
+        opcEliminarCarne.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuEliminarCarneActionPerformed(evt);
+                opcEliminarCarneActionPerformed(evt);
             }
         });
-        jMenu1.add(mnuEliminarCarne);
+        jMenu1.add(opcEliminarCarne);
         jMenu1.add(jSeparator4);
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Gráficas");
+        mnuEventos.setText("Eventos");
+        mnuEventos.setEnabled(false);
 
-        mnuAyuda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        mnuAyuda.setText("Peso");
-        jMenu2.add(mnuAyuda);
-        jMenu2.add(jSeparator6);
-
-        mnuAcercaDe.setText("Altura");
-        mnuAcercaDe.addActionListener(new java.awt.event.ActionListener() {
+        opcRegistrarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
+        opcRegistrarEvento.setText("Registrar Evento");
+        opcRegistrarEvento.setToolTipText("Crear un juego nuevo");
+        opcRegistrarEvento.setEnabled(false);
+        opcRegistrarEvento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAcercaDeActionPerformed(evt);
+                opcRegistrarEventoActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuAcercaDe);
+        mnuEventos.add(opcRegistrarEvento);
+
+        opcModificarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+        opcModificarEvento.setText("Modificar Evento");
+        opcModificarEvento.setEnabled(false);
+        opcModificarEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcModificarEventoActionPerformed(evt);
+            }
+        });
+        mnuEventos.add(opcModificarEvento);
+
+        opcEliminarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
+        opcEliminarEvento.setText("Eliminar Evento");
+        opcEliminarEvento.setEnabled(false);
+        opcEliminarEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcEliminarEventoActionPerformed(evt);
+            }
+        });
+        mnuEventos.add(opcEliminarEvento);
+        mnuEventos.add(jSeparator8);
+
+        jMenuBar1.add(mnuEventos);
+
+        jMenu2.setText("Gráficas");
+
+        opcGraficaPeso.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        opcGraficaPeso.setText("Peso");
+        jMenu2.add(opcGraficaPeso);
+        jMenu2.add(jSeparator6);
+
+        opcGraficaAltura.setText("Altura");
+        opcGraficaAltura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcGraficaAlturaActionPerformed(evt);
+            }
+        });
+        jMenu2.add(opcGraficaAltura);
         jMenu2.add(jSeparator5);
 
-        jMenuItem1.setText("Perímetro Cefálico");
-        jMenuItem1.setToolTipText("El hijo seleccionado no es bebé");
-        jMenu2.add(jMenuItem1);
+        opcGraficaPerimetroCefalico.setText("Perímetro Cefálico");
+        opcGraficaPerimetroCefalico.setToolTipText("El hijo seleccionado no es bebé");
+        jMenu2.add(opcGraficaPerimetroCefalico);
 
         jMenuBar1.add(jMenu2);
 
@@ -353,15 +394,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarHijoActionPerformed
-        try {
-            VentanaCrearHijo v = new VentanaCrearHijo(modelo,
-                    modelo.getHijo(getPosHijoSeleccionado()), true);
-            v.setLocationRelativeTo(this);
-            v.setVisible(true);
-        } catch (IndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(this, "Error al intentar acceder a "
-                    + "los datos de un hijo.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        modificarHijoSeleccionado();
     }//GEN-LAST:event_btnEditarHijoActionPerformed
 
     private int getPosHijoSeleccionado() {
@@ -379,34 +412,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_mnuSalirActionPerformed
 
-    private void jMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenu1MenuSelected
-        mnuPartidaReiniciar.setEnabled(panelJuegoActual.isVisible() && (modelo.getPartidaActual() != null));
-    }//GEN-LAST:event_jMenu1MenuSelected
+    private void opcGraficaAlturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcGraficaAlturaActionPerformed
 
-    private void mnuAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAcercaDeActionPerformed
-        VentanaAcercaDe v = new VentanaAcercaDe();
-        v.setLocationRelativeTo(this);
-        v.setVisible(true);
-    }//GEN-LAST:event_mnuAcercaDeActionPerformed
+    }//GEN-LAST:event_opcGraficaAlturaActionPerformed
 
-    private void mnuModificarRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuModificarRegistroActionPerformed
+    private void opcModificarRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcModificarRegistroActionPerformed
+        modificarHijoSeleccionado();
+    }//GEN-LAST:event_opcModificarRegistroActionPerformed
 
-    }//GEN-LAST:event_mnuModificarRegistroActionPerformed
+    private void opcEliminarCarneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEliminarCarneActionPerformed
+        eliminarHijoSeleccionado();
+    }//GEN-LAST:event_opcEliminarCarneActionPerformed
 
-    private void mnuEliminarCarneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEliminarCarneActionPerformed
-
-    }//GEN-LAST:event_mnuEliminarCarneActionPerformed
-
-    private void mnuRegistrarCarneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRegistrarCarneActionPerformed
-        if (this.modelo.getJugadores().size() > 1) {
-            VentanaPartidaComenzar v = new VentanaPartidaComenzar(modelo, this);
-            v.setLocationRelativeTo(this);
-            v.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "Debe haber dos jugadores registrados por lo"
-                    + " menos antes de comenzar una partida de \"Perfección\"", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_mnuRegistrarCarneActionPerformed
+    private void opcRegistrarCarneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcRegistrarCarneActionPerformed
+        registrarHijo();
+    }//GEN-LAST:event_opcRegistrarCarneActionPerformed
 
     private void itemCargarVacunasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCargarVacunasActionPerformed
         boolean aux;
@@ -427,10 +447,31 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } while (aux);
     }//GEN-LAST:event_itemCargarVacunasActionPerformed
 
+    private void btnEliminarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarHijoActionPerformed
+        eliminarHijoSeleccionado();
+    }//GEN-LAST:event_btnEliminarHijoActionPerformed
+
+    private void opcRegistrarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcRegistrarEventoActionPerformed
+        VentanaCrearEvento v = new VentanaCrearEvento(modelo, -1);
+        v.setLocationRelativeTo(this);
+        v.setVisible(true);
+        //if()
+        //TODO
+    }//GEN-LAST:event_opcRegistrarEventoActionPerformed
+
+    private void opcModificarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcModificarEventoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_opcModificarEventoActionPerformed
+
+    private void opcEliminarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEliminarEventoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_opcEliminarEventoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarHijo;
     private javax.swing.JButton btnEditarHijo;
     private javax.swing.JButton btnEliminarHijo;
+    private javax.swing.ButtonGroup buttonGroupHijos;
     private javax.swing.JMenuItem itemCargarVacunas;
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
@@ -440,13 +481,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
@@ -456,14 +495,65 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JMenuItem mnuAcercaDe;
-    private javax.swing.JMenuItem mnuAyuda;
-    private javax.swing.JMenuItem mnuEliminarCarne;
-    private javax.swing.JMenuItem mnuModificarRegistro;
-    private javax.swing.JMenuItem mnuRegistrarCarne;
+    private javax.swing.JMenu mnuEventos;
     private javax.swing.JMenuItem mnuSalir;
+    private javax.swing.JMenuItem opcEliminarCarne;
+    private javax.swing.JMenuItem opcEliminarEvento;
+    private javax.swing.JMenuItem opcGraficaAltura;
+    private javax.swing.JMenuItem opcGraficaPerimetroCefalico;
+    private javax.swing.JMenuItem opcGraficaPeso;
+    private javax.swing.JMenuItem opcModificarEvento;
+    private javax.swing.JMenuItem opcModificarRegistro;
+    private javax.swing.JMenuItem opcRegistrarCarne;
+    private javax.swing.JMenuItem opcRegistrarEvento;
+    private javax.swing.JScrollPane panelBotonesHijos;
     // End of variables declaration//GEN-END:variables
     private final Sistema modelo;
+
+    private void modificarHijoSeleccionado() {
+        try {
+            VentanaCrearHijo v = new VentanaCrearHijo(modelo,
+                    modelo.getHijo(getPosHijoSeleccionado()), true);
+            v.setLocationRelativeTo(this);
+            v.setVisible(true);
+        } catch (IndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(this, "Error al intentar acceder a "
+                    + "los datos de un hijo.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void registrarHijo() {
+        VentanaCrearHijo v = new VentanaCrearHijo(modelo, null, false);
+        v.setLocationRelativeTo(this);
+        v.setVisible(true);
+        if (modelo.getCantidadHijos() > 0) {
+            opcModificarRegistro.setEnabled(true);
+            opcEliminarCarne.setEnabled(true);
+            btnEditarHijo.setEnabled(true);
+            btnEliminarHijo.setEnabled(true);
+            mnuEventos.setEnabled(true);
+            opcRegistrarEvento.setEnabled(true);
+        }
+    }
+
+    private void eliminarHijoSeleccionado() {
+        int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro/a que desea eliminar al "
+                + "carné seleccionado?", "Confirme su selección",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (opcion == JOptionPane.YES_OPTION) {
+            modelo.eliminarHijoPorPos(getPosHijoSeleccionado());
+            JOptionPane.showMessageDialog(this, "El registro se ha borrado exiitosamente"
+                    + "del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
+            if (modelo.getCantidadHijos() == 0) {
+                opcModificarRegistro.setEnabled(false);
+                opcEliminarCarne.setEnabled(false);
+                btnEditarHijo.setEnabled(false);
+                btnEliminarHijo.setEnabled(false);
+            }
+        }
+    }
 }
