@@ -8,9 +8,9 @@ import persistencia.Serializacion;
 
 public class Inicio {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalArgumentException, IOException {
 
-        Sistema s;
+        /*Sistema s;
         final Sistema elSistema;
         try {
             s = Serializacion.deserializar();
@@ -29,6 +29,11 @@ public class Inicio {
             }
         });
         VentanaPrincipal a = new VentanaPrincipal(elSistema);
-        a.setVisible(true);
+        a.setVisible(true);*/
+        Sistema s = new Sistema();
+     
+        s.cargarVacunasDeArchivo("Prueba Cargar Vacunas.txt");
+        System.out.println("");
+        
     }
 }

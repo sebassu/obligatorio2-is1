@@ -1,0 +1,19 @@
+-SISTEMATICAS-
+
+N: Antitetanica
+M: 99 100 c/10 c/5
+A: c/10
+D: -
+
+N: Polio
+M: 0 10 15 100
+A: 10
+D: -
+
+-NO SISTEMATICAS-
+
+N: Alguna 2015
+D: -
+
+N: Otra 1999
+D: Es una caca
