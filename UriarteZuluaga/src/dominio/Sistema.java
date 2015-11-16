@@ -80,7 +80,7 @@ public class Sistema implements Serializable {
     }
 
     public boolean esEsteTipo(String elTipo, String tipoEsperado) {
-        return elTipo.replaceAll("\\W", "").replaceAll("\\d+", "").equals(tipoEsperado);
+        return elTipo.replaceAll("\\W", "").equals(tipoEsperado);
     }
 
     public void agregarConsulta(String medico, String elTitulo, String elTipo,
@@ -90,7 +90,7 @@ public class Sistema implements Serializable {
             throw new IllegalArgumentException("Este tipo de evento debe ser "
                     + "creado con otro método");
         } else if (esNombreInvalido(medico)) {
-            throw new IllegalArgumentException("El nombre del médico es inálido");
+            throw new IllegalArgumentException("El nombre del médico es inválido");
         } else {
             if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
                 Consulta nuevaConsulta = new Consulta(proximaIdAAsignar, elTitulo,
@@ -238,7 +238,7 @@ public class Sistema implements Serializable {
                     laSociedadMedica, medicoCab);
             if (listaHijos.contains(hijoAAgregar)) {
                 throw new IllegalStateException("Los datos ingresados corresponden "
-                        + "a un hijo ya ingresado.");
+                        + "a un hijo/a ya ingresado.");
             } else {
                 listaHijos.add(hijoAAgregar);
             }
@@ -250,15 +250,24 @@ public class Sistema implements Serializable {
             throws IllegalArgumentException, IllegalStateException {
         if (esHijoValido(elNombre, laFecha, laCedulaId, laSociedadMedica)) {
             Hijo hijoAModificar = new Hijo(laCedulaAnterior);
-            if (!listaHijos.contains(hijoAModificar)) {
+            int pos = listaHijos.indexOf(hijoAModificar);
+            if (pos == -1) {
                 throw new IllegalStateException("Los datos ingresados no corresponden "
-                        + "a un hijo ya ingresado.");
+                        + "a un hijo/a ya ingresado.");
             } else {
-                listaHijos.remove(hijoAModificar);
-                listaHijos.add(new Hijo(elNombre, laFecha, esHombre, laCedulaId,
-                        laSociedadMedica, elMedico));
+                Hijo aux = listaHijos.get(pos);
+                aux.setNombre(elNombre);
+                aux.setCedulaId(laCedulaId);
+                aux.setFechaNacimiento(laFecha);
+                aux.setGenero(esHombre);
+                aux.setMedicoDeCabecera(elMedico);
+                aux.setSociedadMedica(laSociedadMedica);
             }
         }
+    }
+
+    public Hijo getHijo(int pos) throws IndexOutOfBoundsException {
+        return listaHijos.get(pos);
     }
 
     public void eliminarHijo(String laCedulaId) throws IllegalStateException {
@@ -267,13 +276,12 @@ public class Sistema implements Serializable {
             listaHijos.remove(hijoABorrar);
         } else {
             throw new IllegalStateException("Los datos ingresados no corresponden "
-                    + "a un hijo ya ingresado.");
+                    + "a un hijo/a ya ingresado.");
         }
     }
 
     public int cargarVacunasSistematicas(ArchivoLectura archivoLeido,
             int numeroLinea) throws IOException, IllegalArgumentException {
-
         String linea = archivoLeido.linea().trim();
         String nombre = "";
         String meses = "";
@@ -283,7 +291,6 @@ public class Sistema implements Serializable {
         boolean error = false;
         boolean vacunaTerminada = false;
         while (archivoLeido.hayMasLineas() && !linea.equals("-No sistemáticas-")) {
-
             linea = archivoLeido.linea().trim();
             numeroLinea++;
             String[] datosEnLinea = linea.split(":");
@@ -291,30 +298,40 @@ public class Sistema implements Serializable {
                 case "Nombre":
                     if (nombre.equals("")) {
                         nombre = datosEnLinea[1].trim();
-                    } else error = true;
+                    } else {
+                        error = true;
+                    }
                     break;
                 case "Meses":
                     if (meses.equals("")) {
                         meses = datosEnLinea[1].trim();
-                    } else error = true;
+                    } else {
+                        error = true;
+                    }
                     break;
                 case "Años":
                     if (anios.equals("")) {
                         anios = datosEnLinea[1].trim();
-                    } else error = true;
+                    } else {
+                        error = true;
+                    }
                     break;
                 case "Descripción":
                     if (descripcion.equals("")) {
                         descripcion = datosEnLinea[1].trim();
                         vacunaTerminada = true;
-                    } else error = true;
+                    } else {
+                        error = true;
+                    }
                     break;
                 default:
                     throw new IllegalArgumentException("Una vacuna no tiene "
                             + "el campo de información '" + datosEnLinea[0]);
             }
             cantRenglones++;
-            if (cantRenglones == 4) vacunaTerminada = true;
+            if (cantRenglones == 4) {
+                vacunaTerminada = true;
+            }
             if (vacunaTerminada && !nombre.equals("") && !meses.equals("")
                     && !anios.equals("") && !descripcion.equals("")) {
 
@@ -340,13 +357,13 @@ public class Sistema implements Serializable {
             String descripcion) throws IllegalArgumentException {
 
         Vacuna vacunaNueva;
-        if (!esNombreInvalido(nombre.trim())){
+        if (!esNombreInvalido(nombre.trim())) {
             vacunaNueva = new Vacuna(nombre, true);
-            
+
         } else {
-            
+
         }
-        
+
     }
 
     public void cargarVacunasDeArchivo(String ubicacion) throws IllegalArgumentException,

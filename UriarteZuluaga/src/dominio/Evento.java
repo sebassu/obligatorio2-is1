@@ -1,4 +1,3 @@
-
 package dominio;
 
 import java.io.Serializable;
@@ -89,6 +88,10 @@ public class Evento implements Serializable, Comparable {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public String getNotas() {
+        return notas;
     }
 
     public String getDescripcion() {

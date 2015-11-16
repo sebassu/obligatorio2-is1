@@ -9,8 +9,8 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     //Variables de instancia.
     private String nombre;
     private boolean sistematca;
-    private ArrayList<Integer> vencimientoEnMeses;
-    private ArrayList<Integer> vencimientoEnAnios;
+    private final ArrayList<Integer> vencimientoEnMeses;
+    private final ArrayList<Integer> vencimientoEnAnios;
 
     //Constructor.
     public Vacuna(String nom, boolean bool) throws IllegalArgumentException {

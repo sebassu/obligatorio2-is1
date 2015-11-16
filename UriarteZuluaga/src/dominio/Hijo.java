@@ -1,21 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dominio;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Objects;
 
-/**
- *
- * @author UriarteZuluaga
- */
 public class Hijo implements Serializable, Comparable {
 
     private String nombre;
@@ -29,9 +19,9 @@ public class Hijo implements Serializable, Comparable {
     private final ArrayList<Par<Calendar, Integer>> listaAlturas;
     private final ArrayList<Par<Calendar, Vacuna>> historialVacunaciones;
 
-    private Hijo() {
+    protected Hijo() {
         nombre = "";
-        fechaNacimiento = new GregorianCalendar();
+        fechaNacimiento = Calendar.getInstance();
         cedulaId = "9.999.999-9";
         sociedadMedica = "";
         listaPesos = new ArrayList<>();
@@ -43,7 +33,7 @@ public class Hijo implements Serializable, Comparable {
 
     public Hijo(String laCedulaId) {
         nombre = "";
-        fechaNacimiento = new GregorianCalendar();
+        fechaNacimiento = Calendar.getInstance();
         cedulaId = laCedulaId;
         sociedadMedica = "";
         listaPesos = new ArrayList<>();
@@ -80,7 +70,7 @@ public class Hijo implements Serializable, Comparable {
     }
 
     public boolean esBebe() {
-        return new GregorianCalendar().get(Calendar.YEAR)
+        return Calendar.getInstance().get(Calendar.YEAR)
                 - fechaNacimiento.get(Calendar.YEAR) < 4;
     }
 
@@ -92,8 +82,8 @@ public class Hijo implements Serializable, Comparable {
         return medicoDeCabecera;
     }
 
-    public void setMedicoDeCabecera(String elMedicoCabecilla) {
-        this.medicoDeCabecera = elMedicoCabecilla;
+    public void setMedicoDeCabecera(String elMedicoCabecera) {
+        this.medicoDeCabecera = elMedicoCabecera;
     }
 
     public void setNombre(String elNombre) {
@@ -114,6 +104,10 @@ public class Hijo implements Serializable, Comparable {
 
     public void setSociedadMedica(String laSociedadMedica) {
         this.sociedadMedica = laSociedadMedica;
+    }
+
+    public String getSociedadMedica() {
+        return sociedadMedica;
     }
 
     public void agregarPeso(int dato, Calendar dia) {

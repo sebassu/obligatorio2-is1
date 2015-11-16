@@ -353,11 +353,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarHijoActionPerformed
-
+        try {
+            VentanaCrearHijo v = new VentanaCrearHijo(modelo,
+                    modelo.getHijo(getPosHijoSeleccionado()), true);
+            v.setLocationRelativeTo(this);
+            v.setVisible(true);
+        } catch (IndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(this, "Error al intentar acceder a "
+                    + "los datos de un hijo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEditarHijoActionPerformed
 
+    private int getPosHijoSeleccionado() {
+        //TODO
+        return 0;
+    }
+
     private void btnAgregarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarHijoActionPerformed
-        VentanaCrearHijo v = new VentanaCrearHijo(modelo);
+        VentanaCrearHijo v = new VentanaCrearHijo(modelo, null, false);
         v.setLocationRelativeTo(this);
         v.setVisible(true);
     }//GEN-LAST:event_btnAgregarHijoActionPerformed
@@ -413,25 +426,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         } while (aux);
     }//GEN-LAST:event_itemCargarVacunasActionPerformed
-
-    /*public static void main(String args[]) {
-     try {
-     for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-     if ("Nimbus".equals(info.getName())) {
-     javax.swing.UIManager.setLookAndFeel(info.getClassName());
-     break;
-     }
-     }
-     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-     java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-     }
-     java.awt.EventQueue.invokeLater(new Runnable() {
-     @Override
-     public void run() {
-     new VentanaPrincipal().setVisible(true);
-     }
-     });
-     }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarHijo;

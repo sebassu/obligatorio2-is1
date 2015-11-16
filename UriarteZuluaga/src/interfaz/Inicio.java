@@ -1,21 +1,11 @@
 package interfaz;
 
-
 import dominio.Sistema;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import persistencia.Serializacion;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author UriarteZuluaga
- */
 public class Inicio {
 
     public static void main(String[] args) {
@@ -38,8 +28,7 @@ public class Inicio {
                 }
             }
         });
-    }
-        VentanaPrincipal a = new VentanaPrincipal();
+        VentanaPrincipal a = new VentanaPrincipal(elSistema);
         a.setVisible(true);
     }
 }
