@@ -189,4 +189,9 @@ public class Hijo implements Serializable, Comparable {
         hash = 53 * hash + Objects.hashCode(this.cedulaId);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import persistencia.ArchivoLectura;
 
 public class Sistema implements Serializable {
@@ -26,8 +27,10 @@ public class Sistema implements Serializable {
     public void agregarEventoAListaCorrespondiente(Evento elEvento) {
         if (esFechaFutura(elEvento.getFecha())) {
             eventosARealizar.add(elEvento);
+            Collections.sort(eventosARealizar);
         } else {
             eventosRealizados.add(elEvento);
+            Collections.sort(eventosRealizados);
         }
         proximaIdAAsignar++;
     }
@@ -40,12 +43,12 @@ public class Sistema implements Serializable {
             if (pos == -1) {
                 throw new IllegalStateException("No existe un evento con esta ID");
             } else {
-                eventosRealizados.remove(pos);
-                eventosRealizados.add(elEvento);
+                eventosRealizados.set(pos, elEvento);
+                Collections.sort(eventosRealizados);
             }
         } else {
-            eventosARealizar.remove(pos);
-            eventosARealizar.add(elEvento);
+            eventosARealizar.set(pos, elEvento);
+            Collections.sort(eventosARealizar);
         }
     }
 
@@ -89,7 +92,7 @@ public class Sistema implements Serializable {
         if (!esEsteTipo(elTipo, "Consulta")) {
             throw new IllegalArgumentException("Este tipo de evento debe ser "
                     + "creado con otro método");
-        } else if (esNombreInvalido(medico)) {
+        } else if (noContieneCaracterAlfabetico(medico)) {
             throw new IllegalArgumentException("El nombre del médico es inválido");
         } else {
             if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
@@ -106,7 +109,7 @@ public class Sistema implements Serializable {
         if (!esEsteTipo(elTipo, "Consulta")) {
             throw new IllegalArgumentException("Este tipo de evento debe ser "
                     + "buscado con otro método");
-        } else if (esNombreInvalido(medico)) {
+        } else if (noContieneCaracterAlfabetico(medico)) {
             throw new IllegalArgumentException("El nombre del médico es inálido");
         } else {
             if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
@@ -155,8 +158,10 @@ public class Sistema implements Serializable {
         Evento eventoAEliminar = new Evento(laId);
         if (eventosRealizados.contains(eventoAEliminar)) {
             eventosRealizados.remove(eventoAEliminar);
+            Collections.sort(eventosRealizados);
         } else if (eventosARealizar.contains(eventoAEliminar)) {
             eventosARealizar.remove(eventoAEliminar);
+            Collections.sort(eventosARealizar);
         } else {
             throw new IllegalStateException("El evento a eliminar no existe");
         }
@@ -166,9 +171,9 @@ public class Sistema implements Serializable {
             Calendar laFecha, Hijo hijo, String elLugar)
             throws IllegalArgumentException {
         boolean esValido = false;
-        if (esNombreInvalido(elTitulo)) {
+        if (noContieneCaracterAlfabetico(elTitulo)) {
             throw new IllegalArgumentException("El título es inválido");
-        } else if (esNombreInvalido(elLugar)) {
+        } else if (noContieneCaracterAlfabetico(elLugar)) {
             throw new IllegalArgumentException("El lugar es inválido");
         } else if (esFechaAntesDeNacimiento(hijo.getFechaNacimiento(), laFecha)) {
             throw new IllegalArgumentException("Esa fecha es antes del nacimiento"
@@ -179,7 +184,7 @@ public class Sistema implements Serializable {
         return esValido;
     }
 
-    public boolean esNombreInvalido(String nombre) {
+    public boolean noContieneCaracterAlfabetico(String nombre) {
         return nombre.replaceAll("\\W", "").replaceAll("\\d+", "").isEmpty();
     }
 
@@ -197,19 +202,19 @@ public class Sistema implements Serializable {
         return laFechaNacimiento.getTime().compareTo(otraFecha.getTime()) > 0;
     }
 
-    protected boolean esFechaFutura(Calendar laFecha) {
+    public boolean esFechaFutura(Calendar laFecha) {
         return laFecha.getTime().compareTo(Calendar.getInstance().getTime()) > 0;
     }
 
     /**
-     * esFechaValida:
+     * esFechaNacimientoValida:
      *
      * @param laFecha Fecha a ser validada.
      * @return Retorna true si la fecha recibida no es una futura comparada con
      * la actual y además resulta en una edad menor a los doce años para el
      * niño/a.
      */
-    public boolean esFechaValida(Calendar laFecha) {
+    public boolean esFechaNacimientoValida(Calendar laFecha) {
         return !esFechaFutura(laFecha)
                 && Calendar.getInstance().get(Calendar.YEAR) - laFecha.get(Calendar.YEAR) < 12;
     }
@@ -219,11 +224,11 @@ public class Sistema implements Serializable {
             throws IllegalArgumentException {
         if (esFechaFutura(laFecha)) {
             throw new IllegalArgumentException("La fecha ingresada es inválida");
-        } else if (esNombreInvalido(elNombre)) {
+        } else if (noContieneCaracterAlfabetico(elNombre)) {
             throw new IllegalArgumentException("El nombre es inválido");
         } else if (esCedulaInvalida(laCedulaId)) {
             throw new IllegalArgumentException("La cedula es inválida");
-        } else if (esNombreInvalido(laSociedadMedica)) {
+        } else if (noContieneCaracterAlfabetico(laSociedadMedica)) {
             throw new IllegalArgumentException("El nombre de la sociedad Médica "
                     + "es inválido");
         }
@@ -241,6 +246,7 @@ public class Sistema implements Serializable {
                         + "a un hijo/a ya ingresado.");
             } else {
                 listaHijos.add(hijoAAgregar);
+                Collections.sort(listaHijos);
             }
         }
     }
@@ -262,6 +268,7 @@ public class Sistema implements Serializable {
                 aux.setGenero(esHombre);
                 aux.setMedicoDeCabecera(elMedico);
                 aux.setSociedadMedica(laSociedadMedica);
+                Collections.sort(listaHijos);
             }
         }
     }
@@ -270,10 +277,19 @@ public class Sistema implements Serializable {
         return listaHijos.get(pos);
     }
 
+    public Evento getEvento(int pos) throws IndexOutOfBoundsException {
+        return eventosARealizar.get(pos);
+    }
+
+    public int getCantidadEventosARealizar() {
+        return eventosARealizar.size();
+    }
+
     public void eliminarHijo(String laCedulaId) throws IllegalStateException {
         Hijo hijoABorrar = new Hijo(laCedulaId);
         if (listaHijos.contains(hijoABorrar)) {
             listaHijos.remove(hijoABorrar);
+            Collections.sort(listaHijos);
         } else {
             throw new IllegalStateException("Los datos ingresados no corresponden "
                     + "a un hijo/a ya ingresado.");
@@ -357,7 +373,7 @@ public class Sistema implements Serializable {
             String descripcion) throws IllegalArgumentException {
 
         Vacuna vacunaNueva;
-        if (!esNombreInvalido(nombre.trim())) {
+        if (!noContieneCaracterAlfabetico(nombre.trim())) {
             vacunaNueva = new Vacuna(nombre, true);
 
         } else {

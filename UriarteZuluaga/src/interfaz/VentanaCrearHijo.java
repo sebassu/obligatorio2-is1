@@ -2,19 +2,22 @@ package interfaz;
 
 import dominio.Hijo;
 import dominio.Sistema;
+import java.awt.event.KeyEvent;
 import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 public class VentanaCrearHijo extends javax.swing.JFrame {
-    
+
     public VentanaCrearHijo(Sistema sis, Hijo h, boolean esParaEditar) {
         this.modelo = sis;
         this.edicion = esParaEditar;
         this.cedulaAnt = "";
         initComponents();
         ((JLabel) jComboBoxGenero.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        jDateChooserNac.setSelectableDateRange(null, new Date());
         jLabelErrorCedula.setVisible(false);
         jLabelErrorFecha.setVisible(false);
         jLabelErrorMed.setVisible(false);
@@ -34,7 +37,7 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
             }
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -125,6 +128,11 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
                 txtNombreFocusLost(evt);
             }
         });
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setLabelFor(jDateChooserNac);
@@ -132,6 +140,11 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
 
         txtCedula.setToolTipText("Formato: N.NNN.NNN-N");
         txtCedula.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCedulaKeyTyped(evt);
+            }
+        });
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("CI:");
@@ -236,6 +249,11 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
                 txtMedicoFocusLost(evt);
             }
         });
+        txtMedico.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMedicoKeyTyped(evt);
+            }
+        });
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Médico de Cabecera:");
@@ -307,15 +325,12 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
                 .addComponent(jPanelEstadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanelDatos.getAccessibleContext().setAccessibleName("Datos personales");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -334,7 +349,7 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
         boolean error = false;
         String[] aux = new String[4];
         aux[0] = txtNombre.getText();
-        if (modelo.esNombreInvalido(aux[0])) {
+        if (modelo.noContieneCaracterAlfabetico(aux[0])) {
             jLabelErrorNombre.setVisible(error = true);
         }
         aux[1] = txtCedula.getText();
@@ -342,15 +357,15 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
             jLabelErrorCedula.setVisible(error = true);
         }
         aux[2] = txtSociedad.getText();
-        if (modelo.esNombreInvalido(aux[2])) {
+        if (modelo.noContieneCaracterAlfabetico(aux[2])) {
             jLabelErrorNomSoc.setVisible(error = true);
         }
         aux[3] = txtMedico.getText();
-        if (modelo.esNombreInvalido(aux[3])) {
+        if (modelo.noContieneCaracterAlfabetico(aux[3])) {
             jLabelErrorMed.setVisible(error = true);
         }
         Calendar c = jDateChooserNac.getCalendar();
-        if (!modelo.esFechaValida(c)) {
+        if (!modelo.esFechaNacimientoValida(c)) {
             jLabelErrorFecha.setVisible(error = true);
         }
         if (!error) {
@@ -378,24 +393,40 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusLost
-        jLabelErrorNombre.setVisible(modelo.esNombreInvalido(txtNombre.getText()));
+        jLabelErrorNombre.setVisible(modelo.noContieneCaracterAlfabetico(txtNombre.getText()));
     }//GEN-LAST:event_txtNombreFocusLost
 
     private void txtMedicoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMedicoFocusLost
-        jLabelErrorMed.setVisible(modelo.esNombreInvalido(txtMedico.getText()));
+        jLabelErrorMed.setVisible(modelo.noContieneCaracterAlfabetico(txtMedico.getText()));
     }//GEN-LAST:event_txtMedicoFocusLost
 
     private void jDateChooserNacFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jDateChooserNacFocusLost
-        jLabelErrorFecha.setVisible(!modelo.esFechaValida(jDateChooserNac.getCalendar()));
+        jLabelErrorFecha.setVisible(!modelo.esFechaNacimientoValida(jDateChooserNac.getCalendar()));
     }//GEN-LAST:event_jDateChooserNacFocusLost
 
     private void jLabelErrorNomSocFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jLabelErrorNomSocFocusLost
-        jLabelErrorNomSoc.setVisible(modelo.esNombreInvalido(txtSociedad.getText()));
+        jLabelErrorNomSoc.setVisible(modelo.noContieneCaracterAlfabetico(txtSociedad.getText()));
     }//GEN-LAST:event_jLabelErrorNomSocFocusLost
 
     private void jLabelErrorCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jLabelErrorCedulaFocusLost
         jLabelErrorCedula.setVisible(modelo.esCedulaInvalida(txtCedula.getText()));
     }//GEN-LAST:event_jLabelErrorCedulaFocusLost
+
+    private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
+        char caracter = evt.getKeyChar();
+        if (!Character.isDigit(caracter) && caracter != '-' && caracter != '.'
+                && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCedulaKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        validarEntradaAlfabetica(evt);
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtMedicoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedicoKeyTyped
+        validarEntradaAlfabetica(evt);
+    }//GEN-LAST:event_txtMedicoKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
@@ -426,4 +457,12 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
     private final Sistema modelo;
     private final boolean edicion;
     private String cedulaAnt;
+
+    private void validarEntradaAlfabetica(KeyEvent evt) {
+        char caracter = evt.getKeyChar();
+        if (!Character.isAlphabetic(caracter) && caracter != ' ' && caracter != '-'
+                && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
+    }
 }
