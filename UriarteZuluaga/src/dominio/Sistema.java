@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import persistencia.ArchivoLectura;
+import auxiliar.Validaciones;
 
 public class Sistema implements Serializable {
 
@@ -24,8 +25,8 @@ public class Sistema implements Serializable {
         proximaIdAAsignar = Integer.MIN_VALUE;
     }
 
-    public void agregarEventoAListaCorrespondiente(Evento elEvento) {
-        if (esFechaFutura(elEvento.getFecha())) {
+    public void agregarEvento(Evento elEvento) {
+        if (Validaciones.esFechaFutura(elEvento.getFecha())) {
             eventosARealizar.add(elEvento);
             Collections.sort(eventosARealizar);
         } else {
@@ -52,130 +53,19 @@ public class Sistema implements Serializable {
         }
     }
 
-    public void agregarEvento(String elTitulo, String elTipo,
-            String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
-            throws IllegalArgumentException {
-        if (esEsteTipo(elTipo, "Vacunación") || esEsteTipo(elTipo, "Consulta")) {
-            throw new IllegalArgumentException("Este tipo de evento debe ser "
-                    + "creado con otro método");
-        } else {
-            if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
-                Evento nuevoEvento = new Evento(proximaIdAAsignar,
-                        elTitulo, elTipo, laDescripcion, laFecha, hijo, elLugar);
-                agregarEventoAListaCorrespondiente(nuevoEvento);
-            }
-        }
-    }
-
-    public void modificarEvento(int laId, String elTitulo, String elTipo,
-            String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
-            throws IllegalArgumentException, IllegalStateException {
-        if (esEsteTipo(elTipo, "Vacunación") || esEsteTipo(elTipo, "Consulta")) {
-            throw new IllegalArgumentException("Este tipo de evento debe ser "
-                    + "buscado con otro método");
-        } else {
-            if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
-                Evento eventoAModificar = new Evento(laId, elTitulo, elTipo,
-                        laDescripcion, laFecha, hijo, elLugar);
-                modificarEventoEnListaCorrespondiente(eventoAModificar);
-            }
-        }
-    }
-
     public boolean esEsteTipo(String elTipo, String tipoEsperado) {
         return elTipo.replaceAll("\\W", "").equals(tipoEsperado);
-    }
-
-    public void agregarConsulta(String medico, String elTitulo, String elTipo,
-            String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
-            throws IllegalArgumentException {
-        if (!esEsteTipo(elTipo, "Consulta")) {
-            throw new IllegalArgumentException("Este tipo de evento debe ser "
-                    + "creado con otro método");
-        } else if (noContieneCaracterAlfabetico(medico)) {
-            throw new IllegalArgumentException("El nombre del médico es inválido");
-        } else {
-            if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
-                Consulta nuevaConsulta = new Consulta(proximaIdAAsignar, elTitulo,
-                        elTipo, laDescripcion, laFecha, hijo, elLugar, medico);
-                agregarEventoAListaCorrespondiente(nuevaConsulta);
-            }
-        }
-    }
-
-    public void modificarConsulta(int laId, String medico, String elTitulo, String elTipo,
-            String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
-            throws IllegalArgumentException, IllegalStateException {
-        if (!esEsteTipo(elTipo, "Consulta")) {
-            throw new IllegalArgumentException("Este tipo de evento debe ser "
-                    + "buscado con otro método");
-        } else if (noContieneCaracterAlfabetico(medico)) {
-            throw new IllegalArgumentException("El nombre del médico es inálido");
-        } else {
-            if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
-                Consulta consultaAModificar = new Consulta(laId, elTitulo,
-                        elTipo, laDescripcion, laFecha, hijo, elLugar, medico);
-                modificarEventoEnListaCorrespondiente(consultaAModificar);
-            }
-        }
-    }
-
-    public void modificarVacunacion(int laId, Vacuna vacuna, String elTitulo, String elTipo,
-            String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar)
-            throws IllegalArgumentException, IllegalStateException {
-        if (!esEsteTipo(elTipo, "Vacunación")) {
-            throw new IllegalArgumentException("Este tipo de evento debe ser "
-                    + "creado con otro método");
-        } else if (!listaVacunas.contains(vacuna)) {
-            throw new IllegalArgumentException("La vacuna no existe en el sistema");
-        } else {
-            if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
-                Vacunacion vacunacionAModificar = new Vacunacion(laId, elTitulo,
-                        elTipo, laDescripcion, laFecha, hijo, elLugar, vacuna);
-                modificarEventoEnListaCorrespondiente(vacunacionAModificar);
-            }
-        }
-    }
-
-    public void agregarVacunacion(int laId, Vacuna vacuna, String elTitulo, String elTipo,
-            String laDescripcion, Calendar laFecha, Hijo hijo, String elLugar) {
-        if (!esEsteTipo(elTipo, "Vacunación")) {
-            throw new IllegalArgumentException("Este tipo de evento debe ser "
-                    + "creado con otro método");
-        } else if (!listaVacunas.contains(vacuna)) {
-            throw new IllegalArgumentException("La vacuna no existe en el sistema");
-        } else {
-            if (esEventoValido(elTitulo, laDescripcion, laFecha, hijo, elLugar)) {
-                Vacunacion nuevaVacunacion = new Vacunacion(proximaIdAAsignar,
-                        elTitulo, elTipo, laDescripcion, laFecha, hijo, elLugar,
-                        vacuna);
-                agregarEventoAListaCorrespondiente(nuevaVacunacion);
-            }
-        }
-    }
-
-    public void eliminarEvento(int laId) throws IllegalStateException {
-        Evento eventoAEliminar = new Evento(laId);
-        if (eventosRealizados.contains(eventoAEliminar)) {
-            eventosRealizados.remove(eventoAEliminar);
-            Collections.sort(eventosRealizados);
-        } else if (eventosARealizar.contains(eventoAEliminar)) {
-            eventosARealizar.remove(eventoAEliminar);
-            Collections.sort(eventosARealizar);
-        } else {
-            throw new IllegalStateException("El evento a eliminar no existe");
-        }
     }
 
     protected boolean esEventoValido(String elTitulo, String laDescripcion,
             Calendar laFecha, Hijo hijo, String elLugar)
             throws IllegalArgumentException {
         boolean esValido = false;
-        if (noContieneCaracterAlfabetico(elTitulo)) {
+        if (Validaciones.noContieneCaracterAlfabetico(elTitulo)) {
             throw new IllegalArgumentException("El título es inválido");
-        } else if (noContieneCaracterAlfabetico(elLugar)) {
+        } else if (Validaciones.noContieneCaracterAlfabetico(elLugar)) {
             throw new IllegalArgumentException("El lugar es inválido");
-        } else if (esFechaAntesDeNacimiento(hijo.getFechaNacimiento(), laFecha)) {
+        } else if (Validaciones.esFechaAntesDeNacimiento(hijo.getFechaNacimiento(), laFecha)) {
             throw new IllegalArgumentException("Esa fecha es antes del nacimiento"
                     + "de su hijo/a");
         } else {
@@ -184,51 +74,16 @@ public class Sistema implements Serializable {
         return esValido;
     }
 
-    public boolean noContieneCaracterAlfabetico(String nombre) {
-        return nombre.replaceAll("\\W", "").replaceAll("\\d+", "").isEmpty();
-    }
-
-    public boolean esCedulaInvalida(String cedula) {
-        if (cedula.length() != 11 || cedula.charAt(1) != '.'
-                || cedula.charAt(5) != '.' || cedula.charAt(5) != '-') {
-            return false;
-        } else {
-            return cedula.replaceAll("\\D", "").length() == 8;
-        }
-    }
-
-    protected boolean esFechaAntesDeNacimiento(Calendar laFechaNacimiento,
-            Calendar otraFecha) {
-        return laFechaNacimiento.getTime().compareTo(otraFecha.getTime()) > 0;
-    }
-
-    public boolean esFechaFutura(Calendar laFecha) {
-        return laFecha.getTime().compareTo(Calendar.getInstance().getTime()) > 0;
-    }
-
-    /**
-     * esFechaNacimientoValida:
-     *
-     * @param laFecha Fecha a ser validada.
-     * @return Retorna true si la fecha recibida no es una futura comparada con
-     * la actual y además resulta en una edad menor a los doce años para el
-     * niño/a.
-     */
-    public boolean esFechaNacimientoValida(Calendar laFecha) {
-        return !esFechaFutura(laFecha)
-                && Calendar.getInstance().get(Calendar.YEAR) - laFecha.get(Calendar.YEAR) < 12;
-    }
-
     protected boolean esHijoValido(String elNombre, Calendar laFecha,
             String laCedulaId, String laSociedadMedica)
             throws IllegalArgumentException {
-        if (esFechaFutura(laFecha)) {
+        if (Validaciones.esFechaFutura(laFecha)) {
             throw new IllegalArgumentException("La fecha ingresada es inválida");
-        } else if (noContieneCaracterAlfabetico(elNombre)) {
+        } else if (Validaciones.noContieneCaracterAlfabetico(elNombre)) {
             throw new IllegalArgumentException("El nombre es inválido");
-        } else if (esCedulaInvalida(laCedulaId)) {
+        } else if (Validaciones.esCedulaInvalida(laCedulaId)) {
             throw new IllegalArgumentException("La cedula es inválida");
-        } else if (noContieneCaracterAlfabetico(laSociedadMedica)) {
+        } else if (Validaciones.noContieneCaracterAlfabetico(laSociedadMedica)) {
             throw new IllegalArgumentException("El nombre de la sociedad Médica "
                     + "es inválido");
         }
@@ -277,12 +132,28 @@ public class Sistema implements Serializable {
         return listaHijos.get(pos);
     }
 
+    public ArrayList<Hijo> getHijos() throws IllegalStateException {
+        if (listaHijos.isEmpty()) {
+            throw new IllegalStateException("La lista de hijos es vacía");
+        } else {
+            return listaHijos;
+        }
+    }
+
     public Evento getEvento(int pos) throws IndexOutOfBoundsException {
         return eventosARealizar.get(pos);
     }
 
     public int getCantidadEventosARealizar() {
         return eventosARealizar.size();
+    }
+
+    public int getCantidadHijos() {
+        return listaHijos.size();
+    }
+
+    public int getCantidadVacunas() {
+        return listaVacunas.size();
     }
 
     public void eliminarHijo(String laCedulaId) throws IllegalStateException {
@@ -294,6 +165,10 @@ public class Sistema implements Serializable {
             throw new IllegalStateException("Los datos ingresados no corresponden "
                     + "a un hijo/a ya ingresado.");
         }
+    }
+
+    public void eliminarHijoPorPos(int posicion) throws NullPointerException {
+        listaHijos.remove(posicion);
     }
 
     public int cargarVacunasSistematicas(ArchivoLectura archivoLeido,
@@ -373,7 +248,7 @@ public class Sistema implements Serializable {
             String descripcion) throws IllegalArgumentException {
 
         Vacuna vacunaNueva;
-        if (!noContieneCaracterAlfabetico(nombre.trim())) {
+        if (!Validaciones.noContieneCaracterAlfabetico(nombre.trim())) {
             vacunaNueva = new Vacuna(nombre, true);
 
         } else {
