@@ -1,8 +1,8 @@
 package dominio;
 
+import auxiliar.Auxiliares;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Evento implements Serializable, Comparable {
 
@@ -15,67 +15,39 @@ public class Evento implements Serializable, Comparable {
     private Hijo cualHijo;
     private String notas;
 
-    public Evento(int laId, String elTitulo, String elTipo, String laDescripcion,
-            Calendar laFecha, Hijo hijo, String elLugar) {
-        this.id = laId;
-        this.titulo = elTitulo;
-        this.tipo = elTipo;
-        this.descripcion = laDescripcion;
-        this.fecha = laFecha;
-        this.cualHijo = hijo;
-        this.lugar = elLugar;
+    protected Evento() throws IllegalArgumentException, NullPointerException {
+        this(0, "", "", "", Calendar.getInstance(), new Hijo(), "");
+    }
+
+    public Evento(int laId) throws IllegalArgumentException, NullPointerException {
+        this(laId, "", "", "", Calendar.getInstance(), new Hijo(), "");
+    }
+
+    public Evento(int laId, String elTitulo, String elTipo, Calendar laFecha, Hijo elHijo)
+            throws IllegalArgumentException, NullPointerException {
+        this(laId, elTitulo, elTipo, "", laFecha, elHijo, "");
+    }
+
+    public Evento(int laId, String elTitulo, String elTipo, Calendar laFecha, Hijo elHijo,
+            String elLugar) throws IllegalArgumentException, NullPointerException {
+        this(laId, elTitulo, elTipo, "", laFecha, elHijo, elLugar);
     }
 
     public Evento(int laId, String elTitulo, String elTipo, String laDescripcion,
-            Calendar laFecha, Hijo hijo) {
-        this.id = laId;
-        this.titulo = elTitulo;
-        this.tipo = elTipo;
-        this.descripcion = laDescripcion;
-        this.fecha = laFecha;
-        this.cualHijo = hijo;
-        this.lugar = "";
+            Calendar laFecha, Hijo elHijo) throws IllegalArgumentException, NullPointerException {
+        this(laId, elTitulo, elTipo, laDescripcion, laFecha, elHijo, "");
     }
 
-    public Evento(int laId, String elTitulo, String elTipo, Calendar laFecha, Hijo hijo,
-            String elLugar) {
-        this.id = laId;
-        this.titulo = elTitulo;
-        this.tipo = elTipo;
-        this.descripcion = "";
-        this.fecha = laFecha;
-        this.cualHijo = hijo;
-        this.lugar = elLugar;
-    }
-
-    public Evento(int laId, String elTitulo, String elTipo, Calendar laFecha, Hijo hijo) {
-        this.id = laId;
-        this.titulo = elTitulo;
-        this.tipo = elTipo;
-        this.descripcion = "";
-        this.fecha = laFecha;
-        this.cualHijo = hijo;
-        this.lugar = "";
-    }
-
-    public Evento(int laId) {
-        this.id = laId;
-        this.titulo = "";
-        this.tipo = "";
-        this.descripcion = "";
-        this.fecha.setTime(new Date());
-        this.cualHijo = null;
-        this.lugar = "";
-    }
-
-    protected Evento() {
-        this.id = 0;
-        this.titulo = "";
-        this.tipo = "";
-        this.descripcion = "";
-        this.fecha.setTime(new Date());
-        this.cualHijo = null;
-        this.lugar = "";
+    public Evento(int laId, String elTitulo, String elTipo, String laDescripcion,
+            Calendar laFecha, Hijo hijo, String elLugar)
+            throws IllegalArgumentException, NullPointerException {
+        this.setId(laId);
+        this.setTitulo(elTitulo);
+        this.setTipo(elTipo);
+        this.setDescripcion(laDescripcion);
+        this.setFecha(laFecha);
+        this.setCualHijo(hijo);
+        this.setLugar(elLugar);
     }
 
     public String getTitulo() {
@@ -110,32 +82,57 @@ public class Evento implements Serializable, Comparable {
         return id;
     }
 
-    public void setId(int laId) {
+    public final void setId(int laId) {
         this.id = laId;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public final void setTipo(String elTipo) throws IllegalArgumentException {
+        if (Auxiliares.noContieneCaracterAlfabetico(elTipo)) {
+            throw new IllegalArgumentException("Tipo inválido.");
+        } else {
+            this.tipo = elTipo;
+        }
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public final void setDescripcion(String laDescripcion) {
+        this.descripcion = laDescripcion;
     }
 
-    public void setFecha(Calendar fecha) {
-        this.fecha = fecha;
+    public final void setNotas(String lasNotas) {
+        this.notas = lasNotas;
     }
 
-    public void setCualHijo(Hijo cualHijo) {
-        this.cualHijo = cualHijo;
+    public final void setFecha(Calendar fecha) throws NullPointerException {
+        if (fecha == null) {
+            throw new NullPointerException("Fecha nula.");
+        } else {
+            this.fecha = fecha;
+        }
     }
 
-    public void setLugar(String elLugar) {
-        this.lugar = elLugar;
+    public final void setCualHijo(Hijo cualHijo) throws NullPointerException {
+        if (cualHijo == null) {
+            throw new NullPointerException("Hijo nulo.");
+        } else {
+            this.cualHijo = cualHijo;
+        }
     }
 
-    public void setTitulo(String elTitulo) {
-        this.titulo = elTitulo;
+    public final void setLugar(String elLugar) throws IllegalArgumentException {
+        if (!elLugar.isEmpty()
+                && Auxiliares.noContieneCaracterAlfabetico(elLugar)) {
+            throw new IllegalArgumentException("Lugar inválido.");
+        } else {
+            this.lugar = elLugar;
+        }
+    }
+
+    public final void setTitulo(String elTitulo) throws IllegalArgumentException {
+        if (Auxiliares.noContieneCaracterAlfabetico(elTitulo)) {
+            throw new IllegalArgumentException("Título inválido.");
+        } else {
+            this.titulo = elTitulo;
+        }
     }
 
     @Override

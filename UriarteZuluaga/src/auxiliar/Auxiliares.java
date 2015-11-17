@@ -1,16 +1,32 @@
 package auxiliar;
 
+import dominio.Sistema;
 import java.util.Calendar;
 
-public final class Validaciones {
+public final class Auxiliares {
 
     public static boolean esCedulaInvalida(String cedula) {
         if (cedula.length() != 11 || cedula.charAt(1) != '.'
-                || cedula.charAt(5) != '.' || cedula.charAt(5) != '-') {
+                || cedula.charAt(5) != '.' || cedula.charAt(9) != '-') {
             return true;
         } else {
             return cedula.replaceAll("\\D", "").length() != 8;
         }
+    }
+
+    public static boolean esNumeroNatural(String num) {
+        for (int i = 0; i < num.length(); i++) {
+            if (!Character.isDigit(num.charAt(i))) {
+                return false;
+            }
+        }
+        return !num.equals("");
+    }
+
+    public static int mesesDesdeLaFecha(Calendar fecha) {
+        Calendar hoy = Calendar.getInstance();
+        return ((hoy.get(Calendar.YEAR)) - fecha.get(Calendar.YEAR)) * 12
+                + hoy.get(Calendar.MONTH) - fecha.get(Calendar.MONTH);
     }
 
     public static boolean noContieneCaracterAlfabetico(String nombre) {
@@ -36,6 +52,11 @@ public final class Validaciones {
      */
     public static boolean esFechaNacimientoValida(Calendar laFecha) {
         return !esFechaFutura(laFecha)
-                && Calendar.getInstance().get(Calendar.YEAR) - laFecha.get(Calendar.YEAR) < 12;
+                && Calendar.getInstance().get(Calendar.YEAR) - laFecha.get(Calendar.YEAR)
+                < Sistema.anioMaximoIngresable();
+    }
+
+    public static boolean esNombreVacunaInvalido(String nombre) {
+        return nombre.replaceAll("\\W", "").isEmpty();
     }
 }

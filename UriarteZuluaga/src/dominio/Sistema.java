@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import persistencia.ArchivoLectura;
-import auxiliar.Validaciones;
+import auxiliar.Auxiliares;
 
 public class Sistema implements Serializable {
 
@@ -15,77 +15,48 @@ public class Sistema implements Serializable {
     private final ArrayList<Vacuna> listaVacunas;
     private final ArrayList<Evento> eventosRealizados;
     private final ArrayList<Evento> eventosARealizar;
-    private int proximaIdAAsignar;
+    public static int proximaIDEventos = Integer.MIN_VALUE;
 
     public Sistema() {
         listaHijos = new ArrayList<>();
         listaVacunas = new ArrayList<>();
         eventosRealizados = new ArrayList<>();
         eventosARealizar = new ArrayList<>();
-        proximaIdAAsignar = Integer.MIN_VALUE;
     }
 
     public void agregarEvento(Evento elEvento) {
-        if (Validaciones.esFechaFutura(elEvento.getFecha())) {
-            eventosARealizar.add(elEvento);
-            Collections.sort(eventosARealizar);
-        } else {
-            eventosRealizados.add(elEvento);
-            Collections.sort(eventosRealizados);
-        }
-        proximaIdAAsignar++;
+        eventosARealizar.add(elEvento);
+        Collections.sort(eventosARealizar);
     }
 
-    public void modificarEventoEnListaCorrespondiente(Evento elEvento)
-            throws IllegalStateException {
-        int pos = eventosARealizar.indexOf(elEvento);
-        if (pos == -1) {
-            pos = eventosRealizados.indexOf(elEvento);
-            if (pos == -1) {
-                throw new IllegalStateException("No existe un evento con esta ID");
-            } else {
-                eventosRealizados.set(pos, elEvento);
-                Collections.sort(eventosRealizados);
-            }
-        } else {
-            eventosARealizar.set(pos, elEvento);
-            Collections.sort(eventosARealizar);
-        }
+    public void modificarEvento(Evento eventoAAgregar, int posEventoAModificar) {
+        int idAnterior = eventosARealizar.get(posEventoAModificar).getId();
+        eventoAAgregar.setId(idAnterior);
+        eventosARealizar.set(posEventoAModificar, eventoAAgregar);
+        proximaIDEventos--;
+        Collections.sort(eventosARealizar);
     }
 
-    public boolean esEsteTipo(String elTipo, String tipoEsperado) {
-        return elTipo.replaceAll("\\W", "").equals(tipoEsperado);
-    }
-
-    protected boolean esEventoValido(String elTitulo, String laDescripcion,
-            Calendar laFecha, Hijo hijo, String elLugar)
-            throws IllegalArgumentException {
-        boolean esValido = false;
-        if (Validaciones.noContieneCaracterAlfabetico(elTitulo)) {
-            throw new IllegalArgumentException("El título es inválido");
-        } else if (Validaciones.noContieneCaracterAlfabetico(elLugar)) {
-            throw new IllegalArgumentException("El lugar es inválido");
-        } else if (Validaciones.esFechaAntesDeNacimiento(hijo.getFechaNacimiento(), laFecha)) {
-            throw new IllegalArgumentException("Esa fecha es antes del nacimiento"
-                    + "de su hijo/a");
-        } else {
-            esValido = true;
-        }
-        return esValido;
+    public void reordenarListaEventosARealizar() {
+        Collections.sort(eventosARealizar);
     }
 
     protected boolean esHijoValido(String elNombre, Calendar laFecha,
-            String laCedulaId, String laSociedadMedica)
+            String laCedulaId, String laSociedadMedica, String medicoCab)
             throws IllegalArgumentException {
-        if (Validaciones.esFechaFutura(laFecha)) {
-            throw new IllegalArgumentException("La fecha ingresada es inválida");
-        } else if (Validaciones.noContieneCaracterAlfabetico(elNombre)) {
-            throw new IllegalArgumentException("El nombre es inválido");
-        } else if (Validaciones.esCedulaInvalida(laCedulaId)) {
-            throw new IllegalArgumentException("La cedula es inválida");
-        } else if (Validaciones.noContieneCaracterAlfabetico(laSociedadMedica)) {
-            throw new IllegalArgumentException("El nombre de la sociedad Médica "
-                    + "es inválido");
+        if (Auxiliares.esFechaFutura(laFecha)) {
+            throw new IllegalArgumentException("La fecha ingresada es inválida.");
+        } else if (Auxiliares.noContieneCaracterAlfabetico(elNombre)) {
+            throw new IllegalArgumentException("El nombre es inválido.");
+        } else if (Auxiliares.esCedulaInvalida(laCedulaId)) {
+            throw new IllegalArgumentException("La cedula es inválida.");
+        } else if (Auxiliares.noContieneCaracterAlfabetico(laSociedadMedica)) {
+            throw new IllegalArgumentException("El nombre de la sociedad médica "
+                    + "es inválido.");
+        } else if (!medicoCab.isEmpty()
+                && Auxiliares.noContieneCaracterAlfabetico(medicoCab)) {
+            throw new IllegalArgumentException("El nombre del médico ingresado "
+                    + "es inválido.");
         }
         return true;
     }
@@ -93,7 +64,7 @@ public class Sistema implements Serializable {
     public void agregarHijo(String elNombre, Calendar laFecha, boolean esHombre,
             String laCedulaId, String laSociedadMedica, String medicoCab)
             throws IllegalArgumentException, IllegalStateException {
-        if (esHijoValido(elNombre, laFecha, laCedulaId, laSociedadMedica)) {
+        if (esHijoValido(elNombre, laFecha, laCedulaId, laSociedadMedica, medicoCab)) {
             Hijo hijoAAgregar = new Hijo(elNombre, laFecha, esHombre, laCedulaId,
                     laSociedadMedica, medicoCab);
             if (listaHijos.contains(hijoAAgregar)) {
@@ -109,7 +80,7 @@ public class Sistema implements Serializable {
     public void modificarHijo(String elNombre, Calendar laFecha, boolean esHombre,
             String laCedulaId, String laSociedadMedica, String elMedico, String laCedulaAnterior)
             throws IllegalArgumentException, IllegalStateException {
-        if (esHijoValido(elNombre, laFecha, laCedulaId, laSociedadMedica)) {
+        if (esHijoValido(elNombre, laFecha, laCedulaId, laSociedadMedica, elMedico)) {
             Hijo hijoAModificar = new Hijo(laCedulaAnterior);
             int pos = listaHijos.indexOf(hijoAModificar);
             if (pos == -1) {
@@ -177,7 +148,7 @@ public class Sistema implements Serializable {
         String meses = "";
         String anios = "";
         String descripcion = "";
-        String linea = "";
+        String linea;
         int cantRenglones = 0;
         boolean error = false;
         boolean vacunaTerminada = false;
@@ -249,7 +220,6 @@ public class Sistema implements Serializable {
             } else {
                 error = true;
             }
-
             if (error) {
                 throw new IllegalArgumentException("Error en linea " + numeroLinea
                         + ", no se esperaba '" + linea + "'");
@@ -260,29 +230,28 @@ public class Sistema implements Serializable {
 
     public void procesarVacunaSistematica(String nombre, String meses, String anios,
             String descripcion) throws IllegalArgumentException, NumberFormatException {
-
         Vacuna vacunaNueva;
-        if (!esNombreInvalido(nombre.trim())) {
+        if (!Auxiliares.esNombreVacunaInvalido(nombre.trim())) {
             vacunaNueva = new Vacuna(nombre, true, descripcion);
             String[] mes = meses.split(" ");
             String[] anio = anios.split(" ");
             if (!meses.equals("-")) {
-                for (int i = 0; i < mes.length; i++) {
-                    if (mesValido(mes[i])) {
-                        vacunaNueva.agregarVencimientoEnMeses(mes[i]);
+                for (String me : mes) {
+                    if (mesValido(me)) {
+                        vacunaNueva.agregarVencimientoEnMeses(me);
                     } else {
                         throw new IllegalArgumentException("En la vacuna " + nombre
-                                + " el mes " + mes[i] + " es inválido");
+                                + " el mes " + me + " es inválido");
                     }
                 }
             }
             if (!anios.equals("-")) {
-                for (int i = 0; i < anio.length; i++) {
-                    if (anioValido(anio[i])) {
-                        vacunaNueva.agregarVencimientoEnAnios(anio[i]);
+                for (String anio1 : anio) {
+                    if (anioValido(anio1)) {
+                        vacunaNueva.agregarVencimientoEnAnios(anio1);
                     } else {
                         throw new IllegalArgumentException("En la vacuna " + nombre
-                                + " el año " + anio[i] + " es inválido");
+                                + " el año " + anio1 + " es inválido");
                     }
                 }
             }
@@ -293,55 +262,44 @@ public class Sistema implements Serializable {
                     + " es inválido");
         }
     }
-    
-    public boolean esNumeroNatural(String num) {
-        
-        for (int i = 0; i < num.length(); i++) {
-            if (!Character.isDigit(num.charAt(i)))
-                return false;
-        }
-        return !num.equals("");
-    }
-    
+
     public boolean mesValido(String mes) {
-        
-        if (esNumeroNatural(mes)) {
+        if (Auxiliares.esNumeroNatural(mes)) {
             int intMes = Integer.parseInt(mes);
             return intMes < mesMaximoIngresable();
         }
         return periodoMesValido(mes);
     }
-    
+
     public boolean periodoMesValido(String periodo) {
-        
         if (periodo.length() > 2) {
             if (periodo.charAt(0) == 'c' && periodo.charAt(1) == '/') {
                 String[] separarMes = periodo.split("/");
-                if (separarMes.length > 1)
-                return mesValido(separarMes[1]);
+                if (separarMes.length > 1) {
+                    return mesValido(separarMes[1]);
+                }
             }
         }
         return false;
     }
-    
+
     public boolean periodoAnioValido(String periodo) {
-        
         if (periodo.length() > 2) {
             if (periodo.charAt(0) == 'c' && periodo.charAt(1) == '/') {
                 String[] separarAnio = periodo.split("/");
-                if (separarAnio.length > 1)
-                return anioValido(separarAnio[1]);
+                if (separarAnio.length > 1) {
+                    return anioValido(separarAnio[1]);
+                }
             }
         }
         return false;
     }
-    
+
     public boolean anioValido(String anio) {
-        
-         if (esNumeroNatural(anio)) {
+        if (Auxiliares.esNumeroNatural(anio)) {
             int intAnio = Integer.parseInt(anio);
             return intAnio < anioMaximoIngresable();
-        } 
+        }
         return periodoAnioValido(anio);
     }
 
@@ -400,7 +358,6 @@ public class Sistema implements Serializable {
             } else {
                 error = true;
             }
-
             if (error) {
                 throw new IllegalArgumentException("Error en linea " + numeroLinea
                         + ", no se esperaba '" + linea + "'");
@@ -410,9 +367,8 @@ public class Sistema implements Serializable {
 
     public void procesarVacunaNoSistematica(String nombre, String descripcion)
             throws IllegalArgumentException, NumberFormatException {
-
         Vacuna vacunaNueva;
-        if (!Validaciones.noContieneCaracterAlfabetico(nombre.trim())) {
+        if (!Auxiliares.noContieneCaracterAlfabetico(nombre.trim())) {
             vacunaNueva = new Vacuna(nombre, true, descripcion);
             listaVacunas.add(vacunaNueva);
         } else {
@@ -421,13 +377,11 @@ public class Sistema implements Serializable {
         }
     }
 
-    int anioMaximoIngresable() {
-
+    public static int anioMaximoIngresable() {
         return 12;
     }
 
-    int mesMaximoIngresable() {
-
+    public static int mesMaximoIngresable() {
         return anioMaximoIngresable() * 12;
     }
 
@@ -451,5 +405,18 @@ public class Sistema implements Serializable {
             }
         }
         archivoLeido.cerrar();
+    }
+
+    public void eliminarEventoPorPos(int posEvento) {
+        eventosARealizar.remove(posEvento);
+        Collections.sort(eventosARealizar);
+    }
+
+    public void darDeBajaEvento(int posEventoACompletar) {
+        Evento eventoACompletar = eventosARealizar.get(posEventoACompletar);
+        eventosARealizar.remove(posEventoACompletar);
+        eventosRealizados.add(eventoACompletar);
+        Collections.sort(eventosRealizados);
+        Collections.sort(eventosARealizar);
     }
 }

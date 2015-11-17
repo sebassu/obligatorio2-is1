@@ -1,5 +1,6 @@
 package dominio;
 
+import auxiliar.Auxiliares;
 import java.util.Calendar;
 
 public class Consulta extends Evento {
@@ -21,7 +22,11 @@ public class Consulta extends Evento {
         return medico;
     }
 
-    public void setMedico(String elMedico) {
+    public void setMedico(String elMedico) throws IllegalArgumentException {
+        if (!elMedico.isEmpty()
+                && Auxiliares.noContieneCaracterAlfabetico(elMedico)) {
+            throw new IllegalArgumentException("Nombre de médico inválido");
+        }
         this.medico = elMedico;
     }
 }

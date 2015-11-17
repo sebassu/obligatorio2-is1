@@ -1,9 +1,12 @@
 package interfaz;
 
-import auxiliar.Validaciones;
+import auxiliar.Auxiliares;
+import dominio.Consulta;
 import dominio.Evento;
 import dominio.Hijo;
 import dominio.Sistema;
+import dominio.Vacuna;
+import dominio.Vacunacion;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,7 +20,6 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
     public VentanaCrearEvento(Sistema sis, int posEvento) {
         this.modelo = sis;
         this.posEventoAModificar = posEvento;
-        this.idEventoAModificar = 0;
         try {
             initComponents();
             ((JLabel) jComboBoxTipo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
@@ -30,29 +32,26 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
                 aux.add("Vacunación");
             }
             jComboBoxTipo.setModel(new DefaultComboBoxModel(aux.toArray()));
+            jDateChooserFecha.setCalendar(Calendar.getInstance());
+            jComboBoxTipo.setSelectedIndex(0);
             jComboBoxHijo.setSelectedIndex(0);
-            jLabelOtro.setEnabled(false);
-            txtOtro.setEnabled(false);
-            jLabelErrorOtro.setEnabled(false);
-            jLabelOtro.setVisible(false);
-            txtOtro.setVisible(false);
             jLabelErrorOtro.setVisible(false);
-            jLabelErrorFecha.setVisible(false);
             jLabelErrorLugar.setVisible(false);
             jLabelErrorTitulo.setVisible(false);
             if (posEvento != -1) {
                 Evento eventoAModificar = modelo.getEvento(posEvento);
-                idEventoAModificar = eventoAModificar.getId();
+                txtOtro.setEnabled(false);
+                jComboBoxTipo.setEnabled(false);
                 txtTitulo.setText(eventoAModificar.getTitulo());
                 txtLugar.setText(eventoAModificar.getLugar());
                 jComboBoxHijo.setSelectedItem(eventoAModificar.getCualHijo());
-                jComboBoxTipo.setSelectedItem(eventoAModificar.getTipo());
-                if (eventoAModificar.getTipo().equals("Otro")) {
-                    jLabelOtro.setEnabled(true);
-                    txtOtro.setEnabled(true);
+                if (!eventoAModificar.getTipo().equals("Consulta")
+                        && !eventoAModificar.getTipo().equals("Vacunación")) {
                     jLabelOtro.setVisible(true);
                     txtOtro.setVisible(true);
                     txtOtro.setText(eventoAModificar.getTipo());
+                } else {
+                    jComboBoxTipo.setSelectedItem(eventoAModificar.getTipo());
                 }
                 textAreaDesc.setText(eventoAModificar.getDescripcion());
             }
@@ -65,7 +64,6 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        textArea1 = new java.awt.TextArea();
         jPanel5 = new javax.swing.JPanel();
         btnAceptar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -79,14 +77,12 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         jComboBoxTipo = new javax.swing.JComboBox();
         jLabelVacuna = new javax.swing.JLabel();
         jDateChooserFecha = new com.toedter.calendar.JDateChooser();
-        jLabelErrorFecha = new javax.swing.JLabel();
         jLabelErrorTitulo = new javax.swing.JLabel();
         txtOtro = new javax.swing.JTextField();
         jComboBoxHijo = new javax.swing.JComboBox();
         jLabel15 = new javax.swing.JLabel();
         txtLugar = new javax.swing.JTextField();
         jLabelOtro = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         jLabelErrorLugar = new javax.swing.JLabel();
         jLabelErrorOtro = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -96,12 +92,12 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         txtMedico = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         jLabelErrorMedico = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de Hijo");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMinimumSize(new java.awt.Dimension(200, 200));
-        setResizable(false);
 
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -128,9 +124,9 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAceptar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addGap(33, 33, 33))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,6 +140,8 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         );
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setMaximumSize(new java.awt.Dimension(463, 466));
+        jPanel6.setMinimumSize(new java.awt.Dimension(463, 466));
 
         jPanelDatos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del Evento", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 204))); // NOI18N
         jPanelDatos.setOpaque(false);
@@ -166,28 +164,17 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Tipo de Evento:");
 
-        jComboBoxTipo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jComboBoxTipoFocusLost(evt);
+        jComboBoxTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTipoActionPerformed(evt);
             }
         });
 
         jLabelVacuna.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelVacuna.setLabelFor(jComboBoxVacunas);
         jLabelVacuna.setText("Vacuna:");
-        jLabelVacuna.setEnabled(false);
 
         jDateChooserFecha.setToolTipText("Seleccionar una fecha anterior a la actual");
-        jDateChooserFecha.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jDateChooserFechaFocusLost(evt);
-            }
-        });
-
-        jLabelErrorFecha.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelErrorFecha.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabelErrorFecha.setText("Fecha inválida");
-        jLabelErrorFecha.setFocusable(false);
 
         jLabelErrorTitulo.setForeground(new java.awt.Color(255, 0, 0));
         jLabelErrorTitulo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -195,7 +182,6 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         jLabelErrorTitulo.setFocusable(false);
 
         txtOtro.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-        txtOtro.setEnabled(false);
         txtOtro.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtOtroFocusLost(evt);
@@ -216,11 +202,6 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         jLabelOtro.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelOtro.setLabelFor(txtOtro);
         jLabelOtro.setText("Otro:");
-        jLabelOtro.setEnabled(false);
-
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel17.setLabelFor(textAreaDesc);
-        jLabel17.setText("Descripción:");
 
         jLabelErrorLugar.setForeground(new java.awt.Color(255, 0, 0));
         jLabelErrorLugar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -234,17 +215,14 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
 
         textAreaDesc.setColumns(20);
         textAreaDesc.setRows(5);
+        textAreaDesc.setBorder(javax.swing.BorderFactory.createTitledBorder("Descripción"));
         jScrollPane1.setViewportView(textAreaDesc);
-
-        jComboBoxVacunas.setEnabled(false);
 
         jLabelMedico.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelMedico.setLabelFor(txtLugar);
         jLabelMedico.setText("Médico:");
-        jLabelMedico.setEnabled(false);
 
         txtMedico.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-        txtMedico.setEnabled(false);
         txtMedico.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtMedicoFocusLost(evt);
@@ -264,21 +242,14 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         jPanelDatos.setLayout(jPanelDatosLayout);
         jPanelDatosLayout.setHorizontalGroup(
             jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanelDatosLayout.createSequentialGroup()
-                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelDatosLayout.createSequentialGroup()
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jDateChooserFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jDateChooserFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelDatosLayout.createSequentialGroup()
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTitulo))
-                    .addGroup(jPanelDatosLayout.createSequentialGroup()
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBoxHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDatosLayout.createSequentialGroup()
                         .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,26 +258,33 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
                             .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelDatosLayout.createSequentialGroup()
-                                .addComponent(jComboBoxVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jComboBoxTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtOtro)
-                            .addComponent(txtLugar)
-                            .addComponent(txtMedico))))
-                .addGap(4, 4, 4)
-                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelErrorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelErrorTitulo)
-                    .addComponent(jLabelErrorLugar)
-                    .addComponent(jLabelErrorOtro)
-                    .addComponent(jLabelErrorMedico)))
-            .addGroup(jPanelDatosLayout.createSequentialGroup()
-                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDatosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
+                                .addComponent(txtMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, Short.MAX_VALUE)
+                                .addComponent(jLabelErrorMedico))
+                            .addComponent(jComboBoxVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                                .addComponent(txtOtro, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelErrorOtro))
+                            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                                .addComponent(txtLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelErrorLugar))))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBoxHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelErrorTitulo))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
         jPanelDatosLayout.setVerticalGroup(
@@ -319,15 +297,15 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabelErrorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jDateChooserFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jDateChooserFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxHijo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -340,19 +318,19 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
                     .addComponent(txtLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelErrorLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
-                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelErrorMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelErrorMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -360,111 +338,108 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-       /* boolean error = false;
-        String[] parametros = new String[4];
-        parametros[0] = txtTitulo.getText().trim();
-        if (parametros[0].isEmpty()) {
-            jLabelErrorTitulo.setVisible(error = true);
-        }
-        Calendar fechaSeleccionada = jDateChooserFecha.getCalendar();
-        if (!Validaciones.esFechaFutura(fechaSeleccionada)) {
-            jLabelErrorFecha.setVisible(error = true);
-        }
-        parametros[1] = jComboBoxTipo.getSelectedItem().toString();
-        if (parametros[1].equals("Otro")) {
-            parametros[1] = txtOtro.getText().trim();
-            if (parametros[2].isEmpty()) {
-                jLabelErrorOtro.setVisible(error = true);
+        try {
+            String titulo = txtTitulo.getText().trim();
+            if (Auxiliares.noContieneCaracterAlfabetico(titulo)) {
+                jLabelErrorTitulo.setVisible(true);
             }
-        }
-        parametros[2] = txtLugar.getText().trim();
-        if (parametros[2].isEmpty()) {
-            jLabelErrorLugar.setVisible(error = true);
-        }
-        if (!error) {
-            try {
-                if (posEventoAModificar != -1) {
-                  switch(jComboBoxTipo.getSelectedItem().toString()) {
-                      case "Otro":
-                          modelo.agregarEvento(parametros[0], parametros[1],
-                            textAreaDesc.getText(), fechaSeleccionada,
-                            (Hijo) jComboBoxHijo.getSelectedItem(), parametros[2]);
-                      case "Vacunación":
-                          
-                          modelo.AgregarVacunacion(parametros[0], parametros[1],
-                            textAreaDesc.getText(), fechaSeleccionada,
-                            (Hijo) jComboBoxHijo.getSelectedItem(), parametros[2]);
-                  }
-                } else {
-                    modelo.modificarEvento(idEventoAModificar, parametros[0], parametros[1],
-                            textAreaDesc.getText(), fechaSeleccionada,
-                            (Hijo) jComboBoxHijo.getSelectedItem(), parametros[2]);
-                }
-            } catch (IllegalArgumentException | IllegalStateException e) {
-                JOptionPane.showMessageDialog(this, "Error", e.getMessage(),
-                        JOptionPane.ERROR_MESSAGE);
+            String tipo = jComboBoxTipo.getSelectedItem().toString();
+            switch (tipo) {
+                case "Otro":
+                    tipo = txtOtro.getText().trim();
+                    if (Auxiliares.noContieneCaracterAlfabetico(tipo)
+                            || tipo.equalsIgnoreCase("Consulta")
+                            || tipo.equalsIgnoreCase("Vacunación")
+                            || tipo.equalsIgnoreCase("Vacunacion")) {
+                        jLabelErrorOtro.setVisible(true);
+                    }
+                    break;
+                case "Consulta":
+                    ValidarMedico();
+                    break;
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Error", VentanaPrincipal.ERR_INGRESO,
-                    JOptionPane.ERROR_MESSAGE);
-        }*/
+            Evento eventoAAgregar = null;
+            switch (tipo) {
+                case "Consulta":
+                    eventoAAgregar = new Consulta(Sistema.proximaIDEventos++, titulo, tipo,
+                            textAreaDesc.getText().trim(), jDateChooserFecha.getCalendar(),
+                            (Hijo) jComboBoxHijo.getSelectedItem(), txtLugar.getText().trim(),
+                            txtMedico.getText().trim());
+                    break;
+                case "Vacunación":
+                    eventoAAgregar = new Vacunacion(Sistema.proximaIDEventos++, titulo, tipo,
+                            textAreaDesc.getText().trim(), jDateChooserFecha.getCalendar(),
+                            (Hijo) jComboBoxHijo.getSelectedItem(), txtLugar.getText().trim(),
+                            (Vacuna) jComboBoxVacunas.getSelectedItem());
+                    break;
+                default:
+                    eventoAAgregar = new Evento(Sistema.proximaIDEventos++, titulo, tipo,
+                            textAreaDesc.getText().trim(), jDateChooserFecha.getCalendar(),
+                            (Hijo) jComboBoxHijo.getSelectedItem(), txtLugar.getText().trim());
+                    break;
+            }
+            if (posEventoAModificar == -1) {
+                modelo.agregarEvento(eventoAAgregar);
+            } else {
+                modelo.modificarEvento(eventoAAgregar, posEventoAModificar);
+            }
+            JOptionPane.showMessageDialog(this, "El evento se ha agregado/modificado "
+                    + "exitosamente en el sistema", "Operación completada",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, "Error", VentanaPrincipal.ERR_INGRESO
+                    + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButtonCerrarActionPerformed
 
-    private void txtTituloFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTituloFocusLost
-        jLabelErrorTitulo.setVisible(txtTitulo.getText().trim().isEmpty());
-    }//GEN-LAST:event_txtTituloFocusLost
-
-    private void jDateChooserFechaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jDateChooserFechaFocusLost
-        jLabelErrorFecha.setVisible(!Validaciones.esFechaFutura(jDateChooserFecha.getCalendar()));
-    }//GEN-LAST:event_jDateChooserFechaFocusLost
-
-    private void txtOtroFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOtroFocusLost
-        jLabelErrorOtro.setVisible(txtOtro.getText().trim().isEmpty());
-    }//GEN-LAST:event_txtOtroFocusLost
+    private void txtMedicoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMedicoFocusLost
+        ValidarMedico();
+    }//GEN-LAST:event_txtMedicoFocusLost
 
     private void txtLugarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLugarFocusLost
         String textoEscrito = txtLugar.getText().trim();
         if (textoEscrito.isEmpty()) {
             jLabelErrorLugar.setText("Lugar vacío");
-            jLabelErrorLugar.setForeground(Color.yellow);
+            jLabelErrorLugar.setForeground(Color.orange);
             jLabelErrorLugar.setVisible(true);
-        } else if (Validaciones.noContieneCaracterAlfabetico(textoEscrito)) {
+        } else if (Auxiliares.noContieneCaracterAlfabetico(textoEscrito)) {
             jLabelErrorLugar.setText("Lugar inválido");
             jLabelErrorLugar.setForeground(Color.red);
             jLabelErrorLugar.setVisible(true);
@@ -473,48 +448,61 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtLugarFocusLost
 
-    private void jComboBoxTipoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBoxTipoFocusLost
-        txtOtro.setEnabled(false);
+    private void txtOtroFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOtroFocusLost
+        jLabelErrorOtro.setVisible(txtOtro.getText().trim().isEmpty());
+    }//GEN-LAST:event_txtOtroFocusLost
+
+    private void jComboBoxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoActionPerformed
         jLabelErrorOtro.setVisible(false);
         jLabelOtro.setVisible(false);
         txtOtro.setVisible(false);
         jLabelVacuna.setVisible(false);
-        jComboBoxVacunas.setEnabled(false);
         jComboBoxVacunas.setVisible(false);
-        txtMedico.setEnabled(false);
         jLabelMedico.setVisible(false);
         txtMedico.setVisible(false);
         jLabelErrorMedico.setVisible(false);
         switch (jComboBoxTipo.getSelectedItem().toString()) {
             case "Otro":
-                txtOtro.setEnabled(true);
-                jLabelErrorOtro.setVisible(true);
                 jLabelOtro.setVisible(true);
                 txtOtro.setVisible(true);
                 txtMedico.setText("");
                 break;
             case "Consulta":
-                txtMedico.setEnabled(true);
                 jLabelMedico.setVisible(true);
                 txtMedico.setVisible(true);
                 txtOtro.setText("");
                 break;
             case "Vacunación":
-                jLabelVacuna.setVisible(false);
-                jComboBoxVacunas.setEnabled(false);
-                jComboBoxVacunas.setVisible(false);
+                jLabelVacuna.setVisible(true);
+                jComboBoxVacunas.setVisible(true);
                 txtMedico.setText("");
                 txtOtro.setText("");
                 break;
         }
-    }//GEN-LAST:event_jComboBoxTipoFocusLost
+    }//GEN-LAST:event_jComboBoxTipoActionPerformed
 
-    private void txtMedicoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMedicoFocusLost
-        jLabelErrorMedico.setVisible(Validaciones.noContieneCaracterAlfabetico(txtMedico.getText()));
-    }//GEN-LAST:event_txtMedicoFocusLost
+    private void txtTituloFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTituloFocusLost
+        jLabelErrorTitulo.setVisible(txtTitulo.getText().trim().isEmpty());
+    }//GEN-LAST:event_txtTituloFocusLost
+
+    private void ValidarMedico() {
+        String textoEscrito = txtMedico.getText().trim();
+        if (textoEscrito.isEmpty()) {
+            jLabelErrorMedico.setText("Campo vacío");
+            jLabelErrorMedico.setForeground(Color.orange);
+            jLabelErrorMedico.setVisible(true);
+        } else if (Auxiliares.noContieneCaracterAlfabetico(textoEscrito)) {
+            jLabelErrorMedico.setText("Médico inválido");
+            jLabelErrorMedico.setForeground(Color.red);
+            jLabelErrorMedico.setVisible(true);
+        } else {
+            jLabelErrorMedico.setVisible(false);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JButton jButtonCerrar;
     private javax.swing.JComboBox jComboBoxHijo;
     private javax.swing.JComboBox jComboBoxTipo;
@@ -524,9 +512,7 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabelErrorFecha;
     private javax.swing.JLabel jLabelErrorLugar;
     private javax.swing.JLabel jLabelErrorMedico;
     private javax.swing.JLabel jLabelErrorOtro;
@@ -539,7 +525,6 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanelDatos;
     private javax.swing.JScrollPane jScrollPane1;
-    private java.awt.TextArea textArea1;
     private javax.swing.JTextArea textAreaDesc;
     private javax.swing.JTextField txtLugar;
     private javax.swing.JTextField txtMedico;
@@ -548,5 +533,4 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private final Sistema modelo;
     private final int posEventoAModificar;
-    private int idEventoAModificar;
 }

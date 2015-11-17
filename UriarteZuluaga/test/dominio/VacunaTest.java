@@ -60,19 +60,19 @@ public class VacunaTest {
 
     @Test
     public void testConstructorOK1() {
-        Vacuna v = new Vacuna("HPV", false);
+        Vacuna v = new Vacuna("HPV", false, "ABC");
         assertEquals(v.getNombre(), "HPV");
     }
 
     @Test
     public void testConstructorOK2() {
-        Vacuna v = new Vacuna("Triple Bacteriana 55", true);
+        Vacuna v = new Vacuna("Triple Bacteriana 55", true, "ABC");
         assertEquals(v.getNombre(), "Triple Bacteriana 55");
     }
 
     @Test
     public void testConstructorOK3() {
-        Vacuna v = new Vacuna("CPV1321 A3", false);
+        Vacuna v = new Vacuna("CPV1321 A3", false, "ABC");
         assertEquals(v.getNombre(), "CPV1321 A3");
     }
 
@@ -80,26 +80,26 @@ public class VacunaTest {
     public void testConstructorError() {
         ex.expect(IllegalArgumentException.class);
         ex.expectMessage("Nombre inválido");
-        Vacuna v = new Vacuna(nom, false);
+        Vacuna v = new Vacuna(nom, false, "ABC");
     }
 
     @Test
     public void testEquals1() {
-        Vacuna v = new Vacuna("HPV", false);
+        Vacuna v = new Vacuna("HPV", false, "ABC");
         assertTrue(v.equals(v));
     }
 
     @Test
     public void testEquals2() {
-        Vacuna v1 = new Vacuna("BCG", false);
-        Vacuna v2 = new Vacuna("BCG", false);
+        Vacuna v1 = new Vacuna("BCG", false, "ABC");
+        Vacuna v2 = new Vacuna("BCG", false, "ABC");
         assertTrue(v1.equals(v2));
     }
 
     @Test
     public void testEquals3() {
-        Vacuna v1 = new Vacuna("ABC", false);
-        Vacuna v2 = new Vacuna("H1N1", false);
+        Vacuna v1 = new Vacuna("ABC", false, "ABC");
+        Vacuna v2 = new Vacuna("H1N1", false, "ABC");
         assertFalse(v1.equals(v2));
     }
 }

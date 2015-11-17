@@ -11,16 +11,20 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class VentanaPrincipal extends javax.swing.JFrame {
 
     public static final String ERR_INGRESO = "Se detectaron errores en los datos "
-            + "ingresados, reintente.";
+            + "ingresados, reintente\nError detectado: ";
+
     public static final Color niñoOsc = new Color(60, 154, 40);
     public static final Color niñoClaro = new Color(135, 186, 19);
     public static final Color Amarillo = new Color(233, 224, 40);
     public static final Color niña = new Color(246, 168, 40);
-    
+
     public VentanaPrincipal(Sistema sis) {
         this.modelo = sis;
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
+        if (ActivarOpcionesQueRequierenHijos()) {
+            ActivarOpcionesModificacionEventos();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -402,10 +406,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         return 0;
     }
 
+    private int getPosEventoSeleccionado() {
+        //TODO
+        return 0;
+    }
+
     private void btnAgregarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarHijoActionPerformed
         VentanaCrearHijo v = new VentanaCrearHijo(modelo, null, false);
         v.setLocationRelativeTo(this);
         v.setVisible(true);
+        ActivarOpcionesQueRequierenHijos();
     }//GEN-LAST:event_btnAgregarHijoActionPerformed
 
     private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
@@ -455,16 +465,28 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         VentanaCrearEvento v = new VentanaCrearEvento(modelo, -1);
         v.setLocationRelativeTo(this);
         v.setVisible(true);
-        //if()
-        //TODO
+        ActivarOpcionesModificacionEventos();
     }//GEN-LAST:event_opcRegistrarEventoActionPerformed
 
     private void opcModificarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcModificarEventoActionPerformed
-        // TODO add your handling code here:
+        VentanaCrearEvento v = new VentanaCrearEvento(modelo, getPosEventoSeleccionado());
+        v.setLocationRelativeTo(this);
+        v.setVisible(true);
     }//GEN-LAST:event_opcModificarEventoActionPerformed
 
     private void opcEliminarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEliminarEventoActionPerformed
-        // TODO add your handling code here:
+        int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro/a que desea eliminar al "
+                + "evento seleccionado?", "Confirme su selección",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (opcion == JOptionPane.YES_OPTION) {
+            modelo.eliminarEventoPorPos(getPosEventoSeleccionado());
+            JOptionPane.showMessageDialog(this, "El evento se ha borrado exitosamente"
+                    + "del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
+            if (modelo.getCantidadEventosARealizar() == 0) {
+                opcModificarEvento.setEnabled(false);
+                opcEliminarEvento.setEnabled(false);
+            }
+        }
     }//GEN-LAST:event_opcEliminarEventoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -530,14 +552,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         VentanaCrearHijo v = new VentanaCrearHijo(modelo, null, false);
         v.setLocationRelativeTo(this);
         v.setVisible(true);
-        if (modelo.getCantidadHijos() > 0) {
-            opcModificarRegistro.setEnabled(true);
-            opcEliminarCarne.setEnabled(true);
-            btnEditarHijo.setEnabled(true);
-            btnEliminarHijo.setEnabled(true);
-            mnuEventos.setEnabled(true);
-            opcRegistrarEvento.setEnabled(true);
-        }
+        ActivarOpcionesQueRequierenHijos();
     }
 
     private void eliminarHijoSeleccionado() {
@@ -546,7 +561,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (opcion == JOptionPane.YES_OPTION) {
             modelo.eliminarHijoPorPos(getPosHijoSeleccionado());
-            JOptionPane.showMessageDialog(this, "El registro se ha borrado exiitosamente"
+            JOptionPane.showMessageDialog(this, "El registro se ha borrado exitosamente"
                     + "del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
             if (modelo.getCantidadHijos() == 0) {
                 opcModificarRegistro.setEnabled(false);
@@ -554,6 +569,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btnEditarHijo.setEnabled(false);
                 btnEliminarHijo.setEnabled(false);
             }
+        }
+    }
+
+    private boolean ActivarOpcionesQueRequierenHijos() {
+        boolean activar = modelo.getCantidadHijos() > 0;
+        if (activar) {
+            opcModificarRegistro.setEnabled(true);
+            opcEliminarCarne.setEnabled(true);
+            btnEditarHijo.setEnabled(true);
+            btnEliminarHijo.setEnabled(true);
+            mnuEventos.setEnabled(true);
+            opcRegistrarEvento.setEnabled(true);
+        }
+        return activar;
+    }
+
+    private void ActivarOpcionesModificacionEventos() {
+        if (modelo.getCantidadEventosARealizar() > 0) {
+            opcModificarEvento.setEnabled(true);
+            opcEliminarEvento.setEnabled(true);
         }
     }
 }

@@ -1,7 +1,6 @@
 package dominio;
 
 import java.io.Serializable;
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,10 +14,10 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     private final ArrayList<String> vencimientoEnMeses;
     private final ArrayList<String> vencimientoEnAnios;
     private String descripcion;
-    private Object Ordering;
 
     //Constructor.
-    public Vacuna(String nom, boolean bool, String descrip) throws IllegalArgumentException {
+    public Vacuna(String nom, boolean bool, String descrip)
+            throws IllegalArgumentException {
         setNombre(nom);
         setSistematca(bool);
         vencimientoEnMeses = new ArrayList<>();
@@ -118,7 +117,6 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
 
     public void ordenarListas() {
         Comparator<String> numerosPrimero = new Comparator<String>() {
-
             @Override
             public int compare(String uno, String dos) {
                 boolean unoEmpiezaConLetra = Character.isLetter(uno.charAt(0));
@@ -129,7 +127,7 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
                 } else if (unoEmpiezaConLetra && dosEmpiezaConLetra) {
                     String[] unoCortado = uno.split("/");
                     String[] dosCortado = dos.split("/");
-                    return Integer.parseInt(unoCortado[1]) 
+                    return Integer.parseInt(unoCortado[1])
                             - Integer.parseInt(dosCortado[1]);
                 } else {
                     return 1;

@@ -1,6 +1,6 @@
 package interfaz;
 
-import auxiliar.Validaciones;
+import auxiliar.Auxiliares;
 import dominio.Hijo;
 import dominio.Sistema;
 import java.awt.event.KeyEvent;
@@ -342,43 +342,31 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        boolean error = false;
         String[] aux = new String[4];
         aux[0] = txtNombre.getText();
-        if (Validaciones.noContieneCaracterAlfabetico(aux[0])) {
-            jLabelErrorNombre.setVisible(error = true);
-        }
+        jLabelErrorNombre.setVisible(Auxiliares.noContieneCaracterAlfabetico(aux[0]));
         aux[1] = txtCedula.getText();
-        if (Validaciones.esCedulaInvalida(aux[1])) {
-            jLabelErrorCedula.setVisible(error = true);
-        }
+        jLabelErrorCedula.setVisible(Auxiliares.esCedulaInvalida(aux[1]));
         aux[2] = txtSociedad.getText();
-        if (Validaciones.noContieneCaracterAlfabetico(aux[2])) {
-            jLabelErrorNomSoc.setVisible(error = true);
-        }
+        jLabelErrorNomSoc.setVisible(Auxiliares.noContieneCaracterAlfabetico(aux[2]));
         aux[3] = txtMedico.getText();
-        if (Validaciones.noContieneCaracterAlfabetico(aux[3])) {
-            jLabelErrorMed.setVisible(error = true);
-        }
-        if (!error) {
-            try {
-                Calendar c = jDateChooserNac.getCalendar();
-                if (edicion) {
-                    modelo.modificarHijo(aux[0], c,
-                            jComboBoxGenero.getSelectedIndex() == 0, aux[1],
-                            aux[2], aux[3], cedulaAnt);
-                } else {
-                    modelo.agregarHijo(aux[0], c,
-                            jComboBoxGenero.getSelectedIndex() == 0, aux[1], aux[2], aux[3]);
-                }
-            } catch (IllegalArgumentException | IllegalStateException e) {
-                JOptionPane.showMessageDialog(this, "Los datos ingresados "
-                        + "corresponden a un hijo ya ingresado.", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+        jLabelErrorMed.setVisible(!aux[3].isEmpty() && Auxiliares.noContieneCaracterAlfabetico(aux[3]));
+        try {
+            Calendar c = jDateChooserNac.getCalendar();
+            if (edicion) {
+                modelo.modificarHijo(aux[0], c,
+                        jComboBoxGenero.getSelectedIndex() == 0, aux[1],
+                        aux[2], aux[3], cedulaAnt);
+            } else {
+                modelo.agregarHijo(aux[0], c,
+                        jComboBoxGenero.getSelectedIndex() == 0, aux[1], aux[2], aux[3]);
+                JOptionPane.showMessageDialog(this, "El carné se ha registrado/modificado "
+                        + "exitosamente en el sistema", "Operación completada",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Error", VentanaPrincipal.ERR_INGRESO,
-                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            JOptionPane.showMessageDialog(this, VentanaPrincipal.ERR_INGRESO
+                    + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
@@ -387,15 +375,15 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusLost
-        jLabelErrorNombre.setVisible(Validaciones.noContieneCaracterAlfabetico(txtNombre.getText()));
+        jLabelErrorNombre.setVisible(Auxiliares.noContieneCaracterAlfabetico(txtNombre.getText()));
     }//GEN-LAST:event_txtNombreFocusLost
 
     private void txtMedicoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMedicoFocusLost
-        jLabelErrorMed.setVisible(Validaciones.noContieneCaracterAlfabetico(txtMedico.getText()));
+        jLabelErrorMed.setVisible(Auxiliares.noContieneCaracterAlfabetico(txtMedico.getText()));
     }//GEN-LAST:event_txtMedicoFocusLost
 
     private void jLabelErrorCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jLabelErrorCedulaFocusLost
-        jLabelErrorCedula.setVisible(Validaciones.esCedulaInvalida(txtCedula.getText()));
+        jLabelErrorCedula.setVisible(Auxiliares.esCedulaInvalida(txtCedula.getText()));
     }//GEN-LAST:event_jLabelErrorCedulaFocusLost
 
     private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
@@ -415,11 +403,11 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMedicoKeyTyped
 
     private void txtCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCedulaFocusLost
-        jLabelErrorCedula.setVisible(Validaciones.esCedulaInvalida(txtCedula.getText()));
+        jLabelErrorCedula.setVisible(Auxiliares.esCedulaInvalida(txtCedula.getText()));
     }//GEN-LAST:event_txtCedulaFocusLost
 
     private void txtSociedadFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSociedadFocusLost
-        jLabelErrorNomSoc.setVisible(Validaciones.noContieneCaracterAlfabetico(txtSociedad.getText()));
+        jLabelErrorNomSoc.setVisible(Auxiliares.noContieneCaracterAlfabetico(txtSociedad.getText()));
     }//GEN-LAST:event_txtSociedadFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

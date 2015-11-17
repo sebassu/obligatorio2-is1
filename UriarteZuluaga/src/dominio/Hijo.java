@@ -15,9 +15,9 @@ public class Hijo implements Serializable, Comparable {
     private String cedulaId;
     private String sociedadMedica;
     private String medicoDeCabecera;
-    private final ArrayList<Par<Calendar, Integer>> listaPesos;
-    private final ArrayList<Par<Calendar, Integer>> listaPerimetrosCefalicos;
-    private final ArrayList<Par<Calendar, Integer>> listaAlturas;
+    private final ArrayList<Par<Integer, Double>> listaPesos;
+    private final ArrayList<Par<Integer, Double>> listaPerimetrosCefalicos;
+    private final ArrayList<Par<Integer, Double>> listaAlturas;
     private final ArrayList<Par<Calendar, Vacuna>> historialVacunaciones;
 
     protected Hijo() {
@@ -111,43 +111,43 @@ public class Hijo implements Serializable, Comparable {
         return sociedadMedica;
     }
 
-    public void agregarPeso(int dato, Calendar dia) {
+    public void agregarPeso(double dato, int dia) {
         listaPesos.add(new Par<>(dia, dato));
     }
 
-    public void modificarPeso(int dato, Calendar dia) {
-        Par<Calendar, Integer> datoBuscado = new Par<>(dia, 0);
+    public void modificarPeso(double dato, int dia) {
+        Par<Integer, Double> datoBuscado = new Par<>(dia, 0D);
         listaPesos.set(listaPesos.indexOf(datoBuscado), new Par<>(dia, dato));
     }
 
-    public Iterator<Par<Calendar, Integer>> getIteradorListaPesos() {
+    public Iterator<Par<Integer, Double>> getIteradorListaPesos() {
         return listaPesos.iterator();
     }
 
-    public void agregarAltura(int dato, Calendar dia) {
+    public void agregarAltura(double dato, int dia) {
         listaAlturas.add(new Par<>(dia, dato));
     }
 
-    public void modificarAltura(int dato, Calendar dia) {
-        Par<Calendar, Integer> datoBuscado = new Par<>(dia, 0);
+    public void modificarAltura(double dato, int dia) {
+        Par<Integer, Double> datoBuscado = new Par<>(dia, 0D);
         listaAlturas.set(listaAlturas.indexOf(datoBuscado), new Par<>(dia, dato));
     }
 
-    public Iterator<Par<Calendar, Integer>> getIteradorListaAlturas() {
+    public Iterator<Par<Integer, Double>> getIteradorListaAlturas() {
         return listaAlturas.iterator();
     }
 
-    public void agregarPerimetroCefalico(int dato, Calendar dia) {
+    public void agregarPerimetroCefalico(double dato, int dia) {
         listaPerimetrosCefalicos.add(new Par<>(dia, dato));
     }
 
-    public void modificarPerimetroCefalico(int dato, Calendar dia) {
-        Par<Calendar, Integer> datoBuscado = new Par<>(dia, 0);
+    public void modificarPerimetroCefalico(double dato, int dia) {
+        Par<Integer, Double> datoBuscado = new Par<>(dia, 0D);
         listaPerimetrosCefalicos.set(listaPerimetrosCefalicos.indexOf(datoBuscado),
                 new Par<>(dia, dato));
     }
 
-    public Iterator<Par<Calendar, Integer>> getIteradorListaPerimetrosCefalicos() {
+    public Iterator<Par<Integer, Double>> getIteradorListaPerimetrosCefalicos() {
         return listaPerimetrosCefalicos.iterator();
     }
 
