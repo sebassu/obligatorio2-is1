@@ -4,8 +4,10 @@ import auxiliar.Par;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Objects;
+import org.jfree.data.xy.XYSeries;
 
 public class Hijo implements Serializable, Comparable {
 
@@ -15,12 +17,12 @@ public class Hijo implements Serializable, Comparable {
     private String cedulaId;
     private String sociedadMedica;
     private String medicoDeCabecera;
-    private final ArrayList<Par<Integer, Double>> listaPesos;
-    private final ArrayList<Par<Integer, Double>> listaPerimetrosCefalicos;
-    private final ArrayList<Par<Integer, Double>> listaAlturas;
-    private final ArrayList<Par<Calendar, Vacuna>> historialVacunaciones;
+    private final ArrayList<Par<Double, Double>> listaPesos;
+    private final ArrayList<Par<Double, Double>> listaPerimetrosCefalicos;
+    private final ArrayList<Par<Double, Double>> listaAlturas;
+    private ArrayList<Par<Vacuna,ArrayList<Calendar>>> historialVacunaciones;
 
-    protected Hijo() {
+    public Hijo() {
         nombre = "";
         fechaNacimiento = Calendar.getInstance();
         cedulaId = "9.999.999-9";
@@ -111,60 +113,137 @@ public class Hijo implements Serializable, Comparable {
         return sociedadMedica;
     }
 
-    public void agregarPeso(double dato, int dia) {
+    public void agregarPeso(double dato, double dia) {
         listaPesos.add(new Par<>(dia, dato));
     }
 
-    public void modificarPeso(double dato, int dia) {
-        Par<Integer, Double> datoBuscado = new Par<>(dia, 0D);
+    public void modificarPeso(double dato, double dia) {
+        Par<Double, Double> datoBuscado = new Par<>(dia, 0D);
         listaPesos.set(listaPesos.indexOf(datoBuscado), new Par<>(dia, dato));
     }
 
-    public Iterator<Par<Integer, Double>> getIteradorListaPesos() {
+    public Iterator<Par<Double, Double>> getIteradorListaPesos() {
         return listaPesos.iterator();
     }
 
-    public void agregarAltura(double dato, int dia) {
+    public void agregarAltura(double dato, double dia) {
         listaAlturas.add(new Par<>(dia, dato));
     }
 
-    public void modificarAltura(double dato, int dia) {
-        Par<Integer, Double> datoBuscado = new Par<>(dia, 0D);
+    public void modificarAltura(double dato, double dia) {
+        Par<Double, Double> datoBuscado = new Par<>(dia, 0D);
         listaAlturas.set(listaAlturas.indexOf(datoBuscado), new Par<>(dia, dato));
     }
 
-    public Iterator<Par<Integer, Double>> getIteradorListaAlturas() {
+    public Iterator<Par<Double, Double>> getIteradorListaAlturas() {
         return listaAlturas.iterator();
     }
 
-    public void agregarPerimetroCefalico(double dato, int dia) {
+    public void agregarPerimetroCefalico(double dato, double dia) {
         listaPerimetrosCefalicos.add(new Par<>(dia, dato));
     }
 
-    public void modificarPerimetroCefalico(double dato, int dia) {
-        Par<Integer, Double> datoBuscado = new Par<>(dia, 0D);
+    public void modificarPerimetroCefalico(double dato, double dia) {
+        Par<Double, Double> datoBuscado = new Par<>(dia, 0D);
         listaPerimetrosCefalicos.set(listaPerimetrosCefalicos.indexOf(datoBuscado),
                 new Par<>(dia, dato));
     }
 
-    public Iterator<Par<Integer, Double>> getIteradorListaPerimetrosCefalicos() {
+    public Iterator<Par<Double, Double>> getIteradorListaPerimetrosCefalicos() {
         return listaPerimetrosCefalicos.iterator();
     }
 
-    public void agregarVacuna(Vacuna v, Calendar dia) {
-        historialVacunaciones.add(new Par<>(dia, v));
+    public void agregarVacunaRecivida(Vacuna v, Calendar dia) {
+        Par<Vacuna,ArrayList<Calendar>> vacunaNueva =
+                new Par<>(new Vacuna(v), new ArrayList<Calendar>());
+        vacunaNueva.getDato2().add(dia);
+        if (!historialVacunaciones.contains(vacunaNueva)) {
+            historialVacunaciones.add(vacunaNueva);
+        } else {
+            historialVacunaciones.get(historialVacunaciones.indexOf(
+                vacunaNueva)).getDato2().add(dia);
+            Collections.sort(historialVacunaciones.get(historialVacunaciones.indexOf(
+                vacunaNueva)).getDato2());
+        }
     }
 
-    public void modificarVacuna(Vacuna v, Calendar dia) {
-        Par<Calendar, Vacuna> vacunaBuscada = new Par<>(dia, v);
-        historialVacunaciones.set(historialVacunaciones.indexOf(vacunaBuscada),
-                new Par<>(dia, v));
+    public void eliminarVacunaRecivida(Vacuna v) {
+        Par<Vacuna,ArrayList<Calendar>> vacunaBuscada = new Par<>(v, new ArrayList<Calendar>());
+        historialVacunaciones.remove(vacunaBuscada);
+    }
+    
+    public void eliminarFechaVacunaRecivida(Vacuna v, Calendar fecha) {
+        Par<Vacuna,ArrayList<Calendar>> vacunaBuscada = new Par<>(v, new ArrayList<Calendar>());
+        historialVacunaciones.get(historialVacunaciones.indexOf(
+                vacunaBuscada)).getDato2().remove(fecha);
     }
 
-    public Iterator<Par<Calendar, Vacuna>> getIteradorHistorialVacunaciones() {
+    public Iterator<Par<Vacuna,ArrayList<Calendar>>> getIteradorHistorialVacunaciones() {
         return historialVacunaciones.iterator();
     }
-
+    
+    public XYSeries obtenerPesosParaGrafica() {
+        XYSeries pesos = new XYSeries("Peso por Edad");
+        Iterator<Par<Double, Double>> itListaPesos =
+                listaPesos.iterator();
+        while (itListaPesos.hasNext()) {
+            
+            Par<Double, Double> estePar = itListaPesos.next();
+            pesos.add(estePar.getDato1(), estePar.getDato2());
+        }
+        
+        return pesos;
+    }
+    
+    public XYSeries obtenerEstaturaParaGrafica() {
+        XYSeries estaturas = new XYSeries("Longitud / Estatura por Edad");
+        Iterator<Par<Double, Double>> itListaEstaturas =
+                listaPesos.iterator();
+        while (itListaEstaturas.hasNext()) {
+            
+            Par<Double, Double> estePar = itListaEstaturas.next();
+            estaturas.add(estePar.getDato1(), estePar.getDato2());
+        }
+        
+        return estaturas;
+    }
+    
+    public XYSeries obtenerPerimCefalicoParaGrafica() {
+        XYSeries perimCefalico = new XYSeries("Perímetro Cefálico por Edad");
+        Iterator<Par<Double, Double>> itListaPerimetros =
+                listaPesos.iterator();
+        while (itListaPerimetros.hasNext()) {
+            
+            Par<Double, Double> estePar = itListaPerimetros.next();
+            perimCefalico.add(estePar.getDato1(), estePar.getDato2());
+        }
+        
+        return perimCefalico;
+    }
+    
+    public XYSeries obtenerPesoEstaturaParaGrafica() {
+        XYSeries pesosEstaturas = new XYSeries("Peso por Estatura");
+        Iterator<Par<Double, Double>> itListaEstaturas =
+                listaPesos.iterator();
+        Iterator<Par<Double, Double>> itListaPesos =
+                listaPesos.iterator();
+        while (itListaEstaturas.hasNext() && itListaPesos.hasNext()) {
+            
+            Par<Double, Double> esteParEstatura = itListaEstaturas.next();
+            Par<Double, Double> esteParPeso = itListaPesos.next();
+            pesosEstaturas.add(esteParEstatura.getDato2(), esteParPeso.getDato2());
+        }
+        
+        return pesosEstaturas;
+    }
+    
+    public double mesesDesdeNacimientoAFecha(Calendar fecha) {
+  
+        return (double) (((fechaNacimiento.get(Calendar.YEAR)) 
+                - fecha.get(Calendar.YEAR)) * 12 + 
+                fechaNacimiento.get(Calendar.MONTH) - fecha.get(Calendar.MONTH));
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {

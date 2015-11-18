@@ -1,9 +1,61 @@
 package auxiliar;
 
 import dominio.Sistema;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Iterator;
 
 public final class Auxiliares {
+
+    public static String[] convertirArrayListStringAArrayString(
+            ArrayList<String> original) {
+        String[] nuevo = new String[original.size()];
+        Iterator<String> iteradorOriginal = original.iterator();
+        
+        for (int i = 0; i < nuevo.length; i++) {
+            
+            nuevo[i] = iteradorOriginal.next();
+        }
+        Arrays.sort(nuevo);
+        return nuevo;
+    }
+    
+    public static String[] convertirArrayListStringAArrayStringConEspacioAlPrincipio(
+            ArrayList<String> original) {
+        String[] nuevo = new String[original.size()+1];
+        Iterator<String> iteradorOriginal = original.iterator();
+        nuevo[0] = "";
+        for (int i = 1; i < nuevo.length; i++) {
+            
+            nuevo[i] = iteradorOriginal.next();
+        }
+        Arrays.sort(nuevo);
+        return nuevo;
+    }
+    
+    public static Comparator<String> getComparadorNumerosPrimeroLetrasLuego() {
+
+        return new Comparator<String>() {
+            @Override
+            public int compare(String uno, String dos) {
+                boolean unoEmpiezaConLetra = Character.isLetter(uno.charAt(0));
+                boolean dosEmpiezaConLetra = Character.isLetter(dos.charAt(0));
+
+                if (!unoEmpiezaConLetra && !dosEmpiezaConLetra) {
+                    return Integer.parseInt(uno) - Integer.parseInt(dos);
+                } else if (unoEmpiezaConLetra && dosEmpiezaConLetra) {
+                    String[] unoCortado = uno.split("/");
+                    String[] dosCortado = dos.split("/");
+                    return Integer.parseInt(unoCortado[1])
+                            - Integer.parseInt(dosCortado[1]);
+                } else {
+                    return 1;
+                }
+            }
+        };
+    }
 
     public static boolean esCedulaInvalida(String cedula) {
         if (cedula.length() != 11 || cedula.charAt(1) != '.'
@@ -23,10 +75,10 @@ public final class Auxiliares {
         return !num.equals("");
     }
 
-    public static int mesesDesdeLaFecha(Calendar fecha) {
+    public static double mesesDesdeLaFecha(Calendar fecha) {
         Calendar hoy = Calendar.getInstance();
-        return ((hoy.get(Calendar.YEAR)) - fecha.get(Calendar.YEAR)) * 12
-                + hoy.get(Calendar.MONTH) - fecha.get(Calendar.MONTH);
+        return (double) (((hoy.get(Calendar.YEAR)) - fecha.get(Calendar.YEAR)) * 12
+                + hoy.get(Calendar.MONTH) - fecha.get(Calendar.MONTH));
     }
 
     public static boolean noContieneCaracterAlfabetico(String nombre) {

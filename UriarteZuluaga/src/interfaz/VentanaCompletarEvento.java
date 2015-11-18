@@ -224,7 +224,8 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
         try {
             Evento eventoACompletar = modelo.getEvento(posEventoACompletar);
             eventoACompletar.setFecha(Calendar.getInstance());
-            int mesesDesdeNacimiento = Auxiliares.mesesDesdeLaFecha(eventoACompletar.getFecha());
+            double mesesDesdeNacimiento = 
+                    Auxiliares.mesesDesdeLaFecha(eventoACompletar.getFecha());
             switch (eventoACompletar.getTipo()) {
                 case "Consulta":
                     Hijo h = eventoACompletar.getCualHijo();

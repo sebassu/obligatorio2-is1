@@ -22,29 +22,22 @@ public class DataSet {
             String percentil)
             throws FileNotFoundException, IOException {
 
-        int colMes = -1;
         int colP = -1;
-        boolean colDefinidas = false;
         ArchivoLectura archivoLeido = new ArchivoLectura(ubicacion);
         while (archivoLeido.hayMasLineas()) {
             String[] linea = archivoLeido.linea().trim().split("\\t");
-            if (!colDefinidas) {
+            if (colP == -1) {
                 for (int i = 0; i < linea.length; i++) {
-                    if (linea[i].equals("Month")) {
-                        colMes = i;
-                    } else if (linea[i].equals(percentil)) {
+                    if (linea[i].equals(percentil)) {
                         colP = i;
-                    }
-                    if (colMes != -1 && colP != -1) {
-                        i = linea.length;
-                        colDefinidas = true;
                     }
                 }
             } else {
-                p.add(Integer.parseInt(linea[colMes]),
+                p.add(Double.parseDouble(linea[0]),
                         Double.parseDouble(linea[colP]));
             }
         }
+        archivoLeido.cerrar();
         return p;
     }
 

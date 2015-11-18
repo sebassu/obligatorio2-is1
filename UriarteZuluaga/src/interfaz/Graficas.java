@@ -28,15 +28,9 @@ import org.jfree.chart.plot.XYPlot;
  */
 public class Graficas extends javax.swing.JFrame {
 
-    /**
-     * Creates new form XYLineChartExample
-     *
-     * @param datos
-     * @return
-     */
     public JPanel graficar(XYDataset datos,
             String titulo, String labelX, String labelY, int xLow, int xHigh,
-            int yLow, int yHigh) {
+            int yLow, int yHigh, boolean esHombre) {
         JFreeChart chart = ChartFactory.createXYLineChart(titulo, labelX, labelY,
                 datos);
 
@@ -47,125 +41,128 @@ public class Graficas extends javax.swing.JFrame {
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
         yAxis.setLowerBound(yLow);
         yAxis.setUpperBound(yHigh);
-       
+
         plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlineStroke(new BasicStroke(1f));
+        plot.setRangeGridlineStroke(new BasicStroke(1f));
         plot.setDomainGridlinePaint(Color.black);
         plot.setRangeGridlinePaint(Color.black);
         plot.getRendererForDataset(datos).setSeriesPaint(0, Color.red);
-        plot.getRendererForDataset(datos).setSeriesPaint(1, Color.yellow);
+        plot.getRendererForDataset(datos).setSeriesPaint(1, Color.orange);
         plot.getRendererForDataset(datos).setSeriesPaint(2, Color.green);
-        plot.getRendererForDataset(datos).setSeriesPaint(3, Color.yellow);
+        plot.getRendererForDataset(datos).setSeriesPaint(3, Color.orange);
         plot.getRendererForDataset(datos).setSeriesPaint(4, Color.red);
-        plot.getRendererForDataset(datos).setSeriesPaint(5, Color.magenta);
-
+        if (esHombre) {
+            plot.getRendererForDataset(datos).setSeriesPaint(5, Color.blue);
+        } else {
+            plot.getRendererForDataset(datos).setSeriesPaint(5, Color.magenta);
+        }
         return new ChartPanel(chart);
     }
 
-    public JPanel graficarPesoAnios2(XYSeries datosNiñoa, boolean hombre) 
+    public JPanel graficarPesoAnios2(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Peso para la edad (percentiles de nacimiento a 2 años)";
         String xAxisLabel = "Edad (en meses cumplidos)";
         String yAxisLabel = "Peso(kg)";
-         XYDataset datos;
+        XYDataset datos;
         if (hombre) {
             datos = DataSet.datasetPesoAnios2Masculino(datosNiñoa);
         } else {
             datos = DataSet.datasetPesoAnios2Femenino(datosNiñoa);
         }
-        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 0, 24, 0, 
-                26);
+        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 0, 24, 0,
+                26, hombre);
     }
-    
-    public JPanel graficarPesoEstaturaAnios2(XYSeries datosNiñoa, boolean hombre) 
+
+    public JPanel graficarPesoEstaturaAnios2(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Peso / Estatura (percentiles hasta los 5 años)";
         String xAxisLabel = "Estatura (cm)";
         String yAxisLabel = "Peso(kg)";
-         XYDataset datos;
+        XYDataset datos;
         if (hombre) {
             datos = DataSet.datasetPesoEstaturaAnios5Masculino(datosNiñoa);
         } else {
             datos = DataSet.datasetPesoEstaturaAnios5Femenino(datosNiñoa);
         }
-        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 65, 120, 6, 
-                46);
+        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 65, 120, 6,
+                46, hombre);
     }
-    
-    public JPanel graficarEstaturaAnios2(XYSeries datosNiñoa, boolean hombre) 
+
+    public JPanel graficarEstaturaAnios2(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Longitud para la edad (percentiles de nacimiento a"
                 + " 2 años)";
         String xAxisLabel = "Edad (en meses cumplidos)";
         String yAxisLabel = "Longitud / estatura (cm)";
-         XYDataset datos;
+        XYDataset datos;
         if (hombre) {
-            datos = DataSet. datasetEstaturaAnios2Masculino(datosNiñoa);
+            datos = DataSet.datasetEstaturaAnios2Masculino(datosNiñoa);
         } else {
-            datos = DataSet. datasetEstaturaAnios2Femenino(datosNiñoa);
+            datos = DataSet.datasetEstaturaAnios2Femenino(datosNiñoa);
         }
-        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 0, 24, 45, 
-                130);
+        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 0, 24, 45,
+                130, hombre);
     }
-    
-    public JPanel graficarEstaturaAnios2A5(XYSeries datosNiñoa, boolean hombre) 
+
+    public JPanel graficarEstaturaAnios2A5(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Estatura para la edad (percentiles de 2 a 5 años)";
         String xAxisLabel = "Edad (en meses cumplidos)";
         String yAxisLabel = "Estatura (cm)";
-         XYDataset datos;
+        XYDataset datos;
         if (hombre) {
-            datos = DataSet. datasetEstaturaAnios2A5Masculino(datosNiñoa);
+            datos = DataSet.datasetEstaturaAnios2A5Masculino(datosNiñoa);
         } else {
-            datos = DataSet. datasetEstaturaAnios2A5Femenino(datosNiñoa);
+            datos = DataSet.datasetEstaturaAnios2A5Femenino(datosNiñoa);
         }
-        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 24, 60, 45, 
-                130);
+        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 24, 60, 45,
+                130, hombre);
     }
-    
-    public JPanel graficarEstaturaAnios2A15(XYSeries datosNiñoa, boolean hombre) 
+
+    public JPanel graficarEstaturaAnios2A15(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Estatura para la edad (percentiles de 5 a 15 años)";
         String xAxisLabel = "Edad (en meses cumplidos)";
         String yAxisLabel = "Estatura (cm)";
-         XYDataset datos;
+        XYDataset datos;
         if (hombre) {
-            datos = DataSet. datasetEstaturaAnios5A15Masculino(datosNiñoa);
+            datos = DataSet.datasetEstaturaAnios5A15Masculino(datosNiñoa);
         } else {
-            datos = DataSet. datasetEstaturaAnios5A15Femenino(datosNiñoa);
+            datos = DataSet.datasetEstaturaAnios5A15Femenino(datosNiñoa);
         }
-        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 60, 180, 100, 
-                230);
+        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 60, 180, 100,
+                230, hombre);
     }
-    
-    public JPanel graficarPerimCefaAnios3(XYSeries datosNiñoa, boolean hombre) 
+
+    public JPanel graficarPerimCefaAnios3(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Perímetro cefálico para la edad (percentiles de "
                 + "nacimiento a 36 meses)";
         String xAxisLabel = "Edad (en meses cumplidos)";
         String yAxisLabel = "Perímetro cefálico (cm)";
-         XYDataset datos;
+        XYDataset datos;
         if (hombre) {
-            datos = DataSet. datasetPerimCefaAnios3Masculino(datosNiñoa);
+            datos = DataSet.datasetPerimCefaAnios3Masculino(datosNiñoa);
         } else {
-            datos = DataSet. datasetPerimCefaAnios3Femenino(datosNiñoa);
+            datos = DataSet.datasetPerimCefaAnios3Femenino(datosNiñoa);
         }
-        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 60, 180, 100, 
-                230);
+        return graficar(datos, chartTitle, xAxisLabel, yAxisLabel, 60, 180, 100,
+                230, hombre);
     }
 
 
-  /*  public Graficas() throws IOException {
-        super("XY Line Chart Example with JFreechart");
+    /*  public Graficas() throws IOException {
+     super("XY Line Chart Example with JFreechart");
 
-         JPanel chartPanel = graficarEstaturaAnios2Masculino();
-         add(chartPanel, BorderLayout.CENTER);
+     JPanel chartPanel = graficarEstaturaAnios2Masculino();
+     add(chartPanel, BorderLayout.CENTER);
 
-         setSize(640, 480);
-         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         setLocationRelativeTo(null);
-    }*/
-
+     setSize(640, 480);
+     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+     setLocationRelativeTo(null);
+     }*/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -233,5 +230,4 @@ public class Graficas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
 }

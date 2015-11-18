@@ -1,34 +1,47 @@
 package dominio;
 
+import auxiliar.Auxiliares;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class Vacuna implements Serializable, Comparable<Vacuna> {
 
     //Variables de instancia.
     private String nombre;
-    private boolean sistematca;
-    private final ArrayList<String> vencimientoEnMeses;
-    private final ArrayList<String> vencimientoEnAnios;
+    private boolean sistematica;
+    private ArrayList<String> vencimientoEnMeses;
+    private ArrayList<String> vencimientoEnAnios;
     private String descripcion;
 
     //Constructor.
     public Vacuna(String nom, boolean bool, String descrip)
             throws IllegalArgumentException {
-        setNombre(nom);
-        setSistematca(bool);
+        nombre = nom;
+        sistematica = bool;
         vencimientoEnMeses = new ArrayList<>();
         vencimientoEnAnios = new ArrayList<>();
         descripcion = descrip;
+    }
+    
+    public Vacuna (Vacuna vacunaACopiar) {
+        
+        nombre = vacunaACopiar.nombre;
+        sistematica = vacunaACopiar.sistematica;
+        descripcion = vacunaACopiar.descripcion;
+        vencimientoEnMeses = 
+                (ArrayList<String>)vacunaACopiar.vencimientoEnMeses.clone();
+        vencimientoEnAnios = 
+                (ArrayList<String>)vacunaACopiar.vencimientoEnAnios.clone();
     }
 
     //Constructor privado para pruebas.
     protected Vacuna() {
         nombre = "";
-        sistematca = false;
+        sistematica = false;
         vencimientoEnMeses = new ArrayList<>();
         vencimientoEnAnios = new ArrayList<>();
         descripcion = "";
@@ -44,15 +57,15 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     }
 
     public final void setSistematca(boolean unBooleano) {
-        this.sistematca = unBooleano;
+        this.sistematica = unBooleano;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public boolean esSistematca() {
-        return sistematca;
+    public boolean esSistematica() {
+        return sistematica;
     }
 
     public String getDescripcion() {
@@ -63,9 +76,55 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
         this.descripcion = descripcion;
     }
 
+    public String definirMenorVencimiento(String vencimientoMes,
+            String vencimientoAnio) {
+
+        if (vencimientoMes.charAt(0) != 'c' && vencimientoAnio.charAt(0) != 'c') {
+            if (Integer.parseInt(vencimientoMes) 
+                    > Integer.parseInt(vencimientoAnio) * 12) {
+                return vencimientoMes;
+            } else {
+                return vencimientoAnio;
+            }
+        } else if (vencimientoMes.charAt(0) == 'c') {
+            return vencimientoAnio;
+        } else {
+            return vencimientoMes;
+        }
+
+    }
+
+    public String menorVencimientoParaEliminar() {
+
+        String[] vencimientoEnMesesArray = (String[]) vencimientoEnMeses.toArray();
+        String[] vencimientoEnAniosArray = (String[]) vencimientoEnAnios.toArray();
+        if (vencimientoEnMesesArray.length > 0
+                && vencimientoEnAniosArray.length > 0) {
+            String menorVencimiento = definirMenorVencimiento(
+                    vencimientoEnMesesArray[0], vencimientoEnAniosArray[0]);
+            if (menorVencimiento.charAt(0) != 'c') {
+                return menorVencimiento;
+            } else {
+                return "";
+            }
+        } else if (vencimientoEnMesesArray.length > 0) {
+            if (vencimientoEnMesesArray[0].charAt(0) != 'c') {
+                return vencimientoEnMesesArray[0];
+            } else {
+                return "";
+            }
+        } else {
+            if (vencimientoEnAniosArray[0].charAt(0) != 'c') {
+                return vencimientoEnAniosArray[0];
+            } else {
+                return "";
+            }
+        }
+    }
+
     public void agregarVencimientoEnMeses(String dato)
             throws IllegalStateException {
-        if (this.esSistematca()) {
+        if (this.esSistematica()) {
             if (!vencimientoEnMeses.contains(dato)) {
                 vencimientoEnMeses.add(dato);
             } else {
@@ -79,7 +138,7 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
 
     public void eliminarVencimientoEnMeses(String dato)
             throws IllegalStateException {
-        if (this.esSistematca()) {
+        if (this.esSistematica()) {
             if (!vencimientoEnMeses.remove(dato)) {
                 throw new IllegalStateException("El mes " + dato + " no está "
                         + "agregado en " + this.getNombre());
@@ -91,7 +150,7 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
 
     public void agregarVencimientoEnAnios(String dato)
             throws IllegalStateException {
-        if (this.esSistematca()) {
+        if (this.esSistematica()) {
             if (!vencimientoEnAnios.contains(dato)) {
                 vencimientoEnAnios.add(dato);
             } else {
@@ -105,7 +164,7 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
 
     public void eliminarVencimientoEnAnios(String dato)
             throws IllegalStateException {
-        if (this.esSistematca()) {
+        if (this.esSistematica()) {
             if (!vencimientoEnAnios.remove(dato)) {
                 throw new IllegalStateException("El año " + dato + " no está "
                         + "agregado en " + this.getNombre());
@@ -116,27 +175,21 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     }
 
     public void ordenarListas() {
-        Comparator<String> numerosPrimero = new Comparator<String>() {
-            @Override
-            public int compare(String uno, String dos) {
-                boolean unoEmpiezaConLetra = Character.isLetter(uno.charAt(0));
-                boolean dosEmpiezaConLetra = Character.isLetter(dos.charAt(0));
-
-                if (!unoEmpiezaConLetra && !dosEmpiezaConLetra) {
-                    return Integer.parseInt(uno) - Integer.parseInt(dos);
-                } else if (unoEmpiezaConLetra && dosEmpiezaConLetra) {
-                    String[] unoCortado = uno.split("/");
-                    String[] dosCortado = dos.split("/");
-                    return Integer.parseInt(unoCortado[1])
-                            - Integer.parseInt(dosCortado[1]);
-                } else {
-                    return 1;
-                }
-            }
-        };
+        Comparator<String> numerosPrimero
+                = Auxiliares.getComparadorNumerosPrimeroLetrasLuego();
         Collections.sort(vencimientoEnMeses, numerosPrimero);
         Collections.sort(vencimientoEnAnios, numerosPrimero);
     }
+
+    public Iterator<String> iteradorVencimientoEnMeses() {
+        return vencimientoEnMeses.iterator();
+    }
+
+    public Iterator<String> iteradorVencimientoEnAnios() {
+        return vencimientoEnAnios.iterator();
+    }
+    
+    
 
     /**
      * Comparación entre vacunas - Se valida la unicidad del nombre.
@@ -159,12 +212,17 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     public int hashCode() {
         int hash = 3;
         hash = 89 * hash + Objects.hashCode(this.nombre);
-        hash = 89 * hash + (this.sistematca ? 1 : 0);
+        hash = 89 * hash + (this.sistematica ? 1 : 0);
         return hash;
     }
 
     @Override
     public int compareTo(Vacuna o) {
         return this.getNombre().compareTo(o.getNombre());
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }
