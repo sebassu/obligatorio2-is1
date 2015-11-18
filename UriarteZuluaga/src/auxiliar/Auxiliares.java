@@ -42,6 +42,12 @@ public final class Auxiliares {
         return laFecha.getTime().compareTo(Calendar.getInstance().getTime()) > 0;
     }
 
+    public static boolean caeEnEstaSemana(Calendar laFecha) {
+        Calendar hoy = Calendar.getInstance();
+        return (hoy.get(Calendar.YEAR) == laFecha.get(Calendar.YEAR)
+                && hoy.get(Calendar.WEEK_OF_YEAR) == laFecha.get(Calendar.WEEK_OF_YEAR));
+    }
+
     /**
      * esFechaNacimientoValida:
      *

@@ -52,7 +52,7 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
         jLabelPerimetroCefalico = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Registro de Hijo");
+        setTitle("Completar Evento");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMinimumSize(new java.awt.Dimension(200, 200));
 

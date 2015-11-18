@@ -21,15 +21,7 @@ public class Hijo implements Serializable, Comparable {
     private final ArrayList<Par<Calendar, Vacuna>> historialVacunaciones;
 
     protected Hijo() {
-        nombre = "";
-        fechaNacimiento = Calendar.getInstance();
-        cedulaId = "9.999.999-9";
-        sociedadMedica = "";
-        listaPesos = new ArrayList<>();
-        listaPerimetrosCefalicos = new ArrayList<>();
-        listaAlturas = new ArrayList<>();
-        historialVacunaciones = new ArrayList<>();
-        medicoDeCabecera = "";
+        this("9.999.999-9");
     }
 
     public Hijo(String laCedulaId) {

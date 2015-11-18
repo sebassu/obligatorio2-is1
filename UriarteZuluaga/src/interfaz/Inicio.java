@@ -13,7 +13,7 @@ public class Inicio {
     public static void main(String[] args) throws IllegalArgumentException, IOException {
 
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException |
                 IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
@@ -38,6 +38,5 @@ public class Inicio {
         });
         VentanaPrincipal a = new VentanaPrincipal(elSistema);
         a.setVisible(true);
-        
     }
 }

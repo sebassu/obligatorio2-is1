@@ -1,11 +1,29 @@
 package interfaz;
 
+import auxiliar.Auxiliares;
+import dominio.Evento;
+import dominio.Hijo;
 import dominio.Sistema;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Enumeration;
+import javax.swing.AbstractButton;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
@@ -16,22 +34,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public static final Color niñoOsc = new Color(60, 154, 40);
     public static final Color niñoClaro = new Color(135, 186, 19);
     public static final Color Amarillo = new Color(233, 224, 40);
-    public static final Color niña = new Color(246, 168, 40);
+    public static final Color niñaOsc = new Color(246, 168, 40);
+    public static final Color niñaClaro = new Color(255, 204, 40);
 
     public VentanaPrincipal(Sistema sis) {
         this.modelo = sis;
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
-        if (ActivarOpcionesQueRequierenHijos()) {
-            ActivarOpcionesModificacionEventos();
+        if (activarOpcionesQueRequierenHijos()) {
+            activarOpcionesModificacionEventos();
         }
+        panelHijos.setLayout(new BoxLayout(panelHijos, BoxLayout.Y_AXIS));
+        panelEventosProximos.setLayout(new BoxLayout(panelEventosProximos, BoxLayout.Y_AXIS));
+        cargarPanelHijos();
+        cargarPanelEventosProximos();
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jProgressBar1 = new javax.swing.JProgressBar();
         buttonGroupHijos = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         btnAgregarHijo = new javax.swing.JButton();
@@ -40,18 +62,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         btnEliminarHijo = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
-        panelBotonesHijos = new javax.swing.JScrollPane();
+        panelScrolleable = new javax.swing.JScrollPane();
+        panelHijos = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jCalendar1 = new com.toedter.calendar.JCalendar();
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        panelDiaSeleccionado = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        panelEventosProximos = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         itemCargarVacunas = new javax.swing.JMenuItem();
@@ -119,8 +143,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        panelBotonesHijos.setBackground(new java.awt.Color(135, 186, 19));
-        panelBotonesHijos.setBorder(null);
+        panelScrolleable.setBackground(new java.awt.Color(135, 186, 19));
+        panelScrolleable.setBorder(null);
+
+        panelHijos.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout panelHijosLayout = new javax.swing.GroupLayout(panelHijos);
+        panelHijos.setLayout(panelHijosLayout);
+        panelHijosLayout.setHorizontalGroup(
+            panelHijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 261, Short.MAX_VALUE)
+        );
+        panelHijosLayout.setVerticalGroup(
+            panelHijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 386, Short.MAX_VALUE)
+        );
+
+        panelScrolleable.setViewportView(panelHijos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -137,9 +176,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jSeparator3)
-            .addComponent(panelBotonesHijos)
+            .addComponent(panelScrolleable)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +194,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelBotonesHijos))
+                .addComponent(panelScrolleable))
         );
 
         jPanel3.setBackground(new java.awt.Color(60, 154, 40));
@@ -165,6 +204,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jCalendar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jCalendar1.setDecorationBackgroundColor(new java.awt.Color(233, 224, 40));
+        jCalendar1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         jLabel1.setText("Calendario de eventos:");
@@ -179,7 +219,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 120, Short.MAX_VALUE)))
+                        .addGap(0, 138, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -187,9 +227,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jLabel1)
-                .addGap(41, 41, 41)
+                .addGap(26, 26, 26)
                 .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(24, 24, 24))
+                .addGap(39, 39, 39))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -211,35 +251,57 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(135, 186, 19));
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Día seleccionado:");
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane3.setViewportView(jTextArea2);
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Eventos próximos:");
+
+        panelDiaSeleccionado.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout panelDiaSeleccionadoLayout = new javax.swing.GroupLayout(panelDiaSeleccionado);
+        panelDiaSeleccionado.setLayout(panelDiaSeleccionadoLayout);
+        panelDiaSeleccionadoLayout.setHorizontalGroup(
+            panelDiaSeleccionadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 163, Short.MAX_VALUE)
+        );
+        panelDiaSeleccionadoLayout.setVerticalGroup(
+            panelDiaSeleccionadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 186, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(panelDiaSeleccionado);
+
+        panelEventosProximos.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout panelEventosProximosLayout = new javax.swing.GroupLayout(panelEventosProximos);
+        panelEventosProximos.setLayout(panelEventosProximosLayout);
+        panelEventosProximosLayout.setHorizontalGroup(
+            panelEventosProximosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 161, Short.MAX_VALUE)
+        );
+        panelEventosProximosLayout.setVerticalGroup(
+            panelEventosProximosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 178, Short.MAX_VALUE)
+        );
+
+        jScrollPane6.setViewportView(panelEventosProximos);
+
+        jScrollPane5.setViewportView(jScrollPane6);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane5)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -248,13 +310,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
+                .addGap(2, 2, 2)
+                .addComponent(jScrollPane5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                .addGap(38, 38, 38)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                .addGap(27, 27, 27))
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
 
         jMenu3.setText("Opciones");
@@ -402,8 +464,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarHijoActionPerformed
 
     private int getPosHijoSeleccionado() {
-        //TODO
-        return 0;
+        for (Enumeration<AbstractButton> buttons = buttonGroupHijos.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                return Integer.parseInt(button.getToolTipText());
+            }
+        }
+        return -1;
     }
 
     private int getPosEventoSeleccionado() {
@@ -412,10 +479,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void btnAgregarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarHijoActionPerformed
-        VentanaCrearHijo v = new VentanaCrearHijo(modelo, null, false);
-        v.setLocationRelativeTo(this);
-        v.setVisible(true);
-        ActivarOpcionesQueRequierenHijos();
+        registrarHijo();
     }//GEN-LAST:event_btnAgregarHijoActionPerformed
 
     private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
@@ -459,13 +523,46 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btnEliminarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarHijoActionPerformed
         eliminarHijoSeleccionado();
+        cargarPanelHijos();
     }//GEN-LAST:event_btnEliminarHijoActionPerformed
 
     private void opcRegistrarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcRegistrarEventoActionPerformed
         VentanaCrearEvento v = new VentanaCrearEvento(modelo, -1);
         v.setLocationRelativeTo(this);
         v.setVisible(true);
-        ActivarOpcionesModificacionEventos();
+        v.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                activarOpcionesModificacionEventos();
+                cargarPanelEventosProximos();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                activarOpcionesModificacionEventos();
+                cargarPanelEventosProximos();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+        });
     }//GEN-LAST:event_opcRegistrarEventoActionPerformed
 
     private void opcModificarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcModificarEventoActionPerformed
@@ -475,19 +572,189 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_opcModificarEventoActionPerformed
 
     private void opcEliminarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEliminarEventoActionPerformed
-        int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro/a que desea eliminar al "
-                + "evento seleccionado?", "Confirme su selección",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (opcion == JOptionPane.YES_OPTION) {
-            modelo.eliminarEventoPorPos(getPosEventoSeleccionado());
-            JOptionPane.showMessageDialog(this, "El evento se ha borrado exitosamente"
-                    + "del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
-            if (modelo.getCantidadEventosARealizar() == 0) {
-                opcModificarEvento.setEnabled(false);
-                opcEliminarEvento.setEnabled(false);
+        int pos = getPosEventoSeleccionado();
+        if (pos != -1 && pos < modelo.getCantidadEventosARealizar()) {
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro/a que desea eliminar al "
+                    + "evento seleccionado?", "Confirme su selección",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (opcion == JOptionPane.YES_OPTION) {
+                modelo.eliminarEventoPorPos(pos);
+                JOptionPane.showMessageDialog(this, "El evento se ha borrado exitosamente"
+                        + "del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
+                if (modelo.getCantidadEventosARealizar() == 0) {
+                    opcModificarEvento.setEnabled(false);
+                    opcEliminarEvento.setEnabled(false);
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un evento válido para utilizar "
+                    + "esta operación del programa.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_opcEliminarEventoActionPerformed
+
+    private void modificarHijoSeleccionado() {
+        int pos = getPosHijoSeleccionado();
+        if (pos != -1 && pos < modelo.getCantidadHijos()) {
+            VentanaCrearHijo v = new VentanaCrearHijo(modelo,
+                    modelo.getHijo(getPosHijoSeleccionado()), true, this);
+            v.setLocationRelativeTo(this);
+            v.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un hijo válido para utilizar "
+                    + "esta operación del programa.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void registrarHijo() {
+        VentanaCrearHijo v = new VentanaCrearHijo(modelo, null, false, this);
+        v.setLocationRelativeTo(this);
+        v.setVisible(true);
+    }
+
+    private void eliminarHijoSeleccionado() {
+        int pos = getPosHijoSeleccionado();
+        if (pos != -1 && pos < modelo.getCantidadHijos()) {
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro/a que desea eliminar al "
+                    + "carné seleccionado?", "Confirme su selección",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (opcion == JOptionPane.YES_OPTION) {
+                modelo.eliminarHijoPorPos(getPosHijoSeleccionado());
+                JOptionPane.showMessageDialog(this, "El registro se ha borrado exitosamente"
+                        + "del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
+                if (modelo.getCantidadHijos() == 0) {
+                    opcModificarRegistro.setEnabled(false);
+                    opcEliminarCarne.setEnabled(false);
+                    btnEditarHijo.setEnabled(false);
+                    btnEliminarHijo.setEnabled(false);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un hijo válido para utilizar "
+                    + "esta operación del programa.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public final boolean activarOpcionesQueRequierenHijos() {
+        boolean activar = modelo.getCantidadHijos() > 0;
+        if (activar) {
+            opcModificarRegistro.setEnabled(true);
+            opcEliminarCarne.setEnabled(true);
+            btnEditarHijo.setEnabled(true);
+            btnEliminarHijo.setEnabled(true);
+            mnuEventos.setEnabled(true);
+            opcRegistrarEvento.setEnabled(true);
+        }
+        return activar;
+    }
+
+    public final void activarOpcionesModificacionEventos() {
+        if (modelo.getCantidadEventosARealizar() > 0) {
+            opcModificarEvento.setEnabled(true);
+            opcEliminarEvento.setEnabled(true);
+        }
+    }
+
+    public final void cargarPanelHijos() {
+        panelHijos.removeAll();
+        if (modelo.getCantidadHijos() == 0) {
+            JLabel label = new JLabel("\n\n\nSin Hijos a mostrar");
+            label.setFont(new Font("Tahoma", Font.BOLD, 18));
+            panelHijos.add(label);
+        } else {
+            for (int i = 0; i < modelo.getCantidadHijos(); i++) {
+                panelHijos.add(Box.createRigidArea(new Dimension(panelHijos.getWidth(), 25)));
+                final Hijo h = modelo.getHijo(i);
+                JToggleButton aux = new JToggleButton();
+                aux.setBorderPainted(false);
+                aux.setAlignmentX(Component.CENTER_ALIGNMENT);
+                aux.setBackground((h.esHombre() ? niñoClaro : niñaClaro));
+                aux.setFont(new Font("Tahoma", Font.BOLD, 14));
+                aux.setText("          " + h.getNombre() + "           ");
+                aux.setMinimumSize(new Dimension(panelHijos.getWidth(), 75));
+                aux.setToolTipText("" + i);
+                aux.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        repintarFondo(h.esHombre());
+                    }
+                });
+                aux.setVisible(true);
+                aux.setOpaque(true);
+                panelHijos.add(aux);
+                buttonGroupHijos.add(aux);
+            }
+        }
+        panelHijos.validate();
+        panelHijos.repaint();
+        panelHijos.updateUI();
+        panelHijos.setVisible(false);
+        panelHijos.setVisible(true);
+    }
+
+    public final void cargarPanelEventosProximos() {
+        panelEventosProximos.removeAll();
+        if (modelo.getCantidadHijos() == 0) {
+            JLabel label = new JLabel("\n\n\nSin Eventos a mostrar");
+            label.setFont(new Font("Tahoma", Font.BOLD, 18));
+            panelEventosProximos.add(label);
+        } else {
+            for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
+                Evento evento = modelo.getEvento(i);
+                if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {
+                    panelEventosProximos.add(Box.createRigidArea(
+                            new Dimension(panelEventosProximos.getWidth(), 15)));
+                    JToggleButton aux = new JToggleButton();
+                    aux.setBorderPainted(false);
+                    aux.setAlignmentX(Component.LEFT_ALIGNMENT);
+                    aux.setBackground(Color.red);
+                    switch (evento.getTipo()) {
+                        case "Consulta":
+                            aux.setFont(new Font("Tahoma", Font.BOLD, 12));
+                            break;
+                        case "Vacunación":
+                            aux.setFont(new Font("Tahoma", Font.ITALIC, 12));
+                            break;
+                        default:
+                            aux.setFont(new Font("Tahoma", Font.PLAIN, 12));
+                            break;
+                    }
+                    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+                    aux.setText("              " + evento.getTitulo() + " ("
+                            + formatoFecha.format(evento.getFecha().getTime()) + ")              ");
+                    aux.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));
+                    aux.setToolTipText("" + i);
+                    aux.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                        }
+                    });
+                    aux.setVisible(true);
+                    aux.setOpaque(true);
+                    panelEventosProximos.add(aux);
+                }
+            }
+        }
+        panelEventosProximos.validate();
+        panelEventosProximos.repaint();
+        panelEventosProximos.updateUI();
+        panelEventosProximos.setVisible(false);
+        panelEventosProximos.setVisible(true);
+    }
+
+    private void repintarFondo(boolean esHombre) {
+        if (esHombre) {
+            jPanel1.setBackground(niñoOsc);
+            jPanel2.setBackground(niñoClaro);
+            jPanel3.setBackground(niñoOsc);
+            jPanel4.setBackground(niñoClaro);
+        } else {
+            jPanel1.setBackground(niñaOsc);
+            jPanel2.setBackground(niñaClaro);
+            jPanel3.setBackground(niñaOsc);
+            jPanel4.setBackground(niñaClaro);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarHijo;
@@ -507,9 +774,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -518,8 +785,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator8;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JMenu mnuEventos;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenuItem opcEliminarCarne;
@@ -531,64 +796,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcModificarRegistro;
     private javax.swing.JMenuItem opcRegistrarCarne;
     private javax.swing.JMenuItem opcRegistrarEvento;
-    private javax.swing.JScrollPane panelBotonesHijos;
+    private javax.swing.JPanel panelDiaSeleccionado;
+    private javax.swing.JPanel panelEventosProximos;
+    private javax.swing.JPanel panelHijos;
+    private javax.swing.JScrollPane panelScrolleable;
     // End of variables declaration//GEN-END:variables
     private final Sistema modelo;
-
-    private void modificarHijoSeleccionado() {
-        try {
-            VentanaCrearHijo v = new VentanaCrearHijo(modelo,
-                    modelo.getHijo(getPosHijoSeleccionado()), true);
-            v.setLocationRelativeTo(this);
-            v.setVisible(true);
-        } catch (IndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(this, "Error al intentar acceder a "
-                    + "los datos de un hijo.", "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void registrarHijo() {
-        VentanaCrearHijo v = new VentanaCrearHijo(modelo, null, false);
-        v.setLocationRelativeTo(this);
-        v.setVisible(true);
-        ActivarOpcionesQueRequierenHijos();
-    }
-
-    private void eliminarHijoSeleccionado() {
-        int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro/a que desea eliminar al "
-                + "carné seleccionado?", "Confirme su selección",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (opcion == JOptionPane.YES_OPTION) {
-            modelo.eliminarHijoPorPos(getPosHijoSeleccionado());
-            JOptionPane.showMessageDialog(this, "El registro se ha borrado exitosamente"
-                    + "del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
-            if (modelo.getCantidadHijos() == 0) {
-                opcModificarRegistro.setEnabled(false);
-                opcEliminarCarne.setEnabled(false);
-                btnEditarHijo.setEnabled(false);
-                btnEliminarHijo.setEnabled(false);
-            }
-        }
-    }
-
-    private boolean ActivarOpcionesQueRequierenHijos() {
-        boolean activar = modelo.getCantidadHijos() > 0;
-        if (activar) {
-            opcModificarRegistro.setEnabled(true);
-            opcEliminarCarne.setEnabled(true);
-            btnEditarHijo.setEnabled(true);
-            btnEliminarHijo.setEnabled(true);
-            mnuEventos.setEnabled(true);
-            opcRegistrarEvento.setEnabled(true);
-        }
-        return activar;
-    }
-
-    private void ActivarOpcionesModificacionEventos() {
-        if (modelo.getCantidadEventosARealizar() > 0) {
-            opcModificarEvento.setEnabled(true);
-            opcEliminarEvento.setEnabled(true);
-        }
-    }
 }
