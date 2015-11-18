@@ -1,6 +1,7 @@
 package interfaz;
 
 import auxiliar.Auxiliares;
+import com.toedter.calendar.JDayChooser;
 import dominio.Evento;
 import dominio.Hijo;
 import dominio.Sistema;
@@ -15,15 +16,17 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
@@ -55,6 +58,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroupHijos = new javax.swing.ButtonGroup();
+        buttonGroupEventos = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         btnAgregarHijo = new javax.swing.JButton();
         btnEditarHijo = new javax.swing.JButton();
@@ -90,7 +94,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         opcRegistrarEvento = new javax.swing.JMenuItem();
         opcModificarEvento = new javax.swing.JMenuItem();
         opcEliminarEvento = new javax.swing.JMenuItem();
-        jSeparator8 = new javax.swing.JPopupMenu.Separator();
+        jSeparator9 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         opcGraficaPeso = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
@@ -146,7 +151,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelScrolleable.setBackground(new java.awt.Color(135, 186, 19));
         panelScrolleable.setBorder(null);
 
-        panelHijos.setBackground(new java.awt.Color(204, 204, 204));
+        panelHijos.setBackground(new java.awt.Color(236, 236, 240));
 
         javax.swing.GroupLayout panelHijosLayout = new javax.swing.GroupLayout(panelHijos);
         panelHijos.setLayout(panelHijosLayout);
@@ -257,7 +262,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Eventos próximos:");
 
-        panelDiaSeleccionado.setBackground(new java.awt.Color(204, 204, 204));
+        panelDiaSeleccionado.setBackground(new java.awt.Color(236, 236, 240));
 
         javax.swing.GroupLayout panelDiaSeleccionadoLayout = new javax.swing.GroupLayout(panelDiaSeleccionado);
         panelDiaSeleccionado.setLayout(panelDiaSeleccionadoLayout);
@@ -272,7 +277,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(panelDiaSeleccionado);
 
-        panelEventosProximos.setBackground(new java.awt.Color(204, 204, 204));
+        panelEventosProximos.setBackground(new java.awt.Color(236, 236, 240));
 
         javax.swing.GroupLayout panelEventosProximosLayout = new javax.swing.GroupLayout(panelEventosProximos);
         panelEventosProximos.setLayout(panelEventosProximosLayout);
@@ -346,7 +351,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         opcRegistrarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         opcRegistrarCarne.setText("Registrar Carné");
-        opcRegistrarCarne.setToolTipText("Crear un juego nuevo");
+        opcRegistrarCarne.setToolTipText("Crear un carné nuevo");
         opcRegistrarCarne.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcRegistrarCarneActionPerformed(evt);
@@ -364,7 +369,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(opcModificarRegistro);
 
-        opcEliminarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
+        opcEliminarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
         opcEliminarCarne.setText("Eliminar Carné");
         opcEliminarCarne.setEnabled(false);
         opcEliminarCarne.addActionListener(new java.awt.event.ActionListener() {
@@ -380,9 +385,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         mnuEventos.setText("Eventos");
         mnuEventos.setEnabled(false);
 
-        opcRegistrarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
+        opcRegistrarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         opcRegistrarEvento.setText("Registrar Evento");
-        opcRegistrarEvento.setToolTipText("Crear un juego nuevo");
+        opcRegistrarEvento.setToolTipText("Crear un evento nuevo");
         opcRegistrarEvento.setEnabled(false);
         opcRegistrarEvento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -391,8 +396,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         mnuEventos.add(opcRegistrarEvento);
 
-        opcModificarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+        opcModificarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         opcModificarEvento.setText("Modificar Evento");
+        opcModificarEvento.setToolTipText("");
         opcModificarEvento.setEnabled(false);
         opcModificarEvento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -401,7 +407,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         mnuEventos.add(opcModificarEvento);
 
-        opcEliminarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
+        opcEliminarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, java.awt.event.InputEvent.CTRL_MASK));
         opcEliminarEvento.setText("Eliminar Evento");
         opcEliminarEvento.setEnabled(false);
         opcEliminarEvento.addActionListener(new java.awt.event.ActionListener() {
@@ -410,17 +416,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         mnuEventos.add(opcEliminarEvento);
-        mnuEventos.add(jSeparator8);
+        mnuEventos.add(jSeparator9);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
+        jMenuItem1.setText("Completar Evento");
+        jMenuItem1.setEnabled(false);
+        mnuEventos.add(jMenuItem1);
 
         jMenuBar1.add(mnuEventos);
 
         jMenu2.setText("Gráficas");
 
-        opcGraficaPeso.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        opcGraficaPeso.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.SHIFT_MASK));
         opcGraficaPeso.setText("Peso");
         jMenu2.add(opcGraficaPeso);
         jMenu2.add(jSeparator6);
 
+        opcGraficaAltura.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.SHIFT_MASK));
         opcGraficaAltura.setText("Altura");
         opcGraficaAltura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -430,6 +442,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenu2.add(opcGraficaAltura);
         jMenu2.add(jSeparator5);
 
+        opcGraficaPerimetroCefalico.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.SHIFT_MASK));
         opcGraficaPerimetroCefalico.setText("Perímetro Cefálico");
         opcGraficaPerimetroCefalico.setToolTipText("El hijo seleccionado no es bebé");
         jMenu2.add(opcGraficaPerimetroCefalico);
@@ -464,18 +477,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarHijoActionPerformed
 
     private int getPosHijoSeleccionado() {
-        for (Enumeration<AbstractButton> buttons = buttonGroupHijos.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            if (button.isSelected()) {
-                return Integer.parseInt(button.getToolTipText());
+        for (Enumeration<AbstractButton> botonesHijos = buttonGroupHijos.getElements(); botonesHijos.hasMoreElements();) {
+            AbstractButton boton = botonesHijos.nextElement();
+            if (boton.isSelected()) {
+                return Integer.parseInt(boton.getName());
             }
         }
         return -1;
     }
 
     private int getPosEventoSeleccionado() {
-        //TODO
-        return 0;
+        for (Enumeration<AbstractButton> botonesEventos = buttonGroupEventos.getElements(); botonesEventos.hasMoreElements();) {
+            AbstractButton button = botonesEventos.nextElement();
+            if (button.isSelected()) {
+                return Integer.parseInt(button.getName());
+            }
+        }
+        return -1;
     }
 
     private void btnAgregarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarHijoActionPerformed
@@ -523,11 +541,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btnEliminarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarHijoActionPerformed
         eliminarHijoSeleccionado();
-        cargarPanelHijos();
     }//GEN-LAST:event_btnEliminarHijoActionPerformed
 
     private void opcRegistrarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcRegistrarEventoActionPerformed
-        VentanaCrearEvento v = new VentanaCrearEvento(modelo, -1);
+        VentanaCrearEvento v = new VentanaCrearEvento(modelo, -1, this);
+        v.setLocationRelativeTo(this);
+        v.setVisible(true);
+    }//GEN-LAST:event_opcRegistrarEventoActionPerformed
+
+    private void opcModificarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcModificarEventoActionPerformed
+        VentanaCrearEvento v = new VentanaCrearEvento(modelo, getPosEventoSeleccionado(), this);
         v.setLocationRelativeTo(this);
         v.setVisible(true);
         v.addWindowListener(new WindowListener() {
@@ -563,12 +586,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             public void windowDeactivated(WindowEvent e) {
             }
         });
-    }//GEN-LAST:event_opcRegistrarEventoActionPerformed
-
-    private void opcModificarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcModificarEventoActionPerformed
-        VentanaCrearEvento v = new VentanaCrearEvento(modelo, getPosEventoSeleccionado());
-        v.setLocationRelativeTo(this);
-        v.setVisible(true);
     }//GEN-LAST:event_opcModificarEventoActionPerformed
 
     private void opcEliminarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEliminarEventoActionPerformed
@@ -579,8 +596,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (opcion == JOptionPane.YES_OPTION) {
                 modelo.eliminarEventoPorPos(pos);
+                cargarPanelEventosProximos();
                 JOptionPane.showMessageDialog(this, "El evento se ha borrado exitosamente"
-                        + "del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
+                        + " del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
                 if (modelo.getCantidadEventosARealizar() == 0) {
                     opcModificarEvento.setEnabled(false);
                     opcEliminarEvento.setEnabled(false);
@@ -620,7 +638,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             if (opcion == JOptionPane.YES_OPTION) {
                 modelo.eliminarHijoPorPos(getPosHijoSeleccionado());
                 JOptionPane.showMessageDialog(this, "El registro se ha borrado exitosamente"
-                        + "del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
+                        + " del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
+                cargarPanelHijos();
                 if (modelo.getCantidadHijos() == 0) {
                     opcModificarRegistro.setEnabled(false);
                     opcEliminarCarne.setEnabled(false);
@@ -657,21 +676,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public final void cargarPanelHijos() {
         panelHijos.removeAll();
         if (modelo.getCantidadHijos() == 0) {
-            JLabel label = new JLabel("\n\n\nSin Hijos a mostrar");
+            panelHijos.add(Box.createRigidArea(new Dimension(panelHijos.getWidth(), 45)));
+            JLabel label = new JLabel("Sin Hijos a mostrar");
             label.setFont(new Font("Tahoma", Font.BOLD, 18));
+            label.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelHijos.add(label);
         } else {
             for (int i = 0; i < modelo.getCantidadHijos(); i++) {
                 panelHijos.add(Box.createRigidArea(new Dimension(panelHijos.getWidth(), 25)));
                 final Hijo h = modelo.getHijo(i);
                 JToggleButton aux = new JToggleButton();
-                aux.setBorderPainted(false);
                 aux.setAlignmentX(Component.CENTER_ALIGNMENT);
+                aux.setBorderPainted(false);
                 aux.setBackground((h.esHombre() ? niñoClaro : niñaClaro));
                 aux.setFont(new Font("Tahoma", Font.BOLD, 14));
-                aux.setText("          " + h.getNombre() + "           ");
+                aux.setText(h.getNombre());
                 aux.setMinimumSize(new Dimension(panelHijos.getWidth(), 75));
-                aux.setToolTipText("" + i);
+                aux.setName("" + i);
                 aux.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -693,45 +714,43 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public final void cargarPanelEventosProximos() {
         panelEventosProximos.removeAll();
-        if (modelo.getCantidadHijos() == 0) {
-            JLabel label = new JLabel("\n\n\nSin Eventos a mostrar");
-            label.setFont(new Font("Tahoma", Font.BOLD, 18));
+        if (modelo.getCantidadEventosARealizar() == 0) {
+            panelEventosProximos.add(Box.createRigidArea(
+                    new Dimension(panelEventosProximos.getWidth(), 45)));
+            JLabel label = new JLabel("Sin Eventos a mostrar");
+            label.setFont(new Font("Tahoma", Font.BOLD, 24));
+            label.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelEventosProximos.add(label);
         } else {
             for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
                 Evento evento = modelo.getEvento(i);
                 if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {
                     panelEventosProximos.add(Box.createRigidArea(
-                            new Dimension(panelEventosProximos.getWidth(), 15)));
+                            new Dimension(panelEventosProximos.getWidth(), 20)));
                     JToggleButton aux = new JToggleButton();
                     aux.setBorderPainted(false);
-                    aux.setAlignmentX(Component.LEFT_ALIGNMENT);
+                    aux.setAlignmentX(Component.CENTER_ALIGNMENT);
                     aux.setBackground(Color.red);
                     switch (evento.getTipo()) {
                         case "Consulta":
-                            aux.setFont(new Font("Tahoma", Font.BOLD, 12));
+                            aux.setFont(new Font("Tahoma", Font.BOLD, 20));
                             break;
                         case "Vacunación":
-                            aux.setFont(new Font("Tahoma", Font.ITALIC, 12));
+                            aux.setFont(new Font("Tahoma", Font.ITALIC, 20));
                             break;
                         default:
-                            aux.setFont(new Font("Tahoma", Font.PLAIN, 12));
+                            aux.setFont(new Font("Tahoma", Font.PLAIN, 20));
                             break;
                     }
                     SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
-                    aux.setText("              " + evento.getTitulo() + " ("
-                            + formatoFecha.format(evento.getFecha().getTime()) + ")              ");
+                    aux.setText(evento.getTitulo() + " ("
+                            + formatoFecha.format(evento.getFecha().getTime()) + ")");
                     aux.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));
-                    aux.setToolTipText("" + i);
-                    aux.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-
-                        }
-                    });
+                    aux.setName("" + i);
                     aux.setVisible(true);
                     aux.setOpaque(true);
                     panelEventosProximos.add(aux);
+                    buttonGroupEventos.add(aux);
                 }
             }
         }
@@ -756,10 +775,44 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    public void pintarDia(Calendar laFecha, boolean agrego) {
+        Component componentes[] = jCalendar1.getDayChooser().getDayPanel().getComponents();
+        int i = 7;
+        while (((JDayChooser) componentes[i]).getDay() < laFecha.get(Calendar.DAY_OF_MONTH)) {
+            i++;
+        }
+        Component componente = componentes[i];
+        int cantidadEventosDia;
+        String[] aux = {};
+        if (!componente.getName().equals("")) {
+            cantidadEventosDia = 0;
+        } else {
+            aux = componente.getName().split(" - ");
+            cantidadEventosDia = Integer.parseInt(aux[0].split(" ")[0]);
+        }
+        if (agrego) {
+            cantidadEventosDia++;
+            componente.setBackground(Color.magenta);
+            componente.setForeground(Color.red);
+            componente.setFont(new Font("Tahoma", Font.BOLD, 14));
+        } else {
+            if (--cantidadEventosDia == 0 && !(aux[1].split(" ")[0]).equals("0")) {
+                componente.setBackground(Color.cyan);
+                componente.setForeground(Color.blue);
+                componente.setFont(new Font("Tahoma", Font.BOLD, 14));
+            } else {
+                componente.setBackground(UIManager.getColor("Panel.background"));
+                componente.setFont(new Font("Tahoma", Font.PLAIN, 12));
+            }
+            componente.setName(cantidadEventosDia + " eventos - " + aux[1]);
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarHijo;
     private javax.swing.JButton btnEditarHijo;
     private javax.swing.JButton btnEliminarHijo;
+    private javax.swing.ButtonGroup buttonGroupEventos;
     private javax.swing.ButtonGroup buttonGroupHijos;
     private javax.swing.JMenuItem itemCargarVacunas;
     private com.toedter.calendar.JCalendar jCalendar1;
@@ -770,6 +823,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -784,7 +838,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
-    private javax.swing.JPopupMenu.Separator jSeparator8;
+    private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JMenu mnuEventos;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenuItem opcEliminarCarne;
