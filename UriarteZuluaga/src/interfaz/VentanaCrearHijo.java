@@ -12,7 +12,9 @@ import javax.swing.SwingConstants;
 
 public class VentanaCrearHijo extends javax.swing.JFrame {
 
-    public VentanaCrearHijo(Sistema sis, Hijo h, boolean esParaEditar) {
+    public VentanaCrearHijo(Sistema sis, Hijo h, boolean esParaEditar,
+            VentanaPrincipal v) {
+        this.ventanaPrincipal = v;
         this.modelo = sis;
         this.edicion = esParaEditar;
         this.cedulaAnt = "";
@@ -97,10 +99,10 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAceptar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -360,10 +362,10 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
             } else {
                 modelo.agregarHijo(aux[0], c,
                         jComboBoxGenero.getSelectedIndex() == 0, aux[1], aux[2], aux[3]);
-                JOptionPane.showMessageDialog(this, "El carné se ha registrado/modificado "
-                        + "exitosamente en el sistema", "Operación completada",
-                        JOptionPane.INFORMATION_MESSAGE);
+                ventanaPrincipal.activarOpcionesQueRequierenHijos();
             }
+            ventanaPrincipal.cargarPanelHijos();
+            this.dispose();
         } catch (IllegalArgumentException | IllegalStateException e) {
             JOptionPane.showMessageDialog(this, VentanaPrincipal.ERR_INGRESO
                     + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -438,6 +440,7 @@ public class VentanaCrearHijo extends javax.swing.JFrame {
     private final Sistema modelo;
     private final boolean edicion;
     private String cedulaAnt;
+    private final VentanaPrincipal ventanaPrincipal;
 
     private void validarEntradaAlfabetica(KeyEvent evt) {
         char caracter = evt.getKeyChar();
