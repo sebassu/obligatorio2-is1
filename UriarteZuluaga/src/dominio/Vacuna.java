@@ -10,6 +10,8 @@ import java.util.Objects;
 
 public class Vacuna implements Serializable, Comparable<Vacuna> {
 
+    public static final long serialVersionUID = 42L;
+
     //Variables de instancia.
     private String nombre;
     private boolean sistematica;
@@ -79,52 +81,6 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
         this.descripcion = descripcion;
     }
 
-   /* public String definirMenorVencimiento(String vencimientoMes,
-            String vencimientoAnio) {
-
-        if (vencimientoMes.charAt(0) != 'c' && vencimientoAnio.charAt(0) != 'c') {
-            if (Integer.parseInt(vencimientoMes)
-                    > Integer.parseInt(vencimientoAnio) * 12) {
-                return vencimientoMes;
-            } else {
-                return vencimientoAnio;
-            }
-        } else if (vencimientoMes.charAt(0) == 'c') {
-            return vencimientoAnio;
-        } else {
-            return vencimientoMes;
-        }
-
-    }
-
-    public String menorVencimientoParaEliminar() {
-
-        String[] vencimientoEnMesesArray = (String[]) vencimientoEnMeses.toArray();
-        String[] vencimientoEnAniosArray = (String[]) vencimientoEnAnios.toArray();
-        if (vencimientoEnMesesArray.length > 0
-                && vencimientoEnAniosArray.length > 0) {
-            String menorVencimiento = definirMenorVencimiento(
-                    vencimientoEnMesesArray[0], vencimientoEnAniosArray[0]);
-            if (menorVencimiento.charAt(0) != 'c') {
-                return menorVencimiento;
-            } else {
-                return "";
-            }
-        } else if (vencimientoEnMesesArray.length > 0) {
-            if (vencimientoEnMesesArray[0].charAt(0) != 'c') {
-                return vencimientoEnMesesArray[0];
-            } else {
-                return "";
-            }
-        } else {
-            if (vencimientoEnAniosArray[0].charAt(0) != 'c') {
-                return vencimientoEnAniosArray[0];
-            } else {
-                return "";
-            }
-        }
-    }*/
-
     public void agregarVencimientoEnMeses(String dato)
             throws IllegalStateException {
         if (this.esSistematica()) {
@@ -144,7 +100,7 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
         if (vencimientoEnMeses.size() > 0) {
             String vencimientoAEliminar = vencimientoEnMeses.get(0);
             if (vencimientoAEliminar.charAt(0) != 'c') {
-                ultimoVencimientoEliminado = "m"+vencimientoAEliminar;
+                ultimoVencimientoEliminado = "m" + vencimientoAEliminar;
                 eliminarVencimientoEnMeses(vencimientoAEliminar);
                 eliminado = true;
             }
@@ -153,7 +109,7 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
             if (vencimientoEnAnios.size() > 0) {
                 String vencimientoAEliminar = vencimientoEnAnios.get(0);
                 if (vencimientoAEliminar.charAt(0) != 'c') {
-                    ultimoVencimientoEliminado = "a"+vencimientoAEliminar;
+                    ultimoVencimientoEliminado = "a" + vencimientoAEliminar;
                     eliminarVencimientoEnAnios(vencimientoAEliminar);
                     eliminado = true;
                 }
@@ -171,14 +127,14 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     public void setUltimoVencimientoEliminado(String ultimoVencimientoEliminado) {
         this.ultimoVencimientoEliminado = ultimoVencimientoEliminado;
     }
-    
+
     public String getSiguienteVencimiento() {
-        
+
         if (vencimientoEnMeses.size() > 0) {
             String vencimientoSiguiente = vencimientoEnMeses.get(0);
             if (vencimientoSiguiente.charAt(0) != 'c') {
                 return vencimientoSiguiente;
-                
+
             } else if (vencimientoEnAnios.isEmpty()) {
                 return vencimientoSiguiente;
             }
@@ -186,7 +142,7 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
             if (vencimientoEnAnios.size() > 0) {
                 String vencimientoSiguiente = vencimientoEnAnios.get(0);
                 return vencimientoSiguiente;
-            } 
+            }
         }
         throw new IllegalStateException("No hay vencimientos para conseguir");
     }
@@ -206,23 +162,24 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     public void setVencimientoEnAnios(ArrayList<String> vencimientoEnAnios) {
         this.vencimientoEnAnios = vencimientoEnAnios;
     }
-    
+
     public String getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses() {
-        String periodo = "";
+        StringBuilder buf = new StringBuilder();
         for (int i = 1; i < ultimoVencimientoEliminado.length(); i++) {
-            periodo = periodo + ultimoVencimientoEliminado.charAt(i);
+            buf.append(ultimoVencimientoEliminado.charAt(i));
         }
+        String periodo = buf.toString();
         if (ultimoVencimientoEliminado.charAt(0) == 'm') {
             if (!vencimientoEnMeses.isEmpty() && vencimientoEnMeses.get(0).charAt(0) != 'c') {
-                int valorPeriodo = Integer.parseInt(vencimientoEnMeses.get(0)) - 
-                        Integer.parseInt(periodo);
-                return valorPeriodo+"";
+                int valorPeriodo = Integer.parseInt(vencimientoEnMeses.get(0))
+                        - Integer.parseInt(periodo);
+                return valorPeriodo + "";
             }
         } else if (ultimoVencimientoEliminado.charAt(0) == 'a') {
             if (!vencimientoEnAnios.isEmpty() && vencimientoEnAnios.get(0).charAt(0) != 'c') {
-                int valorPeriodo = Integer.parseInt(vencimientoEnAnios.get(0))*12 - 
-                        Integer.parseInt(periodo);
-                return valorPeriodo+"";
+                int valorPeriodo = Integer.parseInt(vencimientoEnAnios.get(0)) * 12
+                        - Integer.parseInt(periodo);
+                return valorPeriodo + "";
             }
         } else {
             return getSiguienteVencimiento();

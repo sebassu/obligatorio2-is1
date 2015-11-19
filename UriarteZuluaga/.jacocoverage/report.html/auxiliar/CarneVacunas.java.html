@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CarneVacunas.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UriarteZuluaga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">auxiliar</a> &gt; <span class="el_source">CarneVacunas.java</span></div><h1>CarneVacunas.java</h1><pre class="source lang-java linenums">package auxiliar;
+
+import java.util.HashMap;
+
+public class CarneVacunas {
+
+    private final HashMap&lt;String, Integer&gt; vacunaSistematicaAPosFila;
+    private final HashMap&lt;String, Integer&gt; vacunaNoSistematicaAPosFila;
+    private final HashMap&lt;String, Integer&gt; mesAPosCol;
+    private final HashMap&lt;String, Integer&gt; anioAPosCol;
+    private final String[] listaAnios;
+    private final String[] listaMeses;
+    private final String[] listaVacunasSistematicas;
+    private final String[] listaVacunasNoSistematicas;
+
+    private void llenarHashMapConDatosArray(HashMap&lt;String, Integer&gt; map, String[] arreglo) {
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        for (int i = 0; i &lt; arreglo.length; i++) {</span>
+<span class="nc" id="L18">            map.put(arreglo[i], i + 1);</span>
+        }
+<span class="nc" id="L20">    }</span>
+
+    private void llenarHashMapColumnasConAmbosArrays(HashMap&lt;String, Integer&gt; mesAPos,
+            HashMap&lt;String, Integer&gt; anioAPos, String[] arregloMeses, String[] arregloAnios) {
+<span class="nc" id="L24">        int cantMeses = arregloMeses.length;</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        for (int i = 0; i &lt; cantMeses; i++) {</span>
+<span class="nc" id="L26">            mesAPos.put(arregloMeses[i], i);</span>
+        }
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        for (int i = 0; i &lt; arregloAnios.length; i++) {</span>
+<span class="nc" id="L29">            anioAPos.put(arregloAnios[i], i + cantMeses);</span>
+        }
+<span class="nc" id="L31">    }</span>
+
+    public CarneVacunas(String[] vacunasSistematicas, String[] vacunasNoSistematicas,
+<span class="nc" id="L34">            String[] mesesCarne, String[] aniosCarne) {</span>
+<span class="nc" id="L35">        vacunaSistematicaAPosFila = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L36">        vacunaNoSistematicaAPosFila = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L37">        mesAPosCol = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L38">        anioAPosCol = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L39">        listaMeses = mesesCarne;</span>
+<span class="nc" id="L40">        listaAnios = aniosCarne;</span>
+<span class="nc" id="L41">        listaVacunasSistematicas = vacunasSistematicas;</span>
+<span class="nc" id="L42">        listaVacunasNoSistematicas = vacunasNoSistematicas;</span>
+<span class="nc" id="L43">        llenarHashMapConDatosArray(vacunaSistematicaAPosFila, listaVacunasSistematicas);</span>
+<span class="nc" id="L44">        llenarHashMapConDatosArray(vacunaNoSistematicaAPosFila, listaVacunasNoSistematicas);</span>
+<span class="nc" id="L45">        llenarHashMapColumnasConAmbosArrays(mesAPosCol, anioAPosCol, listaMeses, listaAnios);</span>
+<span class="nc" id="L46">    }</span>
+
+    public String[] getListaAnios() {
+<span class="nc" id="L49">        return listaAnios;</span>
+    }
+
+    public String[] getListaMeses() {
+<span class="nc" id="L53">        return listaMeses;</span>
+    }
+
+    public String[] getListaVacunasSistematicas() {
+<span class="nc" id="L57">        return listaVacunasSistematicas;</span>
+    }
+
+    public String[] getListaVacunasNoSistematicas() {
+<span class="nc" id="L61">        return listaVacunasNoSistematicas;</span>
+    }
+
+    public int getPosColumnaMes(String mes) {
+<span class="nc" id="L65">        return mesAPosCol.get(mes);</span>
+    }
+
+    public int getPosColumnaAnio(String anio) {
+<span class="nc" id="L69">        return anioAPosCol.get(anio);</span>
+    }
+
+    public int getPosFilVacunaSistematica(String nombreVacuna) {
+<span class="nc" id="L73">        return vacunaSistematicaAPosFila.get(nombreVacuna);</span>
+    }
+
+    public int getPosFilVacunaNoSistematica(String nombreVacuna) {
+<span class="nc" id="L77">        return vacunaNoSistematicaAPosFila.get(nombreVacuna);</span>
+    }
+
+    public int getPosColumnaFecha() {
+<span class="nc" id="L81">        return 1;</span>
+    }
+
+    public int getPosColumnaEdad() {
+<span class="nc" id="L85">        return 2;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

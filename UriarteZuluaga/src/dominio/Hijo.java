@@ -11,6 +11,8 @@ import org.jfree.data.xy.XYSeries;
 
 public class Hijo implements Serializable, Comparable {
 
+    public static final long serialVersionUID = 42L;
+
     private String nombre;
     private Calendar fechaNacimiento;
     private boolean esHombre;

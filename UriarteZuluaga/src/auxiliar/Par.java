@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class Par<D1, D2> implements Serializable {
 
+    public static final long serialVersionUID = 42L;
+    
     private D1 dato1;
     private D2 dato2;
 

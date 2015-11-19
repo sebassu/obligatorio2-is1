@@ -13,6 +13,8 @@ import java.util.Iterator;
 
 public class Sistema implements Serializable {
 
+    public static final long serialVersionUID = 42L;
+    
     protected final ArrayList<Hijo> listaHijos;
     protected ArrayList<Vacuna> listaVacunas;
     protected final ArrayList<Evento> eventosRealizados;

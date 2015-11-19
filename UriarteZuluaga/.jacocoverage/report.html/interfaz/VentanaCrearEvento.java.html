@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VentanaCrearEvento.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UriarteZuluaga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">interfaz</a> &gt; <span class="el_source">VentanaCrearEvento.java</span></div><h1>VentanaCrearEvento.java</h1><pre class="source lang-java linenums">package interfaz;
+
+import auxiliar.Auxiliares;
+import dominio.Consulta;
+import dominio.Evento;
+import dominio.Hijo;
+import dominio.Sistema;
+import dominio.Vacuna;
+import dominio.Vacunacion;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+
+public class VentanaCrearEvento extends javax.swing.JFrame {
+
+<span class="nc" id="L20">    public VentanaCrearEvento(Sistema sis, int posEvento, VentanaPrincipal v) {</span>
+<span class="nc" id="L21">        this.modelo = sis;</span>
+<span class="nc" id="L22">        this.posEventoAModificar = posEvento;</span>
+<span class="nc" id="L23">        this.ventanaPrincipal = v;</span>
+        try {
+<span class="nc" id="L25">            initComponents();</span>
+<span class="nc" id="L26">            ((JLabel) jComboBoxTipo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L27">            ((JLabel) jComboBoxHijo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L28">            jComboBoxHijo.setModel(new DefaultComboBoxModel(modelo.getHijos().toArray()));</span>
+<span class="nc" id="L29">            jComboBoxVacunas.setModel(new DefaultComboBoxModel(modelo.getVacunas().toArray()));</span>
+<span class="nc" id="L30">            ArrayList&lt;String&gt; aux = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L31">            aux.add(&quot;Otro&quot;);</span>
+<span class="nc" id="L32">            aux.add(&quot;Consulta&quot;);</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">            if (modelo.getCantidadVacunas() &gt; 0) {</span>
+<span class="nc" id="L34">                aux.add(&quot;Vacunación&quot;);</span>
+            }
+<span class="nc" id="L36">            jComboBoxTipo.setModel(new DefaultComboBoxModel(aux.toArray()));</span>
+<span class="nc" id="L37">            jDateChooserFecha.setCalendar(Calendar.getInstance());</span>
+<span class="nc" id="L38">            jComboBoxTipo.setSelectedIndex(0);</span>
+<span class="nc" id="L39">            jComboBoxHijo.setSelectedIndex(0);</span>
+<span class="nc" id="L40">            jLabelErrorOtro.setVisible(false);</span>
+<span class="nc" id="L41">            jLabelErrorLugar.setVisible(false);</span>
+<span class="nc" id="L42">            jLabelErrorTitulo.setVisible(false);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">            if (posEvento != -1) {</span>
+<span class="nc" id="L44">                Evento eventoAModificar = modelo.getEvento(posEvento);</span>
+<span class="nc" id="L45">                txtOtro.setEnabled(false);</span>
+<span class="nc" id="L46">                jComboBoxTipo.setEnabled(false);</span>
+<span class="nc" id="L47">                jComboBoxHijo.setEnabled(false);</span>
+<span class="nc" id="L48">                txtTitulo.setText(eventoAModificar.getTitulo());</span>
+<span class="nc" id="L49">                txtLugar.setText(eventoAModificar.getLugar());</span>
+<span class="nc" id="L50">                jComboBoxHijo.setSelectedItem(eventoAModificar.getCualHijo());</span>
+<span class="nc bnc" id="L51" title="All 9 branches missed.">                switch (eventoAModificar.getTipo()) {</span>
+                    case &quot;Vacunación&quot;:
+                    case &quot;Consulta&quot;:
+<span class="nc" id="L54">                        jComboBoxTipo.setSelectedItem(eventoAModificar.getTipo());</span>
+<span class="nc" id="L55">                        break;</span>
+                    default:
+<span class="nc" id="L57">                        jLabelOtro.setVisible(true);</span>
+<span class="nc" id="L58">                        txtOtro.setVisible(true);</span>
+<span class="nc" id="L59">                        txtOtro.setText(eventoAModificar.getTipo());</span>
+                        break;
+                }
+<span class="nc" id="L62">                textAreaDesc.setText(eventoAModificar.getDescripcion());</span>
+            }
+<span class="nc" id="L64">        } catch (IllegalStateException e) {</span>
+<span class="nc" id="L65">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L66">        }</span>
+<span class="nc" id="L67">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+<span class="nc" id="L73">        jPanel5 = new javax.swing.JPanel();</span>
+<span class="nc" id="L74">        btnAceptar = new javax.swing.JButton();</span>
+<span class="nc" id="L75">        jPanel1 = new javax.swing.JPanel();</span>
+<span class="nc" id="L76">        jButtonCerrar = new javax.swing.JButton();</span>
+<span class="nc" id="L77">        jPanel6 = new javax.swing.JPanel();</span>
+<span class="nc" id="L78">        jPanelDatos = new javax.swing.JPanel();</span>
+<span class="nc" id="L79">        jLabel11 = new javax.swing.JLabel();</span>
+<span class="nc" id="L80">        txtTitulo = new javax.swing.JTextField();</span>
+<span class="nc" id="L81">        jLabel12 = new javax.swing.JLabel();</span>
+<span class="nc" id="L82">        jLabel13 = new javax.swing.JLabel();</span>
+<span class="nc" id="L83">        jComboBoxTipo = new javax.swing.JComboBox();</span>
+<span class="nc" id="L84">        jLabelVacuna = new javax.swing.JLabel();</span>
+<span class="nc" id="L85">        jDateChooserFecha = new com.toedter.calendar.JDateChooser();</span>
+<span class="nc" id="L86">        jLabelErrorTitulo = new javax.swing.JLabel();</span>
+<span class="nc" id="L87">        txtOtro = new javax.swing.JTextField();</span>
+<span class="nc" id="L88">        jComboBoxHijo = new javax.swing.JComboBox();</span>
+<span class="nc" id="L89">        jLabel15 = new javax.swing.JLabel();</span>
+<span class="nc" id="L90">        txtLugar = new javax.swing.JTextField();</span>
+<span class="nc" id="L91">        jLabelOtro = new javax.swing.JLabel();</span>
+<span class="nc" id="L92">        jLabelErrorLugar = new javax.swing.JLabel();</span>
+<span class="nc" id="L93">        jLabelErrorOtro = new javax.swing.JLabel();</span>
+<span class="nc" id="L94">        jScrollPane1 = new javax.swing.JScrollPane();</span>
+<span class="nc" id="L95">        textAreaDesc = new javax.swing.JTextArea();</span>
+<span class="nc" id="L96">        jComboBoxVacunas = new javax.swing.JComboBox();</span>
+<span class="nc" id="L97">        jLabelMedico = new javax.swing.JLabel();</span>
+<span class="nc" id="L98">        txtMedico = new javax.swing.JTextField();</span>
+<span class="nc" id="L99">        jLabel18 = new javax.swing.JLabel();</span>
+<span class="nc" id="L100">        jLabelErrorMedico = new javax.swing.JLabel();</span>
+<span class="nc" id="L101">        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));</span>
+
+<span class="nc" id="L103">        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L104">        setTitle(&quot;Registro de Evento&quot;);</span>
+<span class="nc" id="L105">        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L106">        setMinimumSize(new java.awt.Dimension(200, 200));</span>
+
+<span class="nc" id="L108">        btnAceptar.setText(&quot;Aceptar&quot;);</span>
+<span class="nc" id="L109">        btnAceptar.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L111">                btnAceptarActionPerformed(evt);</span>
+<span class="nc" id="L112">            }</span>
+        });
+
+<span class="nc" id="L115">        jPanel1.setBackground(new java.awt.Color(204, 204, 204));</span>
+<span class="nc" id="L116">        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());</span>
+
+<span class="nc" id="L118">        jButtonCerrar.setText(&quot;Cerrar&quot;);</span>
+<span class="nc" id="L119">        jButtonCerrar.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L121">                jButtonCerrarActionPerformed(evt);</span>
+<span class="nc" id="L122">            }</span>
+        });
+
+<span class="nc" id="L125">        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);</span>
+<span class="nc" id="L126">        jPanel5.setLayout(jPanel5Layout);</span>
+<span class="nc" id="L127">        jPanel5Layout.setHorizontalGroup(</span>
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
+        );
+<span class="nc" id="L137">        jPanel5Layout.setVerticalGroup(</span>
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6))
+        );
+
+<span class="nc" id="L148">        jPanel6.setBackground(new java.awt.Color(255, 255, 255));</span>
+<span class="nc" id="L149">        jPanel6.setMaximumSize(new java.awt.Dimension(463, 466));</span>
+<span class="nc" id="L150">        jPanel6.setMinimumSize(new java.awt.Dimension(463, 466));</span>
+
+<span class="nc" id="L152">        jPanelDatos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, &quot;Datos del Evento&quot;, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(&quot;Tahoma&quot;, 0, 11), new java.awt.Color(0, 51, 204))); // NOI18N</span>
+<span class="nc" id="L153">        jPanelDatos.setOpaque(false);</span>
+
+<span class="nc" id="L155">        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L156">        jLabel11.setLabelFor(txtTitulo);</span>
+<span class="nc" id="L157">        jLabel11.setText(&quot;Título:&quot;);</span>
+
+<span class="nc" id="L159">        txtTitulo.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));</span>
+<span class="nc" id="L160">        txtTitulo.addFocusListener(new java.awt.event.FocusAdapter() {</span>
+            public void focusLost(java.awt.event.FocusEvent evt) {
+<span class="nc" id="L162">                txtTituloFocusLost(evt);</span>
+<span class="nc" id="L163">            }</span>
+        });
+
+<span class="nc" id="L166">        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L167">        jLabel12.setLabelFor(jDateChooserFecha);</span>
+<span class="nc" id="L168">        jLabel12.setText(&quot;Fecha:&quot;);</span>
+
+<span class="nc" id="L170">        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L171">        jLabel13.setText(&quot;Tipo de Evento:&quot;);</span>
+
+<span class="nc" id="L173">        jComboBoxTipo.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L175">                jComboBoxTipoActionPerformed(evt);</span>
+<span class="nc" id="L176">            }</span>
+        });
+
+<span class="nc" id="L179">        jLabelVacuna.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L180">        jLabelVacuna.setLabelFor(jComboBoxVacunas);</span>
+<span class="nc" id="L181">        jLabelVacuna.setText(&quot;Vacuna:&quot;);</span>
+
+<span class="nc" id="L183">        jDateChooserFecha.setToolTipText(&quot;Seleccionar una fecha anterior a la actual&quot;);</span>
+
+<span class="nc" id="L185">        jLabelErrorTitulo.setForeground(new java.awt.Color(255, 0, 0));</span>
+<span class="nc" id="L186">        jLabelErrorTitulo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);</span>
+<span class="nc" id="L187">        jLabelErrorTitulo.setText(&quot;Título inválido&quot;);</span>
+<span class="nc" id="L188">        jLabelErrorTitulo.setFocusable(false);</span>
+
+<span class="nc" id="L190">        txtOtro.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));</span>
+<span class="nc" id="L191">        txtOtro.addFocusListener(new java.awt.event.FocusAdapter() {</span>
+            public void focusLost(java.awt.event.FocusEvent evt) {
+<span class="nc" id="L193">                txtOtroFocusLost(evt);</span>
+<span class="nc" id="L194">            }</span>
+        });
+
+<span class="nc" id="L197">        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L198">        jLabel15.setLabelFor(jComboBoxHijo);</span>
+<span class="nc" id="L199">        jLabel15.setText(&quot;Hijo:&quot;);</span>
+
+<span class="nc" id="L201">        txtLugar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));</span>
+<span class="nc" id="L202">        txtLugar.addFocusListener(new java.awt.event.FocusAdapter() {</span>
+            public void focusLost(java.awt.event.FocusEvent evt) {
+<span class="nc" id="L204">                txtLugarFocusLost(evt);</span>
+<span class="nc" id="L205">            }</span>
+        });
+
+<span class="nc" id="L208">        jLabelOtro.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L209">        jLabelOtro.setLabelFor(txtOtro);</span>
+<span class="nc" id="L210">        jLabelOtro.setText(&quot;Otro:&quot;);</span>
+
+<span class="nc" id="L212">        jLabelErrorLugar.setForeground(new java.awt.Color(255, 0, 0));</span>
+<span class="nc" id="L213">        jLabelErrorLugar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);</span>
+<span class="nc" id="L214">        jLabelErrorLugar.setText(&quot;Lugar inválido&quot;);</span>
+<span class="nc" id="L215">        jLabelErrorLugar.setFocusable(false);</span>
+
+<span class="nc" id="L217">        jLabelErrorOtro.setForeground(new java.awt.Color(255, 0, 0));</span>
+<span class="nc" id="L218">        jLabelErrorOtro.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);</span>
+<span class="nc" id="L219">        jLabelErrorOtro.setText(&quot;Tipo inválido&quot;);</span>
+<span class="nc" id="L220">        jLabelErrorOtro.setFocusable(false);</span>
+
+<span class="nc" id="L222">        textAreaDesc.setColumns(20);</span>
+<span class="nc" id="L223">        textAreaDesc.setRows(5);</span>
+<span class="nc" id="L224">        textAreaDesc.setBorder(javax.swing.BorderFactory.createTitledBorder(&quot;Descripción&quot;));</span>
+<span class="nc" id="L225">        jScrollPane1.setViewportView(textAreaDesc);</span>
+
+<span class="nc" id="L227">        jLabelMedico.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L228">        jLabelMedico.setLabelFor(txtLugar);</span>
+<span class="nc" id="L229">        jLabelMedico.setText(&quot;Médico:&quot;);</span>
+
+<span class="nc" id="L231">        txtMedico.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));</span>
+<span class="nc" id="L232">        txtMedico.addFocusListener(new java.awt.event.FocusAdapter() {</span>
+            public void focusLost(java.awt.event.FocusEvent evt) {
+<span class="nc" id="L234">                txtMedicoFocusLost(evt);</span>
+<span class="nc" id="L235">            }</span>
+        });
+
+<span class="nc" id="L238">        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L239">        jLabel18.setLabelFor(txtLugar);</span>
+<span class="nc" id="L240">        jLabel18.setText(&quot;Lugar:&quot;);</span>
+
+<span class="nc" id="L242">        jLabelErrorMedico.setForeground(new java.awt.Color(255, 0, 0));</span>
+<span class="nc" id="L243">        jLabelErrorMedico.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);</span>
+<span class="nc" id="L244">        jLabelErrorMedico.setText(&quot;Nombre inválido&quot;);</span>
+<span class="nc" id="L245">        jLabelErrorMedico.setFocusable(false);</span>
+
+<span class="nc" id="L247">        javax.swing.GroupLayout jPanelDatosLayout = new javax.swing.GroupLayout(jPanelDatos);</span>
+<span class="nc" id="L248">        jPanelDatos.setLayout(jPanelDatosLayout);</span>
+<span class="nc" id="L249">        jPanelDatosLayout.setHorizontalGroup(</span>
+            jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jDateChooserFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelOtro, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                                .addComponent(txtMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelErrorMedico))
+                            .addComponent(jComboBoxVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                                .addComponent(txtOtro, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelErrorOtro))
+                            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                                .addComponent(txtLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelErrorLugar))))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBoxHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelErrorTitulo))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
+        );
+<span class="nc" id="L296">        jPanelDatosLayout.setVerticalGroup(</span>
+            jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelErrorTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jDateChooserFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxHijo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtOtro, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelOtro, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelErrorOtro, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelErrorLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelErrorMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+<span class="nc" id="L343">        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);</span>
+<span class="nc" id="L344">        jPanel6.setLayout(jPanel6Layout);</span>
+<span class="nc" id="L345">        jPanel6Layout.setHorizontalGroup(</span>
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+<span class="nc" id="L352">        jPanel6Layout.setVerticalGroup(</span>
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+<span class="nc" id="L359">        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());</span>
+<span class="nc" id="L360">        getContentPane().setLayout(layout);</span>
+<span class="nc" id="L361">        layout.setHorizontalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+<span class="nc" id="L366">        layout.setVerticalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+<span class="nc" id="L374">        pack();</span>
+<span class="nc" id="L375">    }// &lt;/editor-fold&gt;//GEN-END:initComponents</span>
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        try {
+<span class="nc" id="L379">            String titulo = txtTitulo.getText().trim();</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">            if (Auxiliares.noContieneCaracterAlfabetico(titulo)) {</span>
+<span class="nc" id="L381">                jLabelErrorTitulo.setVisible(true);</span>
+            }
+<span class="nc" id="L383">            String tipo = jComboBoxTipo.getSelectedItem().toString();</span>
+<span class="nc bnc" id="L384" title="All 10 branches missed.">            switch (tipo) {</span>
+                case &quot;Otro&quot;:
+<span class="nc" id="L386">                    tipo = txtOtro.getText().trim();</span>
+<span class="nc bnc" id="L387" title="All 8 branches missed.">                    if (Auxiliares.noContieneCaracterAlfabetico(tipo)</span>
+                            || tipo.equalsIgnoreCase(&quot;Consulta&quot;)
+                            || tipo.equalsIgnoreCase(&quot;Vacunación&quot;)
+                            || tipo.equalsIgnoreCase(&quot;Vacunacion&quot;)) {
+<span class="nc" id="L391">                        jLabelErrorOtro.setVisible(true);</span>
+                    }
+                    break;
+                case &quot;Consulta&quot;:
+<span class="nc" id="L395">                    validarMedico();</span>
+<span class="nc" id="L396">                    break;</span>
+                default:
+                    break;
+            }
+            Evento eventoAAgregar;
+<span class="nc bnc" id="L401" title="All 10 branches missed.">            switch (tipo) {</span>
+                case &quot;Consulta&quot;:
+<span class="nc" id="L403">                    eventoAAgregar = new Consulta(Sistema.proximaIDEventos++, titulo, tipo,</span>
+                            textAreaDesc.getText().trim(), jDateChooserFecha.getCalendar(),
+                            (Hijo) jComboBoxHijo.getSelectedItem(), txtLugar.getText().trim(),
+                            txtMedico.getText().trim());
+<span class="nc" id="L407">                    break;</span>
+                case &quot;Vacunación&quot;:
+<span class="nc" id="L409">                    eventoAAgregar = new Vacunacion(Sistema.proximaIDEventos++, titulo, tipo,</span>
+                            textAreaDesc.getText().trim(), jDateChooserFecha.getCalendar(),
+                            (Hijo) jComboBoxHijo.getSelectedItem(), txtLugar.getText().trim(),
+                            (Vacuna) jComboBoxVacunas.getSelectedItem());
+<span class="nc" id="L413">                    break;</span>
+                default:
+<span class="nc" id="L415">                    eventoAAgregar = new Evento(Sistema.proximaIDEventos++, titulo, tipo,</span>
+                            textAreaDesc.getText().trim(), jDateChooserFecha.getCalendar(),
+                            (Hijo) jComboBoxHijo.getSelectedItem(), txtLugar.getText().trim());
+                    break;
+            }
+<span class="nc bnc" id="L420" title="All 2 branches missed.">            if (posEventoAModificar == -1) {</span>
+<span class="nc" id="L421">                modelo.agregarEvento(eventoAAgregar);</span>
+<span class="nc" id="L422">                ventanaPrincipal.pintarDia(jDateChooserFecha.getCalendar());</span>
+            } else {
+<span class="nc" id="L424">                modelo.modificarEvento(eventoAAgregar, posEventoAModificar);</span>
+            }
+<span class="nc" id="L426">            ventanaPrincipal.activarOpcionesModificacionEventos();</span>
+<span class="nc" id="L427">            ventanaPrincipal.cargarPanelEventosProximos();</span>
+<span class="nc" id="L428">            this.dispose();</span>
+<span class="nc" id="L429">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L430">            JOptionPane.showMessageDialog(this, VentanaPrincipal.ERR_INGRESO</span>
+                    + e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L432">        }</span>
+<span class="nc" id="L433">    }//GEN-LAST:event_btnAceptarActionPerformed</span>
+
+    private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed
+<span class="nc" id="L436">        this.dispose();</span>
+<span class="nc" id="L437">    }//GEN-LAST:event_jButtonCerrarActionPerformed</span>
+
+    private void txtMedicoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMedicoFocusLost
+<span class="nc" id="L440">        validarMedico();</span>
+<span class="nc" id="L441">    }//GEN-LAST:event_txtMedicoFocusLost</span>
+
+    private void txtLugarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLugarFocusLost
+<span class="nc" id="L444">        String textoEscrito = txtLugar.getText().trim();</span>
+<span class="nc bnc" id="L445" title="All 2 branches missed.">        if (textoEscrito.isEmpty()) {</span>
+<span class="nc" id="L446">            jLabelErrorLugar.setText(&quot;Lugar vacío&quot;);</span>
+<span class="nc" id="L447">            jLabelErrorLugar.setForeground(Color.orange);</span>
+<span class="nc" id="L448">            jLabelErrorLugar.setVisible(true);</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">        } else if (Auxiliares.noContieneCaracterAlfabetico(textoEscrito)) {</span>
+<span class="nc" id="L450">            jLabelErrorLugar.setText(&quot;Lugar inválido&quot;);</span>
+<span class="nc" id="L451">            jLabelErrorLugar.setForeground(Color.red);</span>
+<span class="nc" id="L452">            jLabelErrorLugar.setVisible(true);</span>
+        } else {
+<span class="nc" id="L454">            jLabelErrorLugar.setVisible(false);</span>
+        }
+<span class="nc" id="L456">    }//GEN-LAST:event_txtLugarFocusLost</span>
+
+    private void txtOtroFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOtroFocusLost
+<span class="nc" id="L459">        jLabelErrorOtro.setVisible(txtOtro.getText().trim().isEmpty());</span>
+<span class="nc" id="L460">    }//GEN-LAST:event_txtOtroFocusLost</span>
+
+    private void jComboBoxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoActionPerformed
+<span class="nc" id="L463">        jLabelErrorOtro.setVisible(false);</span>
+<span class="nc" id="L464">        jLabelOtro.setVisible(false);</span>
+<span class="nc" id="L465">        txtOtro.setVisible(false);</span>
+<span class="nc" id="L466">        jLabelVacuna.setVisible(false);</span>
+<span class="nc" id="L467">        jComboBoxVacunas.setVisible(false);</span>
+<span class="nc" id="L468">        jLabelMedico.setVisible(false);</span>
+<span class="nc" id="L469">        txtMedico.setVisible(false);</span>
+<span class="nc" id="L470">        jLabelErrorMedico.setVisible(false);</span>
+<span class="nc bnc" id="L471" title="All 14 branches missed.">        switch (jComboBoxTipo.getSelectedItem().toString()) {</span>
+            case &quot;Otro&quot;:
+<span class="nc" id="L473">                jLabelOtro.setVisible(true);</span>
+<span class="nc" id="L474">                txtOtro.setVisible(true);</span>
+<span class="nc" id="L475">                txtMedico.setText(&quot;&quot;);</span>
+<span class="nc" id="L476">                break;</span>
+            case &quot;Consulta&quot;:
+<span class="nc" id="L478">                jLabelMedico.setVisible(true);</span>
+<span class="nc" id="L479">                txtMedico.setVisible(true);</span>
+<span class="nc" id="L480">                txtOtro.setText(&quot;&quot;);</span>
+<span class="nc" id="L481">                break;</span>
+            case &quot;Vacunación&quot;:
+<span class="nc" id="L483">                jLabelVacuna.setVisible(true);</span>
+<span class="nc" id="L484">                jComboBoxVacunas.setVisible(true);</span>
+<span class="nc" id="L485">                txtMedico.setText(&quot;&quot;);</span>
+<span class="nc" id="L486">                txtOtro.setText(&quot;&quot;);</span>
+<span class="nc" id="L487">                break;</span>
+            default:
+                break;
+        }
+<span class="nc" id="L491">    }//GEN-LAST:event_jComboBoxTipoActionPerformed</span>
+
+    private void txtTituloFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTituloFocusLost
+<span class="nc" id="L494">        jLabelErrorTitulo.setVisible(Auxiliares.noContieneCaracterAlfabetico(txtTitulo.getText()));</span>
+<span class="nc" id="L495">    }//GEN-LAST:event_txtTituloFocusLost</span>
+
+    private void validarMedico() {
+<span class="nc" id="L498">        String textoEscrito = txtMedico.getText().trim();</span>
+<span class="nc bnc" id="L499" title="All 2 branches missed.">        if (textoEscrito.isEmpty()) {</span>
+<span class="nc" id="L500">            jLabelErrorMedico.setText(&quot;Campo vacío&quot;);</span>
+<span class="nc" id="L501">            jLabelErrorMedico.setForeground(Color.orange);</span>
+<span class="nc" id="L502">            jLabelErrorMedico.setVisible(true);</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">        } else if (Auxiliares.noContieneCaracterAlfabetico(textoEscrito)) {</span>
+<span class="nc" id="L504">            jLabelErrorMedico.setText(&quot;Médico inválido&quot;);</span>
+<span class="nc" id="L505">            jLabelErrorMedico.setForeground(Color.red);</span>
+<span class="nc" id="L506">            jLabelErrorMedico.setVisible(true);</span>
+        } else {
+<span class="nc" id="L508">            jLabelErrorMedico.setVisible(false);</span>
+        }
+<span class="nc" id="L510">    }</span>
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.JButton jButtonCerrar;
+    private javax.swing.JComboBox jComboBoxHijo;
+    private javax.swing.JComboBox jComboBoxTipo;
+    private javax.swing.JComboBox jComboBoxVacunas;
+    private com.toedter.calendar.JDateChooser jDateChooserFecha;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabelErrorLugar;
+    private javax.swing.JLabel jLabelErrorMedico;
+    private javax.swing.JLabel jLabelErrorOtro;
+    private javax.swing.JLabel jLabelErrorTitulo;
+    private javax.swing.JLabel jLabelMedico;
+    private javax.swing.JLabel jLabelOtro;
+    private javax.swing.JLabel jLabelVacuna;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanelDatos;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea textAreaDesc;
+    private javax.swing.JTextField txtLugar;
+    private javax.swing.JTextField txtMedico;
+    private javax.swing.JTextField txtOtro;
+    private javax.swing.JTextField txtTitulo;
+    // End of variables declaration//GEN-END:variables
+    private final Sistema modelo;
+    private final int posEventoAModificar;
+    private VentanaPrincipal ventanaPrincipal;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

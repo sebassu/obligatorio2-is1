@@ -3,8 +3,13 @@ package dominio;
 import java.util.Calendar;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 public class ConsultaTest {
+    
+    @Rule
+    ExpectedException ex = ExpectedException.none();
 
     /**
      * Test of setMedico method, of class Consulta.
@@ -15,21 +20,23 @@ public class ConsultaTest {
         c.setMedico("ABC");
         assertEquals(c.getMedico(), "ABC");
     }
-
+    
     @Test
     public void testSetMedico2() {
+        ex.expect(IllegalArgumentException.class);
+        ex.expectMessage("Médico inválido.");
         Consulta c = new Consulta();
         c.setMedico("-. 123");
         assertEquals(c.getMedico(), "123");
     }
-
+    
     @Test
     public void testSetMedico3() {
         Consulta c = new Consulta();
         c.setMedico("");
         assertEquals(c.getMedico(), "");
     }
-
+    
     @Test
     public void testConsulta1() {
         Calendar f = Calendar.getInstance();
@@ -45,7 +52,7 @@ public class ConsultaTest {
         assertEquals(c.getLugar(), "C");
         assertEquals(c.getMedico(), "D");
     }
-
+    
     @Test
     public void testConsulta2() {
         Calendar f = Calendar.getInstance();

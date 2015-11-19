@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VentanaCrearHijo.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UriarteZuluaga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">interfaz</a> &gt; <span class="el_source">VentanaCrearHijo.java</span></div><h1>VentanaCrearHijo.java</h1><pre class="source lang-java linenums">package interfaz;
+
+import auxiliar.Auxiliares;
+import dominio.Hijo;
+import dominio.Sistema;
+import java.awt.event.KeyEvent;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+
+public class VentanaCrearHijo extends javax.swing.JFrame {
+
+    public VentanaCrearHijo(Sistema sis, Hijo h, boolean esParaEditar,
+<span class="nc" id="L16">            VentanaPrincipal v) {</span>
+<span class="nc" id="L17">        this.ventanaPrincipal = v;</span>
+<span class="nc" id="L18">        this.modelo = sis;</span>
+<span class="nc" id="L19">        this.edicion = esParaEditar;</span>
+<span class="nc" id="L20">        this.cedulaAnt = &quot;&quot;;</span>
+<span class="nc" id="L21">        initComponents();</span>
+<span class="nc" id="L22">        ((JLabel) jComboBoxGenero.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L23">        jDateChooserNac.setSelectableDateRange(null, new Date());</span>
+<span class="nc" id="L24">        jDateChooserNac.setCalendar(Calendar.getInstance());</span>
+<span class="nc" id="L25">        jLabelErrorCedula.setVisible(false);</span>
+<span class="nc" id="L26">        jLabelErrorMed.setVisible(false);</span>
+<span class="nc" id="L27">        jLabelErrorNomSoc.setVisible(false);</span>
+<span class="nc" id="L28">        jLabelErrorNombre.setVisible(false);</span>
+<span class="nc" id="L29">        setLocationRelativeTo(null);</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (esParaEditar) {</span>
+<span class="nc" id="L31">            this.setTitle(&quot;Edición de un Registro&quot;);</span>
+<span class="nc" id="L32">            this.cedulaAnt = h.getCedulaId();</span>
+<span class="nc" id="L33">            txtCedula.setText(cedulaAnt);</span>
+<span class="nc" id="L34">            txtMedico.setText(h.getMedicoDeCabecera());</span>
+<span class="nc" id="L35">            txtSociedad.setText(h.getSociedadMedica());</span>
+<span class="nc" id="L36">            txtNombre.setText(h.getNombre());</span>
+<span class="nc" id="L37">            jDateChooserNac.setCalendar(h.getFechaNacimiento());</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            if (!h.esHombre()) {</span>
+<span class="nc" id="L39">                jComboBoxGenero.setSelectedIndex(1);</span>
+            }
+        }
+<span class="nc" id="L42">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+<span class="nc" id="L48">        jPanel5 = new javax.swing.JPanel();</span>
+<span class="nc" id="L49">        btnAceptar = new javax.swing.JButton();</span>
+<span class="nc" id="L50">        jPanel1 = new javax.swing.JPanel();</span>
+<span class="nc" id="L51">        jButton1 = new javax.swing.JButton();</span>
+<span class="nc" id="L52">        jPanel6 = new javax.swing.JPanel();</span>
+<span class="nc" id="L53">        jPanelDatos = new javax.swing.JPanel();</span>
+<span class="nc" id="L54">        jLabel11 = new javax.swing.JLabel();</span>
+<span class="nc" id="L55">        txtNombre = new javax.swing.JTextField();</span>
+<span class="nc" id="L56">        jLabel12 = new javax.swing.JLabel();</span>
+<span class="nc" id="L57">        txtCedula = new javax.swing.JTextField();</span>
+<span class="nc" id="L58">        jLabel13 = new javax.swing.JLabel();</span>
+<span class="nc" id="L59">        jComboBoxGenero = new javax.swing.JComboBox();</span>
+<span class="nc" id="L60">        jLabel14 = new javax.swing.JLabel();</span>
+<span class="nc" id="L61">        jLabelErrorCedula = new javax.swing.JLabel();</span>
+<span class="nc" id="L62">        jDateChooserNac = new com.toedter.calendar.JDateChooser();</span>
+<span class="nc" id="L63">        jLabelErrorNombre = new javax.swing.JLabel();</span>
+<span class="nc" id="L64">        jPanelEstadisticas = new javax.swing.JPanel();</span>
+<span class="nc" id="L65">        jLabel8 = new javax.swing.JLabel();</span>
+<span class="nc" id="L66">        txtSociedad = new javax.swing.JTextField();</span>
+<span class="nc" id="L67">        txtMedico = new javax.swing.JTextField();</span>
+<span class="nc" id="L68">        jLabel9 = new javax.swing.JLabel();</span>
+<span class="nc" id="L69">        jLabelErrorNomSoc = new javax.swing.JLabel();</span>
+<span class="nc" id="L70">        jLabelErrorMed = new javax.swing.JLabel();</span>
+
+<span class="nc" id="L72">        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L73">        setTitle(&quot;Registro de Hijo&quot;);</span>
+<span class="nc" id="L74">        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L75">        setMinimumSize(new java.awt.Dimension(200, 200));</span>
+<span class="nc" id="L76">        setResizable(false);</span>
+
+<span class="nc" id="L78">        btnAceptar.setText(&quot;Aceptar&quot;);</span>
+<span class="nc" id="L79">        btnAceptar.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L81">                btnAceptarActionPerformed(evt);</span>
+<span class="nc" id="L82">            }</span>
+        });
+
+<span class="nc" id="L85">        jPanel1.setBackground(new java.awt.Color(204, 204, 204));</span>
+<span class="nc" id="L86">        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());</span>
+
+<span class="nc" id="L88">        jButton1.setText(&quot;Cerrar&quot;);</span>
+<span class="nc" id="L89">        jButton1.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L91">                jButton1ActionPerformed(evt);</span>
+<span class="nc" id="L92">            }</span>
+        });
+
+<span class="nc" id="L95">        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);</span>
+<span class="nc" id="L96">        jPanel5.setLayout(jPanel5Layout);</span>
+<span class="nc" id="L97">        jPanel5Layout.setHorizontalGroup(</span>
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(192, Short.MAX_VALUE)
+                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+        );
+<span class="nc" id="L107">        jPanel5Layout.setVerticalGroup(</span>
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6))
+        );
+
+<span class="nc" id="L118">        jPanel6.setBackground(new java.awt.Color(255, 255, 255));</span>
+
+<span class="nc" id="L120">        jPanelDatos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, &quot;Datos personales&quot;, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(&quot;Tahoma&quot;, 0, 11), new java.awt.Color(0, 51, 204))); // NOI18N</span>
+<span class="nc" id="L121">        jPanelDatos.setOpaque(false);</span>
+
+<span class="nc" id="L123">        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L124">        jLabel11.setLabelFor(txtNombre);</span>
+<span class="nc" id="L125">        jLabel11.setText(&quot;Nombre:&quot;);</span>
+
+<span class="nc" id="L127">        txtNombre.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));</span>
+<span class="nc" id="L128">        txtNombre.addFocusListener(new java.awt.event.FocusAdapter() {</span>
+            public void focusLost(java.awt.event.FocusEvent evt) {
+<span class="nc" id="L130">                txtNombreFocusLost(evt);</span>
+<span class="nc" id="L131">            }</span>
+        });
+<span class="nc" id="L133">        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {</span>
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+<span class="nc" id="L135">                txtNombreKeyTyped(evt);</span>
+<span class="nc" id="L136">            }</span>
+        });
+
+<span class="nc" id="L139">        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L140">        jLabel12.setLabelFor(jDateChooserNac);</span>
+<span class="nc" id="L141">        jLabel12.setText(&quot;Nacimiento:&quot;);</span>
+
+<span class="nc" id="L143">        txtCedula.setToolTipText(&quot;Formato: N.NNN.NNN-N&quot;);</span>
+<span class="nc" id="L144">        txtCedula.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));</span>
+<span class="nc" id="L145">        txtCedula.addFocusListener(new java.awt.event.FocusAdapter() {</span>
+            public void focusLost(java.awt.event.FocusEvent evt) {
+<span class="nc" id="L147">                txtCedulaFocusLost(evt);</span>
+<span class="nc" id="L148">            }</span>
+        });
+<span class="nc" id="L150">        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {</span>
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+<span class="nc" id="L152">                txtCedulaKeyTyped(evt);</span>
+<span class="nc" id="L153">            }</span>
+        });
+
+<span class="nc" id="L156">        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L157">        jLabel13.setText(&quot;CI:&quot;);</span>
+
+<span class="nc" id="L159">        jComboBoxGenero.setModel(new javax.swing.DefaultComboBoxModel(new String[] { &quot;Masculino&quot;, &quot;Femenino&quot; }));</span>
+
+<span class="nc" id="L161">        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L162">        jLabel14.setLabelFor(jComboBoxGenero);</span>
+<span class="nc" id="L163">        jLabel14.setText(&quot;Género:&quot;);</span>
+
+<span class="nc" id="L165">        jLabelErrorCedula.setForeground(new java.awt.Color(255, 0, 0));</span>
+<span class="nc" id="L166">        jLabelErrorCedula.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);</span>
+<span class="nc" id="L167">        jLabelErrorCedula.setText(&quot;Cédula inválida&quot;);</span>
+<span class="nc" id="L168">        jLabelErrorCedula.setFocusable(false);</span>
+<span class="nc" id="L169">        jLabelErrorCedula.addFocusListener(new java.awt.event.FocusAdapter() {</span>
+            public void focusLost(java.awt.event.FocusEvent evt) {
+<span class="nc" id="L171">                jLabelErrorCedulaFocusLost(evt);</span>
+<span class="nc" id="L172">            }</span>
+        });
+
+<span class="nc" id="L175">        jDateChooserNac.setToolTipText(&quot;Seleccionar una fecha anterior a la actual&quot;);</span>
+
+<span class="nc" id="L177">        jLabelErrorNombre.setForeground(new java.awt.Color(255, 0, 0));</span>
+<span class="nc" id="L178">        jLabelErrorNombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);</span>
+<span class="nc" id="L179">        jLabelErrorNombre.setText(&quot;Nombre inválido&quot;);</span>
+<span class="nc" id="L180">        jLabelErrorNombre.setFocusable(false);</span>
+
+<span class="nc" id="L182">        javax.swing.GroupLayout jPanelDatosLayout = new javax.swing.GroupLayout(jPanelDatos);</span>
+<span class="nc" id="L183">        jPanelDatos.setLayout(jPanelDatosLayout);</span>
+<span class="nc" id="L184">        jPanelDatosLayout.setHorizontalGroup(</span>
+            jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jDateChooserNac, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtNombre))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDatosLayout.createSequentialGroup()
+                        .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBoxGenero, 0, 158, Short.MAX_VALUE)
+                            .addComponent(txtCedula))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelErrorCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelErrorNombre))
+                .addGap(0, 9, Short.MAX_VALUE))
+        );
+<span class="nc" id="L210">        jPanelDatosLayout.setVerticalGroup(</span>
+            jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelErrorNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelDatosLayout.createSequentialGroup()
+                        .addComponent(jDateChooserNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelErrorCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+<span class="nc" id="L234">        jPanelEstadisticas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, &quot;Datos Servicio de Salud&quot;, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(&quot;Tahoma&quot;, 0, 11), new java.awt.Color(0, 51, 204))); // NOI18N</span>
+<span class="nc" id="L235">        jPanelEstadisticas.setOpaque(false);</span>
+
+<span class="nc" id="L237">        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L238">        jLabel8.setText(&quot;Sociedad médica:&quot;);</span>
+
+<span class="nc" id="L240">        txtSociedad.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));</span>
+<span class="nc" id="L241">        txtSociedad.addFocusListener(new java.awt.event.FocusAdapter() {</span>
+            public void focusLost(java.awt.event.FocusEvent evt) {
+<span class="nc" id="L243">                txtSociedadFocusLost(evt);</span>
+<span class="nc" id="L244">            }</span>
+        });
+
+<span class="nc" id="L247">        txtMedico.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));</span>
+<span class="nc" id="L248">        txtMedico.addFocusListener(new java.awt.event.FocusAdapter() {</span>
+            public void focusLost(java.awt.event.FocusEvent evt) {
+<span class="nc" id="L250">                txtMedicoFocusLost(evt);</span>
+<span class="nc" id="L251">            }</span>
+        });
+<span class="nc" id="L253">        txtMedico.addKeyListener(new java.awt.event.KeyAdapter() {</span>
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+<span class="nc" id="L255">                txtMedicoKeyTyped(evt);</span>
+<span class="nc" id="L256">            }</span>
+        });
+
+<span class="nc" id="L259">        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L260">        jLabel9.setText(&quot;Médico de Cabecera:&quot;);</span>
+
+<span class="nc" id="L262">        jLabelErrorNomSoc.setForeground(new java.awt.Color(255, 0, 0));</span>
+<span class="nc" id="L263">        jLabelErrorNomSoc.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);</span>
+<span class="nc" id="L264">        jLabelErrorNomSoc.setText(&quot;Entrada inválida&quot;);</span>
+<span class="nc" id="L265">        jLabelErrorNomSoc.setFocusable(false);</span>
+
+<span class="nc" id="L267">        jLabelErrorMed.setForeground(new java.awt.Color(255, 0, 0));</span>
+<span class="nc" id="L268">        jLabelErrorMed.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);</span>
+<span class="nc" id="L269">        jLabelErrorMed.setText(&quot;Nombre inválido&quot;);</span>
+<span class="nc" id="L270">        jLabelErrorMed.setFocusable(false);</span>
+
+<span class="nc" id="L272">        javax.swing.GroupLayout jPanelEstadisticasLayout = new javax.swing.GroupLayout(jPanelEstadisticas);</span>
+<span class="nc" id="L273">        jPanelEstadisticas.setLayout(jPanelEstadisticasLayout);</span>
+<span class="nc" id="L274">        jPanelEstadisticasLayout.setHorizontalGroup(</span>
+            jPanelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEstadisticasLayout.createSequentialGroup()
+                .addGroup(jPanelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSociedad, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                    .addComponent(txtMedico))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelErrorNomSoc)
+                    .addComponent(jLabelErrorMed))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+<span class="nc" id="L290">        jPanelEstadisticasLayout.setVerticalGroup(</span>
+            jPanelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEstadisticasLayout.createSequentialGroup()
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addGroup(jPanelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSociedad, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelErrorNomSoc, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelErrorMed, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+<span class="nc" id="L306">        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);</span>
+<span class="nc" id="L307">        jPanel6.setLayout(jPanel6Layout);</span>
+<span class="nc" id="L308">        jPanel6Layout.setHorizontalGroup(</span>
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanelDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelEstadisticas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+<span class="nc" id="L317">        jPanel6Layout.setVerticalGroup(</span>
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelEstadisticas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+<span class="nc" id="L326">        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());</span>
+<span class="nc" id="L327">        getContentPane().setLayout(layout);</span>
+<span class="nc" id="L328">        layout.setHorizontalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
+        );
+<span class="nc" id="L335">        layout.setVerticalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+<span class="nc" id="L343">        pack();</span>
+<span class="nc" id="L344">    }// &lt;/editor-fold&gt;//GEN-END:initComponents</span>
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+<span class="nc" id="L347">        String[] aux = new String[4];</span>
+<span class="nc" id="L348">        aux[0] = txtNombre.getText();</span>
+<span class="nc" id="L349">        jLabelErrorNombre.setVisible(Auxiliares.noContieneCaracterAlfabetico(aux[0]));</span>
+<span class="nc" id="L350">        aux[1] = txtCedula.getText();</span>
+<span class="nc" id="L351">        jLabelErrorCedula.setVisible(Auxiliares.esCedulaInvalida(aux[1]));</span>
+<span class="nc" id="L352">        aux[2] = txtSociedad.getText();</span>
+<span class="nc" id="L353">        jLabelErrorNomSoc.setVisible(Auxiliares.noContieneCaracterAlfabetico(aux[2]));</span>
+<span class="nc" id="L354">        aux[3] = txtMedico.getText();</span>
+<span class="nc bnc" id="L355" title="All 4 branches missed.">        jLabelErrorMed.setVisible(!aux[3].isEmpty() &amp;&amp; Auxiliares.noContieneCaracterAlfabetico(aux[3]));</span>
+        try {
+<span class="nc" id="L357">            Calendar c = jDateChooserNac.getCalendar();</span>
+<span class="nc bnc" id="L358" title="All 2 branches missed.">            if (edicion) {</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">                modelo.modificarHijo(aux[0], c,</span>
+                        jComboBoxGenero.getSelectedIndex() == 0, aux[1],
+                        aux[2], aux[3], cedulaAnt);
+            } else {
+<span class="nc bnc" id="L363" title="All 2 branches missed.">                modelo.agregarHijo(aux[0], c,</span>
+                        jComboBoxGenero.getSelectedIndex() == 0, aux[1], aux[2], aux[3]);
+<span class="nc" id="L365">                ventanaPrincipal.activarOpcionesQueRequierenHijos();</span>
+            }
+<span class="nc" id="L367">            ventanaPrincipal.cargarPanelHijos();</span>
+<span class="nc" id="L368">            this.dispose();</span>
+<span class="nc" id="L369">        } catch (IllegalArgumentException | IllegalStateException e) {</span>
+<span class="nc" id="L370">            JOptionPane.showMessageDialog(this, VentanaPrincipal.ERR_INGRESO</span>
+                    + e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L372">        }</span>
+<span class="nc" id="L373">    }//GEN-LAST:event_btnAceptarActionPerformed</span>
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+<span class="nc" id="L376">        this.dispose();</span>
+<span class="nc" id="L377">    }//GEN-LAST:event_jButton1ActionPerformed</span>
+
+    private void txtNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusLost
+<span class="nc" id="L380">        jLabelErrorNombre.setVisible(Auxiliares.noContieneCaracterAlfabetico(txtNombre.getText()));</span>
+<span class="nc" id="L381">    }//GEN-LAST:event_txtNombreFocusLost</span>
+
+    private void txtMedicoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMedicoFocusLost
+<span class="nc" id="L384">        jLabelErrorMed.setVisible(Auxiliares.noContieneCaracterAlfabetico(txtMedico.getText()));</span>
+<span class="nc" id="L385">    }//GEN-LAST:event_txtMedicoFocusLost</span>
+
+    private void jLabelErrorCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jLabelErrorCedulaFocusLost
+<span class="nc" id="L388">        jLabelErrorCedula.setVisible(Auxiliares.esCedulaInvalida(txtCedula.getText()));</span>
+<span class="nc" id="L389">    }//GEN-LAST:event_jLabelErrorCedulaFocusLost</span>
+
+    private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
+<span class="nc" id="L392">        char caracter = evt.getKeyChar();</span>
+<span class="nc bnc" id="L393" title="All 8 branches missed.">        if (!Character.isDigit(caracter) &amp;&amp; caracter != '-' &amp;&amp; caracter != '.'</span>
+                &amp;&amp; caracter != KeyEvent.VK_BACK_SPACE) {
+<span class="nc" id="L395">            evt.consume();</span>
+        }
+<span class="nc" id="L397">    }//GEN-LAST:event_txtCedulaKeyTyped</span>
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+<span class="nc" id="L400">        validarEntradaAlfabetica(evt);</span>
+<span class="nc" id="L401">    }//GEN-LAST:event_txtNombreKeyTyped</span>
+
+    private void txtMedicoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedicoKeyTyped
+<span class="nc" id="L404">        validarEntradaAlfabetica(evt);</span>
+<span class="nc" id="L405">    }//GEN-LAST:event_txtMedicoKeyTyped</span>
+
+    private void txtCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCedulaFocusLost
+<span class="nc" id="L408">        jLabelErrorCedula.setVisible(Auxiliares.esCedulaInvalida(txtCedula.getText()));</span>
+<span class="nc" id="L409">    }//GEN-LAST:event_txtCedulaFocusLost</span>
+
+    private void txtSociedadFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSociedadFocusLost
+<span class="nc" id="L412">        jLabelErrorNomSoc.setVisible(Auxiliares.noContieneCaracterAlfabetico(txtSociedad.getText()));</span>
+<span class="nc" id="L413">    }//GEN-LAST:event_txtSociedadFocusLost</span>
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBoxGenero;
+    private com.toedter.calendar.JDateChooser jDateChooserNac;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelErrorCedula;
+    private javax.swing.JLabel jLabelErrorMed;
+    private javax.swing.JLabel jLabelErrorNomSoc;
+    private javax.swing.JLabel jLabelErrorNombre;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanelDatos;
+    private javax.swing.JPanel jPanelEstadisticas;
+    private javax.swing.JTextField txtCedula;
+    private javax.swing.JTextField txtMedico;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtSociedad;
+    // End of variables declaration//GEN-END:variables
+    private final Sistema modelo;
+    private final boolean edicion;
+    private String cedulaAnt;
+    private final VentanaPrincipal ventanaPrincipal;
+
+    private void validarEntradaAlfabetica(KeyEvent evt) {
+<span class="nc" id="L446">        char caracter = evt.getKeyChar();</span>
+<span class="nc bnc" id="L447" title="All 8 branches missed.">        if (!Character.isAlphabetic(caracter) &amp;&amp; caracter != ' ' &amp;&amp; caracter != '-'</span>
+                &amp;&amp; caracter != KeyEvent.VK_BACK_SPACE) {
+<span class="nc" id="L449">            evt.consume();</span>
+        }
+<span class="nc" id="L451">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

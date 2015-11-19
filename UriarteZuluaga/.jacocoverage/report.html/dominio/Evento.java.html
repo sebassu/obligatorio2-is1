@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Evento.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UriarteZuluaga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">dominio</a> &gt; <span class="el_source">Evento.java</span></div><h1>Evento.java</h1><pre class="source lang-java linenums">package dominio;
+
+import auxiliar.Auxiliares;
+import java.io.Serializable;
+import java.util.Calendar;
+
+public class Evento implements Serializable, Comparable {
+
+    public static final long serialVersionUID = 42L;
+
+    private int id;
+    private String titulo;
+    private String tipo;
+    private String lugar;
+    private String descripcion;
+    private Calendar fecha;
+    private Hijo cualHijo;
+    private String notas;
+
+    protected Evento() throws IllegalArgumentException, NullPointerException {
+<span class="fc" id="L21">        this(0, &quot;A&quot;, &quot;A&quot;, &quot;&quot;, Calendar.getInstance(), new Hijo(), &quot;&quot;);</span>
+<span class="fc" id="L22">    }</span>
+
+    public Evento(int laId) throws IllegalArgumentException, NullPointerException {
+<span class="nc" id="L25">        this(laId, &quot;A&quot;, &quot;A&quot;, &quot;&quot;, Calendar.getInstance(), new Hijo(), &quot;&quot;);</span>
+<span class="nc" id="L26">    }</span>
+
+    public Evento(int laId, String elTitulo, String elTipo, Calendar laFecha, Hijo elHijo)
+            throws IllegalArgumentException, NullPointerException {
+<span class="nc" id="L30">        this(laId, elTitulo, elTipo, &quot;&quot;, laFecha, elHijo, &quot;&quot;);</span>
+<span class="nc" id="L31">    }</span>
+
+    public Evento(int laId, String elTitulo, String elTipo, Calendar laFecha, Hijo elHijo,
+            String elLugar) throws IllegalArgumentException, NullPointerException {
+<span class="nc" id="L35">        this(laId, elTitulo, elTipo, &quot;&quot;, laFecha, elHijo, elLugar);</span>
+<span class="nc" id="L36">    }</span>
+
+    public Evento(int laId, String elTitulo, String elTipo, String laDescripcion,
+            Calendar laFecha, Hijo elHijo) throws IllegalArgumentException, NullPointerException {
+<span class="nc" id="L40">        this(laId, elTitulo, elTipo, laDescripcion, laFecha, elHijo, &quot;&quot;);</span>
+<span class="nc" id="L41">    }</span>
+
+    public Evento(int laId, String elTitulo, String elTipo, String laDescripcion,
+            Calendar laFecha, Hijo hijo, String elLugar)
+<span class="fc" id="L45">            throws IllegalArgumentException, NullPointerException {</span>
+<span class="fc" id="L46">        this.setId(laId);</span>
+<span class="fc" id="L47">        this.setTitulo(elTitulo);</span>
+<span class="fc" id="L48">        this.setTipo(elTipo);</span>
+<span class="fc" id="L49">        this.setDescripcion(laDescripcion);</span>
+<span class="fc" id="L50">        this.setFecha(laFecha);</span>
+<span class="fc" id="L51">        this.setCualHijo(hijo);</span>
+<span class="fc" id="L52">        this.setLugar(elLugar);</span>
+<span class="fc" id="L53">    }</span>
+
+    public String getTitulo() {
+<span class="fc" id="L56">        return titulo;</span>
+    }
+
+    public String getLugar() {
+<span class="fc" id="L60">        return lugar;</span>
+    }
+
+    public String getTipo() {
+<span class="fc" id="L64">        return tipo;</span>
+    }
+
+    public String getNotas() {
+<span class="nc" id="L68">        return notas;</span>
+    }
+
+    public String getDescripcion() {
+<span class="fc" id="L72">        return descripcion;</span>
+    }
+
+    public Calendar getFecha() {
+<span class="fc" id="L76">        return fecha;</span>
+    }
+
+    public Hijo getCualHijo() {
+<span class="fc" id="L80">        return cualHijo;</span>
+    }
+
+    public int getId() {
+<span class="fc" id="L84">        return id;</span>
+    }
+
+    public final void setId(int laId) {
+<span class="fc" id="L88">        this.id = laId;</span>
+<span class="fc" id="L89">    }</span>
+
+    public final void setTipo(String elTipo) throws IllegalArgumentException {
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (Auxiliares.noContieneCaracterAlfabetico(elTipo)) {</span>
+<span class="fc" id="L93">            throw new IllegalArgumentException(&quot;Tipo inválido.&quot;);</span>
+        } else {
+<span class="fc" id="L95">            this.tipo = elTipo;</span>
+        }
+<span class="fc" id="L97">    }</span>
+
+    public final void setDescripcion(String laDescripcion) {
+<span class="fc" id="L100">        this.descripcion = laDescripcion;</span>
+<span class="fc" id="L101">    }</span>
+
+    public final void setNotas(String lasNotas) {
+<span class="nc" id="L104">        this.notas = lasNotas;</span>
+<span class="nc" id="L105">    }</span>
+
+    public final void setFecha(Calendar fecha) throws NullPointerException {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (fecha == null) {</span>
+<span class="fc" id="L109">            throw new NullPointerException(&quot;Fecha nula.&quot;);</span>
+        } else {
+<span class="fc" id="L111">            this.fecha = fecha;</span>
+        }
+<span class="fc" id="L113">    }</span>
+
+    public final void setCualHijo(Hijo cualHijo) throws NullPointerException {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (cualHijo == null) {</span>
+<span class="fc" id="L117">            throw new NullPointerException(&quot;Hijo nulo.&quot;);</span>
+        } else {
+<span class="fc" id="L119">            this.cualHijo = cualHijo;</span>
+        }
+<span class="fc" id="L121">    }</span>
+
+    public final void setLugar(String elLugar) throws IllegalArgumentException {
+<span class="fc bfc" id="L124" title="All 4 branches covered.">        if (!elLugar.isEmpty()</span>
+                &amp;&amp; Auxiliares.noContieneCaracterAlfabetico(elLugar)) {
+<span class="fc" id="L126">            throw new IllegalArgumentException(&quot;Lugar inválido.&quot;);</span>
+        } else {
+<span class="fc" id="L128">            this.lugar = elLugar;</span>
+        }
+<span class="fc" id="L130">    }</span>
+
+    public final void setTitulo(String elTitulo) throws IllegalArgumentException {
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (Auxiliares.noContieneCaracterAlfabetico(elTitulo)) {</span>
+<span class="fc" id="L134">            throw new IllegalArgumentException(&quot;Título inválido.&quot;);</span>
+        } else {
+<span class="fc" id="L136">            this.titulo = elTitulo;</span>
+        }
+<span class="fc" id="L138">    }</span>
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L142">        int hash = 7;</span>
+<span class="nc" id="L143">        hash = 23 * hash + this.id;</span>
+<span class="nc" id="L144">        return hash;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L149" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L150">            return false;</span>
+        }
+<span class="fc" id="L152">        final Evento other = (Evento) obj;</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        return this.id == other.id;</span>
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+<span class="fc" id="L158">        Evento otroEvento = (Evento) obj;</span>
+<span class="fc" id="L159">        return this.getFecha().compareTo(otroEvento.getFecha());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

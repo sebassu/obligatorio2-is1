@@ -6,7 +6,7 @@
 package interfaz;
 
 import auxiliar.Par;
-import dominio.CarneVacunas;
+import auxiliar.CarneVacunas;
 import dominio.Hijo;
 import dominio.Sistema;
 import dominio.Vacuna;
@@ -27,7 +27,7 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
 
     private JButton[][] botonesVacunasSistematicas;
     private JButton[][] botonesVacunasNoSistematicas;
-    private final CarneVacunas infoCarne;
+    private transient final CarneVacunas infoCarne;
 
     public VentanaCarneVacunas(Sistema sis, Hijo hijoSeleccionado, Color amarillo,
             Color oscuro, Color claro) {
@@ -48,19 +48,20 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
         Iterator<Par<Vacuna, ArrayList<Calendar>>> iteradorVacunas
                 = hijoSeleccionado.getIteradorHistorialVacunaciones();
         Iterator<Vacuna> vacunasSistema = sis.getVacunas().iterator();
-        String ret = "<u>DESCRIPCIONES</u>";
+        StringBuilder buf = new StringBuilder();
+        buf.append("<u>DESCRIPCIONES</u>");
         while (iteradorVacunas.hasNext()) {
             Par<Vacuna, ArrayList<Calendar>> datoActual = iteradorVacunas.next();
             Vacuna vacunaActual = datoActual.getDato1();
-            ret = ret + "<br>" + vacunaActual.getNombre() + ": " + vacunaActual.getDescripcion();
+            buf.append("<br>").append(vacunaActual.getNombre()).append(": ").append(vacunaActual.getDescripcion());
         }
         while (vacunasSistema.hasNext()) {
             Vacuna vacunaActual = vacunasSistema.next();
             if (!hijoSeleccionado.contieneVacunaDeEsteNombre(vacunaActual.getNombre())) {
-                ret = ret + "<br>" + vacunaActual.getNombre() + ": " + vacunaActual.getDescripcion();
+                buf.append("<br>").append(vacunaActual.getNombre()).append(": ").append(vacunaActual.getDescripcion());
             }
         }
-        descripcionesVacunas.setText("<html>" + ret + "</html>");
+        descripcionesVacunas.setText("<html>" + buf.toString() + "</html>");
     }
 
     private void recomendarNuevasVacunaciones(Hijo hijoSeleccionado, Sistema sis, Color oscuro) {

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ArchivoLectura.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UriarteZuluaga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">persistencia</a> &gt; <span class="el_source">ArchivoLectura.java</span></div><h1>ArchivoLectura.java</h1><pre class="source lang-java linenums">package persistencia;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+/**
+ * Clase Reutilizada de obligatorio de Sebastián Uriarte de Programación 2, 
+ * del segundo semestre del año 2014
+ * 
+ * @author UriarteZuluaga
+ */
+
+public class ArchivoLectura {
+
+//Variable de clase - Mensaje a desplegarse en pantalla en caso de error.
+    private static final String ERR_ARCHIVO = &quot;Ha ocurrido un error al intentar&quot;
+            + &quot; acceder al archivo seleccionado. Verifique que no ha movido, &quot;
+            + &quot; renombrado o eliminado al mismo.&quot;;
+
+//Variables de instancia.
+<span class="nc" id="L22">    private String linea = &quot;&quot;;</span>
+    private BufferedReader in;
+
+//Constructor.
+<span class="nc" id="L26">    public ArchivoLectura(String unNombre) throws FileNotFoundException {</span>
+        try {
+<span class="nc" id="L28">            in = new BufferedReader(new FileReader(unNombre));</span>
+<span class="nc" id="L29">        } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L30">            throw new FileNotFoundException(ERR_ARCHIVO);</span>
+<span class="nc" id="L31">        }</span>
+<span class="nc" id="L32">    }</span>
+
+    /**
+     * Método encargado de la lectura del archivo, retornando un valor Booleano
+     * de existir líneas restantes por leer.
+     *
+     * @return Valor Booleano (True si quedan líneas por leer, False en caso
+     * contrario).
+     * @throws java.io.IOException Excepción lanzada en caso de existir un error
+     * al intentar acceder al archivo.
+     */
+    public boolean hayMasLineas() throws IOException {
+        try {
+<span class="nc" id="L45">            linea = in.readLine();</span>
+<span class="nc" id="L46">        } catch (IOException e) {</span>
+<span class="nc" id="L47">            throw new IOException(ERR_ARCHIVO);</span>
+<span class="nc" id="L48">        }</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        return (linea != null);</span>
+    }
+
+//Método de acceso a la línea leída en el método hayMasLineas() superior.    
+    public String linea() {
+<span class="nc" id="L54">        return linea;</span>
+    }
+
+//Método encargado de cerrar el archivo abierto en el constructor.    
+    public void cerrar() throws IOException {
+        try {
+<span class="nc" id="L60">            in.close();</span>
+<span class="nc" id="L61">        } catch (IOException e) {</span>
+<span class="nc" id="L62">            throw new IOException(ERR_ARCHIVO);</span>
+<span class="nc" id="L63">        }</span>
+<span class="nc" id="L64">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

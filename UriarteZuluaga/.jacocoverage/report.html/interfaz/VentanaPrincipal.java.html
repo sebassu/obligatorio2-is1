@@ -1,0 +1,1118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VentanaPrincipal.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UriarteZuluaga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">interfaz</a> &gt; <span class="el_source">VentanaPrincipal.java</span></div><h1>VentanaPrincipal.java</h1><pre class="source lang-java linenums">package interfaz;
+
+import auxiliar.Auxiliares;
+import dominio.Evento;
+import dominio.Hijo;
+import dominio.Sistema;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Enumeration;
+import javax.swing.AbstractButton;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
+import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+public class VentanaPrincipal extends javax.swing.JFrame {
+
+    public static final String ERR_INGRESO = &quot;Se detectaron errores en los datos &quot;
+            + &quot;ingresados, reintente\nError detectado: &quot;;
+    public static final String ERR_SELECCION = &quot;Debe seleccionar un %s válido para utilizar &quot;
+            + &quot;esta operación del programa.&quot;;
+
+<span class="nc" id="L37">    public static final Color niñoOsc = new Color(60, 154, 40);</span>
+<span class="nc" id="L38">    public static final Color niñoClaro = new Color(135, 186, 19);</span>
+<span class="nc" id="L39">    public static final Color Amarillo = new Color(233, 224, 40);</span>
+<span class="nc" id="L40">    public static final Color niñaOsc = new Color(246, 168, 40);</span>
+<span class="nc" id="L41">    public static final Color niñaClaro = new Color(255, 204, 40);</span>
+
+<span class="nc" id="L43">    public VentanaPrincipal(Sistema sis) {</span>
+<span class="nc" id="L44">        this.modelo = sis;</span>
+<span class="nc" id="L45">        initComponents();</span>
+<span class="nc" id="L46">        setExtendedState(MAXIMIZED_BOTH);</span>
+<span class="nc" id="L47">        activarOpcionesQueRequierenHijos();</span>
+<span class="nc" id="L48">        activarOpcionesModificacionEventos();</span>
+<span class="nc" id="L49">        panelHijos.setLayout(new BoxLayout(panelHijos, BoxLayout.Y_AXIS));</span>
+<span class="nc" id="L50">        panelEventosProximos.setLayout(new BoxLayout(panelEventosProximos, BoxLayout.Y_AXIS));</span>
+<span class="nc" id="L51">        panelDiaSeleccionado.setLayout(new BoxLayout(panelDiaSeleccionado, BoxLayout.Y_AXIS));</span>
+<span class="nc" id="L52">        calendario.setCalendar(Calendar.getInstance());</span>
+<span class="nc" id="L53">        cargarPanelHijos();</span>
+<span class="nc" id="L54">        cargarPanelEventosProximos();</span>
+<span class="nc" id="L55">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+<span class="nc" id="L61">        buttonGroupHijos = new javax.swing.ButtonGroup();</span>
+<span class="nc" id="L62">        buttonGroupEventos = new javax.swing.ButtonGroup();</span>
+<span class="nc" id="L63">        jPanel1 = new javax.swing.JPanel();</span>
+<span class="nc" id="L64">        btnAgregarHijo = new javax.swing.JButton();</span>
+<span class="nc" id="L65">        btnEditarHijo = new javax.swing.JButton();</span>
+<span class="nc" id="L66">        jSeparator1 = new javax.swing.JSeparator();</span>
+<span class="nc" id="L67">        jSeparator2 = new javax.swing.JSeparator();</span>
+<span class="nc" id="L68">        btnEliminarHijo = new javax.swing.JButton();</span>
+<span class="nc" id="L69">        jSeparator3 = new javax.swing.JSeparator();</span>
+<span class="nc" id="L70">        panelScrolleable = new javax.swing.JScrollPane();</span>
+<span class="nc" id="L71">        panelHijos = new javax.swing.JPanel();</span>
+<span class="nc" id="L72">        jPanel3 = new javax.swing.JPanel();</span>
+<span class="nc" id="L73">        jPanel2 = new javax.swing.JPanel();</span>
+<span class="nc" id="L74">        calendario = new com.toedter.calendar.JCalendar();</span>
+<span class="nc" id="L75">        jLabel1 = new javax.swing.JLabel();</span>
+<span class="nc" id="L76">        jPanel4 = new javax.swing.JPanel();</span>
+<span class="nc" id="L77">        jLabel2 = new javax.swing.JLabel();</span>
+<span class="nc" id="L78">        jLabel3 = new javax.swing.JLabel();</span>
+<span class="nc" id="L79">        jScrollPane1 = new javax.swing.JScrollPane();</span>
+<span class="nc" id="L80">        panelDiaSeleccionado = new javax.swing.JPanel();</span>
+<span class="nc" id="L81">        jScrollPane7 = new javax.swing.JScrollPane();</span>
+<span class="nc" id="L82">        panelEventosProximos = new javax.swing.JPanel();</span>
+<span class="nc" id="L83">        jMenuBar1 = new javax.swing.JMenuBar();</span>
+<span class="nc" id="L84">        jMenu3 = new javax.swing.JMenu();</span>
+<span class="nc" id="L85">        itemCargarVacunas = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L86">        jSeparator7 = new javax.swing.JPopupMenu.Separator();</span>
+<span class="nc" id="L87">        mnuSalir = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L88">        jMenu1 = new javax.swing.JMenu();</span>
+<span class="nc" id="L89">        opcRegistrarCarne = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L90">        opcModificarRegistro = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L91">        opcEliminarCarne = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L92">        jSeparator4 = new javax.swing.JPopupMenu.Separator();</span>
+<span class="nc" id="L93">        mnuEventos = new javax.swing.JMenu();</span>
+<span class="nc" id="L94">        opcRegistrarEvento = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L95">        opcModificarEvento = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L96">        opcEliminarEvento = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L97">        jSeparator9 = new javax.swing.JPopupMenu.Separator();</span>
+<span class="nc" id="L98">        opcCompletarEvento = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L99">        mnuGraficas = new javax.swing.JMenu();</span>
+<span class="nc" id="L100">        mnuPeso = new javax.swing.JMenu();</span>
+<span class="nc" id="L101">        opcPeso = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L102">        jSeparator10 = new javax.swing.JPopupMenu.Separator();</span>
+<span class="nc" id="L103">        mnuEstatura = new javax.swing.JMenu();</span>
+<span class="nc" id="L104">        opcEstatura1 = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L105">        opcEstatura2 = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L106">        opcEstatura3 = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L107">        jSeparator11 = new javax.swing.JPopupMenu.Separator();</span>
+<span class="nc" id="L108">        mnuPA = new javax.swing.JMenu();</span>
+<span class="nc" id="L109">        opcPA = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L110">        jSeparator8 = new javax.swing.JPopupMenu.Separator();</span>
+<span class="nc" id="L111">        mnuPerimetro = new javax.swing.JMenu();</span>
+<span class="nc" id="L112">        opcPerimetro = new javax.swing.JMenuItem();</span>
+<span class="nc" id="L113">        mnuCarneVac = new javax.swing.JMenu();</span>
+<span class="nc" id="L114">        opcCarneVac = new javax.swing.JMenuItem();</span>
+
+<span class="nc" id="L116">        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L117">        setBackground(new java.awt.Color(0, 153, 255));</span>
+
+<span class="nc" id="L119">        jPanel1.setBackground(new java.awt.Color(60, 154, 40));</span>
+<span class="nc" id="L120">        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));</span>
+
+<span class="nc" id="L122">        btnAgregarHijo.setIcon(new javax.swing.ImageIcon(getClass().getResource(&quot;/interfaz/imagenes/plus-icon.png&quot;))); // NOI18N</span>
+<span class="nc" id="L123">        btnAgregarHijo.setToolTipText(&quot;Agregar nuevo carné&quot;);</span>
+<span class="nc" id="L124">        btnAgregarHijo.setFocusable(false);</span>
+<span class="nc" id="L125">        btnAgregarHijo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);</span>
+<span class="nc" id="L126">        btnAgregarHijo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);</span>
+<span class="nc" id="L127">        btnAgregarHijo.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L129">                btnAgregarHijoActionPerformed(evt);</span>
+<span class="nc" id="L130">            }</span>
+        });
+
+<span class="nc" id="L133">        btnEditarHijo.setIcon(new javax.swing.ImageIcon(getClass().getResource(&quot;/interfaz/imagenes/textfield-rename-icon.png&quot;))); // NOI18N</span>
+<span class="nc" id="L134">        btnEditarHijo.setToolTipText(&quot;Modificar carné&quot;);</span>
+<span class="nc" id="L135">        btnEditarHijo.setEnabled(false);</span>
+<span class="nc" id="L136">        btnEditarHijo.setFocusable(false);</span>
+<span class="nc" id="L137">        btnEditarHijo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);</span>
+<span class="nc" id="L138">        btnEditarHijo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);</span>
+<span class="nc" id="L139">        btnEditarHijo.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L141">                btnEditarHijoActionPerformed(evt);</span>
+<span class="nc" id="L142">            }</span>
+        });
+
+<span class="nc" id="L145">        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);</span>
+
+<span class="nc" id="L147">        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);</span>
+
+<span class="nc" id="L149">        btnEliminarHijo.setIcon(new javax.swing.ImageIcon(getClass().getResource(&quot;/interfaz/imagenes/edit_delete.png&quot;))); // NOI18N</span>
+<span class="nc" id="L150">        btnEliminarHijo.setToolTipText(&quot;Eliminar carné&quot;);</span>
+<span class="nc" id="L151">        btnEliminarHijo.setEnabled(false);</span>
+<span class="nc" id="L152">        btnEliminarHijo.setFocusable(false);</span>
+<span class="nc" id="L153">        btnEliminarHijo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);</span>
+<span class="nc" id="L154">        btnEliminarHijo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);</span>
+<span class="nc" id="L155">        btnEliminarHijo.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L157">                btnEliminarHijoActionPerformed(evt);</span>
+<span class="nc" id="L158">            }</span>
+        });
+
+<span class="nc" id="L161">        panelScrolleable.setBackground(new java.awt.Color(135, 186, 19));</span>
+<span class="nc" id="L162">        panelScrolleable.setBorder(null);</span>
+
+<span class="nc" id="L164">        panelHijos.setBackground(new java.awt.Color(236, 236, 240));</span>
+
+<span class="nc" id="L166">        javax.swing.GroupLayout panelHijosLayout = new javax.swing.GroupLayout(panelHijos);</span>
+<span class="nc" id="L167">        panelHijos.setLayout(panelHijosLayout);</span>
+<span class="nc" id="L168">        panelHijosLayout.setHorizontalGroup(</span>
+            panelHijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 261, Short.MAX_VALUE)
+        );
+<span class="nc" id="L172">        panelHijosLayout.setVerticalGroup(</span>
+            panelHijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 465, Short.MAX_VALUE)
+        );
+
+<span class="nc" id="L177">        panelScrolleable.setViewportView(panelHijos);</span>
+
+<span class="nc" id="L179">        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);</span>
+<span class="nc" id="L180">        jPanel1.setLayout(jPanel1Layout);</span>
+<span class="nc" id="L181">        jPanel1Layout.setHorizontalGroup(</span>
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(btnAgregarHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditarHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 80, Short.MAX_VALUE))
+            .addComponent(jSeparator3)
+            .addComponent(panelScrolleable, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
+<span class="nc" id="L198">        jPanel1Layout.setVerticalGroup(</span>
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEliminarHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnEditarHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jSeparator2)
+                        .addComponent(jSeparator1)
+                        .addComponent(btnAgregarHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelScrolleable))
+        );
+
+<span class="nc" id="L215">        jPanel3.setBackground(new java.awt.Color(60, 154, 40));</span>
+
+<span class="nc" id="L217">        jPanel2.setBackground(new java.awt.Color(135, 186, 19));</span>
+<span class="nc" id="L218">        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));</span>
+
+<span class="nc" id="L220">        calendario.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));</span>
+<span class="nc" id="L221">        calendario.setDecorationBackgroundColor(new java.awt.Color(233, 224, 40));</span>
+<span class="nc" id="L222">        calendario.setFont(new java.awt.Font(&quot;Tahoma&quot;, 0, 14)); // NOI18N</span>
+<span class="nc" id="L223">        calendario.addPropertyChangeListener(new java.beans.PropertyChangeListener() {</span>
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+<span class="nc" id="L225">                calendarioPropertyChange(evt);</span>
+<span class="nc" id="L226">            }</span>
+        });
+
+<span class="nc" id="L229">        jLabel1.setFont(new java.awt.Font(&quot;Calibri&quot;, 1, 24)); // NOI18N</span>
+<span class="nc" id="L230">        jLabel1.setText(&quot;Calendario de eventos:&quot;);</span>
+
+<span class="nc" id="L232">        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);</span>
+<span class="nc" id="L233">        jPanel2.setLayout(jPanel2Layout);</span>
+<span class="nc" id="L234">        jPanel2Layout.setHorizontalGroup(</span>
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(calendario, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+<span class="nc" id="L245">        jPanel2Layout.setVerticalGroup(</span>
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
+                .addComponent(calendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(39, 39, 39))
+        );
+
+<span class="nc" id="L255">        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);</span>
+<span class="nc" id="L256">        jPanel3.setLayout(jPanel3Layout);</span>
+<span class="nc" id="L257">        jPanel3Layout.setHorizontalGroup(</span>
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+<span class="nc" id="L264">        jPanel3Layout.setVerticalGroup(</span>
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+<span class="nc" id="L272">        jPanel4.setBackground(new java.awt.Color(135, 186, 19));</span>
+
+<span class="nc" id="L274">        jLabel2.setFont(new java.awt.Font(&quot;Tahoma&quot;, 0, 18)); // NOI18N</span>
+<span class="nc" id="L275">        jLabel2.setText(&quot;Día seleccionado:&quot;);</span>
+
+<span class="nc" id="L277">        jLabel3.setFont(new java.awt.Font(&quot;Tahoma&quot;, 0, 18)); // NOI18N</span>
+<span class="nc" id="L278">        jLabel3.setText(&quot;Eventos próximos:&quot;);</span>
+
+<span class="nc" id="L280">        panelDiaSeleccionado.setBackground(new java.awt.Color(236, 236, 240));</span>
+
+<span class="nc" id="L282">        javax.swing.GroupLayout panelDiaSeleccionadoLayout = new javax.swing.GroupLayout(panelDiaSeleccionado);</span>
+<span class="nc" id="L283">        panelDiaSeleccionado.setLayout(panelDiaSeleccionadoLayout);</span>
+<span class="nc" id="L284">        panelDiaSeleccionadoLayout.setHorizontalGroup(</span>
+            panelDiaSeleccionadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 196, Short.MAX_VALUE)
+        );
+<span class="nc" id="L288">        panelDiaSeleccionadoLayout.setVerticalGroup(</span>
+            panelDiaSeleccionadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 344, Short.MAX_VALUE)
+        );
+
+<span class="nc" id="L293">        jScrollPane1.setViewportView(panelDiaSeleccionado);</span>
+
+<span class="nc" id="L295">        panelEventosProximos.setBackground(new java.awt.Color(236, 236, 240));</span>
+
+<span class="nc" id="L297">        javax.swing.GroupLayout panelEventosProximosLayout = new javax.swing.GroupLayout(panelEventosProximos);</span>
+<span class="nc" id="L298">        panelEventosProximos.setLayout(panelEventosProximosLayout);</span>
+<span class="nc" id="L299">        panelEventosProximosLayout.setHorizontalGroup(</span>
+            panelEventosProximosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 196, Short.MAX_VALUE)
+        );
+<span class="nc" id="L303">        panelEventosProximosLayout.setVerticalGroup(</span>
+            panelEventosProximosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 318, Short.MAX_VALUE)
+        );
+
+<span class="nc" id="L308">        jScrollPane7.setViewportView(panelEventosProximos);</span>
+
+<span class="nc" id="L310">        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);</span>
+<span class="nc" id="L311">        jPanel4.setLayout(jPanel4Layout);</span>
+<span class="nc" id="L312">        jPanel4Layout.setHorizontalGroup(</span>
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(0, 26, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+<span class="nc" id="L326">        jPanel4Layout.setVerticalGroup(</span>
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+<span class="nc" id="L340">        jMenu3.setText(&quot;Opciones&quot;);</span>
+
+<span class="nc" id="L342">        itemCargarVacunas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));</span>
+<span class="nc" id="L343">        itemCargarVacunas.setText(&quot;Cargar Vacunas&quot;);</span>
+<span class="nc" id="L344">        itemCargarVacunas.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L346">                itemCargarVacunasActionPerformed(evt);</span>
+<span class="nc" id="L347">            }</span>
+        });
+<span class="nc" id="L349">        jMenu3.add(itemCargarVacunas);</span>
+<span class="nc" id="L350">        jMenu3.add(jSeparator7);</span>
+
+<span class="nc" id="L352">        mnuSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));</span>
+<span class="nc" id="L353">        mnuSalir.setText(&quot;Salir&quot;);</span>
+<span class="nc" id="L354">        mnuSalir.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L356">                mnuSalirActionPerformed(evt);</span>
+<span class="nc" id="L357">            }</span>
+        });
+<span class="nc" id="L359">        jMenu3.add(mnuSalir);</span>
+
+<span class="nc" id="L361">        jMenuBar1.add(jMenu3);</span>
+
+<span class="nc" id="L363">        jMenu1.setText(&quot;Hijos&quot;);</span>
+
+<span class="nc" id="L365">        opcRegistrarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));</span>
+<span class="nc" id="L366">        opcRegistrarCarne.setText(&quot;Registrar Carné&quot;);</span>
+<span class="nc" id="L367">        opcRegistrarCarne.setToolTipText(&quot;Crear un carné nuevo&quot;);</span>
+<span class="nc" id="L368">        opcRegistrarCarne.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L370">                opcRegistrarCarneActionPerformed(evt);</span>
+<span class="nc" id="L371">            }</span>
+        });
+<span class="nc" id="L373">        jMenu1.add(opcRegistrarCarne);</span>
+
+<span class="nc" id="L375">        opcModificarRegistro.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));</span>
+<span class="nc" id="L376">        opcModificarRegistro.setText(&quot;Modificar Registro&quot;);</span>
+<span class="nc" id="L377">        opcModificarRegistro.setEnabled(false);</span>
+<span class="nc" id="L378">        opcModificarRegistro.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L380">                opcModificarRegistroActionPerformed(evt);</span>
+<span class="nc" id="L381">            }</span>
+        });
+<span class="nc" id="L383">        jMenu1.add(opcModificarRegistro);</span>
+
+<span class="nc" id="L385">        opcEliminarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));</span>
+<span class="nc" id="L386">        opcEliminarCarne.setText(&quot;Eliminar Carné&quot;);</span>
+<span class="nc" id="L387">        opcEliminarCarne.setEnabled(false);</span>
+<span class="nc" id="L388">        opcEliminarCarne.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L390">                opcEliminarCarneActionPerformed(evt);</span>
+<span class="nc" id="L391">            }</span>
+        });
+<span class="nc" id="L393">        jMenu1.add(opcEliminarCarne);</span>
+<span class="nc" id="L394">        jMenu1.add(jSeparator4);</span>
+
+<span class="nc" id="L396">        jMenuBar1.add(jMenu1);</span>
+
+<span class="nc" id="L398">        mnuEventos.setText(&quot;Eventos&quot;);</span>
+<span class="nc" id="L399">        mnuEventos.setEnabled(false);</span>
+
+<span class="nc" id="L401">        opcRegistrarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));</span>
+<span class="nc" id="L402">        opcRegistrarEvento.setText(&quot;Registrar Evento&quot;);</span>
+<span class="nc" id="L403">        opcRegistrarEvento.setToolTipText(&quot;Crear un evento nuevo&quot;);</span>
+<span class="nc" id="L404">        opcRegistrarEvento.setEnabled(false);</span>
+<span class="nc" id="L405">        opcRegistrarEvento.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L407">                opcRegistrarEventoActionPerformed(evt);</span>
+<span class="nc" id="L408">            }</span>
+        });
+<span class="nc" id="L410">        mnuEventos.add(opcRegistrarEvento);</span>
+
+<span class="nc" id="L412">        opcModificarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));</span>
+<span class="nc" id="L413">        opcModificarEvento.setText(&quot;Modificar Evento&quot;);</span>
+<span class="nc" id="L414">        opcModificarEvento.setToolTipText(&quot;&quot;);</span>
+<span class="nc" id="L415">        opcModificarEvento.setEnabled(false);</span>
+<span class="nc" id="L416">        opcModificarEvento.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L418">                opcModificarEventoActionPerformed(evt);</span>
+<span class="nc" id="L419">            }</span>
+        });
+<span class="nc" id="L421">        mnuEventos.add(opcModificarEvento);</span>
+
+<span class="nc" id="L423">        opcEliminarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, java.awt.event.InputEvent.CTRL_MASK));</span>
+<span class="nc" id="L424">        opcEliminarEvento.setText(&quot;Eliminar Evento&quot;);</span>
+<span class="nc" id="L425">        opcEliminarEvento.setEnabled(false);</span>
+<span class="nc" id="L426">        opcEliminarEvento.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L428">                opcEliminarEventoActionPerformed(evt);</span>
+<span class="nc" id="L429">            }</span>
+        });
+<span class="nc" id="L431">        mnuEventos.add(opcEliminarEvento);</span>
+<span class="nc" id="L432">        mnuEventos.add(jSeparator9);</span>
+
+<span class="nc" id="L434">        opcCompletarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));</span>
+<span class="nc" id="L435">        opcCompletarEvento.setText(&quot;Completar Evento&quot;);</span>
+<span class="nc" id="L436">        opcCompletarEvento.setEnabled(false);</span>
+<span class="nc" id="L437">        opcCompletarEvento.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L439">                opcCompletarEventoActionPerformed(evt);</span>
+<span class="nc" id="L440">            }</span>
+        });
+<span class="nc" id="L442">        mnuEventos.add(opcCompletarEvento);</span>
+
+<span class="nc" id="L444">        jMenuBar1.add(mnuEventos);</span>
+
+<span class="nc" id="L446">        mnuGraficas.setText(&quot;Gráficas&quot;);</span>
+<span class="nc" id="L447">        mnuGraficas.setEnabled(false);</span>
+
+<span class="nc" id="L449">        mnuPeso.setText(&quot;Peso&quot;);</span>
+<span class="nc" id="L450">        mnuPeso.setEnabled(false);</span>
+
+<span class="nc" id="L452">        opcPeso.setText(&quot;&lt; 2 años&quot;);</span>
+<span class="nc" id="L453">        opcPeso.setEnabled(false);</span>
+<span class="nc" id="L454">        opcPeso.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L456">                opcPesoActionPerformed(evt);</span>
+<span class="nc" id="L457">            }</span>
+        });
+<span class="nc" id="L459">        mnuPeso.add(opcPeso);</span>
+
+<span class="nc" id="L461">        mnuGraficas.add(mnuPeso);</span>
+<span class="nc" id="L462">        mnuGraficas.add(jSeparator10);</span>
+
+<span class="nc" id="L464">        mnuEstatura.setText(&quot;Estatura&quot;);</span>
+<span class="nc" id="L465">        mnuEstatura.setEnabled(false);</span>
+
+<span class="nc" id="L467">        opcEstatura1.setText(&quot;&lt; 2 años&quot;);</span>
+<span class="nc" id="L468">        opcEstatura1.setEnabled(false);</span>
+<span class="nc" id="L469">        opcEstatura1.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L471">                opcEstatura1ActionPerformed(evt);</span>
+<span class="nc" id="L472">            }</span>
+        });
+<span class="nc" id="L474">        mnuEstatura.add(opcEstatura1);</span>
+
+<span class="nc" id="L476">        opcEstatura2.setText(&quot;2 a 5 años&quot;);</span>
+<span class="nc" id="L477">        opcEstatura2.setEnabled(false);</span>
+<span class="nc" id="L478">        opcEstatura2.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L480">                opcEstatura2ActionPerformed(evt);</span>
+<span class="nc" id="L481">            }</span>
+        });
+<span class="nc" id="L483">        mnuEstatura.add(opcEstatura2);</span>
+
+<span class="nc" id="L485">        opcEstatura3.setText(&quot;&gt; 5 años&quot;);</span>
+<span class="nc" id="L486">        opcEstatura3.setEnabled(false);</span>
+<span class="nc" id="L487">        opcEstatura3.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L489">                opcEstatura3ActionPerformed(evt);</span>
+<span class="nc" id="L490">            }</span>
+        });
+<span class="nc" id="L492">        mnuEstatura.add(opcEstatura3);</span>
+
+<span class="nc" id="L494">        mnuGraficas.add(mnuEstatura);</span>
+<span class="nc" id="L495">        mnuGraficas.add(jSeparator11);</span>
+
+<span class="nc" id="L497">        mnuPA.setText(&quot;Peso / Altura&quot;);</span>
+<span class="nc" id="L498">        mnuPA.setEnabled(false);</span>
+
+<span class="nc" id="L500">        opcPA.setText(&quot;&lt; 2 años&quot;);</span>
+<span class="nc" id="L501">        opcPA.setEnabled(false);</span>
+<span class="nc" id="L502">        opcPA.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L504">                opcPAActionPerformed(evt);</span>
+<span class="nc" id="L505">            }</span>
+        });
+<span class="nc" id="L507">        mnuPA.add(opcPA);</span>
+
+<span class="nc" id="L509">        mnuGraficas.add(mnuPA);</span>
+<span class="nc" id="L510">        mnuGraficas.add(jSeparator8);</span>
+
+<span class="nc" id="L512">        mnuPerimetro.setText(&quot;Perímetro Cefálico&quot;);</span>
+<span class="nc" id="L513">        mnuPerimetro.setEnabled(false);</span>
+
+<span class="nc" id="L515">        opcPerimetro.setText(&quot;&lt; 3 años&quot;);</span>
+<span class="nc" id="L516">        opcPerimetro.setEnabled(false);</span>
+<span class="nc" id="L517">        opcPerimetro.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L519">                opcPerimetroActionPerformed(evt);</span>
+<span class="nc" id="L520">            }</span>
+        });
+<span class="nc" id="L522">        mnuPerimetro.add(opcPerimetro);</span>
+
+<span class="nc" id="L524">        mnuGraficas.add(mnuPerimetro);</span>
+
+<span class="nc" id="L526">        jMenuBar1.add(mnuGraficas);</span>
+
+<span class="nc" id="L528">        mnuCarneVac.setText(&quot;Carné de Vacunación&quot;);</span>
+
+<span class="nc" id="L530">        opcCarneVac.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.SHIFT_MASK));</span>
+<span class="nc" id="L531">        opcCarneVac.setText(&quot;Desplegar&quot;);</span>
+<span class="nc" id="L532">        opcCarneVac.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L534">                opcCarneVacActionPerformed(evt);</span>
+<span class="nc" id="L535">            }</span>
+        });
+<span class="nc" id="L537">        mnuCarneVac.add(opcCarneVac);</span>
+
+<span class="nc" id="L539">        jMenuBar1.add(mnuCarneVac);</span>
+
+<span class="nc" id="L541">        setJMenuBar(jMenuBar1);</span>
+
+<span class="nc" id="L543">        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());</span>
+<span class="nc" id="L544">        getContentPane().setLayout(layout);</span>
+<span class="nc" id="L545">        layout.setHorizontalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+<span class="nc" id="L555">        layout.setVerticalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+<span class="nc" id="L562">        pack();</span>
+<span class="nc" id="L563">    }// &lt;/editor-fold&gt;//GEN-END:initComponents</span>
+
+    private void btnEditarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarHijoActionPerformed
+<span class="nc" id="L566">        modificarHijoSeleccionado();</span>
+<span class="nc" id="L567">    }//GEN-LAST:event_btnEditarHijoActionPerformed</span>
+
+    private int getPosHijoSeleccionado() {
+<span class="nc bnc" id="L570" title="All 2 branches missed.">        for (Enumeration&lt;AbstractButton&gt; botonesHijos = buttonGroupHijos.getElements(); botonesHijos.hasMoreElements();) {</span>
+<span class="nc" id="L571">            AbstractButton boton = botonesHijos.nextElement();</span>
+<span class="nc bnc" id="L572" title="All 2 branches missed.">            if (boton.isSelected()) {</span>
+<span class="nc" id="L573">                return Integer.parseInt(boton.getName());</span>
+            }
+<span class="nc" id="L575">        }</span>
+<span class="nc" id="L576">        return -1;</span>
+    }
+
+    private int getPosEventoSeleccionado() {
+<span class="nc bnc" id="L580" title="All 2 branches missed.">        for (Enumeration&lt;AbstractButton&gt; botonesEventos = buttonGroupEventos.getElements(); botonesEventos.hasMoreElements();) {</span>
+<span class="nc" id="L581">            AbstractButton button = botonesEventos.nextElement();</span>
+<span class="nc bnc" id="L582" title="All 2 branches missed.">            if (button.isSelected()) {</span>
+<span class="nc" id="L583">                return Integer.parseInt(button.getName());</span>
+            }
+<span class="nc" id="L585">        }</span>
+<span class="nc" id="L586">        return -1;</span>
+    }
+
+    private void btnAgregarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarHijoActionPerformed
+<span class="nc" id="L590">        registrarHijo();</span>
+<span class="nc" id="L591">    }//GEN-LAST:event_btnAgregarHijoActionPerformed</span>
+
+    private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
+<span class="nc" id="L594">        this.dispose();</span>
+<span class="nc" id="L595">    }//GEN-LAST:event_mnuSalirActionPerformed</span>
+
+    private void opcModificarRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcModificarRegistroActionPerformed
+<span class="nc" id="L598">        modificarHijoSeleccionado();</span>
+<span class="nc" id="L599">    }//GEN-LAST:event_opcModificarRegistroActionPerformed</span>
+
+    private void opcEliminarCarneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEliminarCarneActionPerformed
+<span class="nc" id="L602">        eliminarHijoSeleccionado();</span>
+<span class="nc" id="L603">    }//GEN-LAST:event_opcEliminarCarneActionPerformed</span>
+
+    private void opcRegistrarCarneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcRegistrarCarneActionPerformed
+<span class="nc" id="L606">        registrarHijo();</span>
+<span class="nc" id="L607">    }//GEN-LAST:event_opcRegistrarCarneActionPerformed</span>
+
+    private void itemCargarVacunasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCargarVacunasActionPerformed
+        boolean aux;
+        do {
+<span class="nc" id="L612">            JFileChooser fc = new JFileChooser();</span>
+<span class="nc" id="L613">            fc.setCurrentDirectory(new File(&quot;/&quot;));</span>
+<span class="nc" id="L614">            fc.setFileFilter(new FileNameExtensionFilter(&quot;Archivo de texto&quot;, &quot;txt&quot;));</span>
+<span class="nc" id="L615">            int respuesta = fc.showOpenDialog(this);</span>
+<span class="nc bnc" id="L616" title="All 2 branches missed.">            aux = respuesta == JFileChooser.APPROVE_OPTION;</span>
+<span class="nc bnc" id="L617" title="All 2 branches missed.">            if (aux) {</span>
+                try {
+<span class="nc" id="L619">                    modelo.cargarVacunasDeArchivo(fc.getSelectedFile().getAbsolutePath());</span>
+<span class="nc" id="L620">                    aux = false;</span>
+<span class="nc" id="L621">                } catch (IOException | IllegalArgumentException e) {</span>
+<span class="nc" id="L622">                    JOptionPane.showMessageDialog(this, e.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L623">                }</span>
+            }
+<span class="nc bnc" id="L625" title="All 2 branches missed.">        } while (aux);</span>
+<span class="nc" id="L626">    }//GEN-LAST:event_itemCargarVacunasActionPerformed</span>
+
+    private void btnEliminarHijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarHijoActionPerformed
+<span class="nc" id="L629">        eliminarHijoSeleccionado();</span>
+<span class="nc" id="L630">    }//GEN-LAST:event_btnEliminarHijoActionPerformed</span>
+
+    private void opcRegistrarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcRegistrarEventoActionPerformed
+<span class="nc" id="L633">        VentanaCrearEvento v = new VentanaCrearEvento(modelo, -1, this);</span>
+<span class="nc" id="L634">        v.setLocationRelativeTo(this);</span>
+<span class="nc" id="L635">        v.setVisible(true);</span>
+<span class="nc" id="L636">    }//GEN-LAST:event_opcRegistrarEventoActionPerformed</span>
+
+    private void opcModificarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcModificarEventoActionPerformed
+<span class="nc" id="L639">        VentanaCrearEvento v = new VentanaCrearEvento(modelo, getPosEventoSeleccionado(), this);</span>
+<span class="nc" id="L640">        v.setLocationRelativeTo(this);</span>
+<span class="nc" id="L641">        v.setVisible(true);</span>
+<span class="nc" id="L642">    }//GEN-LAST:event_opcModificarEventoActionPerformed</span>
+
+    private void opcEliminarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEliminarEventoActionPerformed
+<span class="nc" id="L645">        int pos = getPosEventoSeleccionado();</span>
+<span class="nc bnc" id="L646" title="All 4 branches missed.">        if (pos != -1 &amp;&amp; pos &lt; modelo.getCantidadEventosARealizar()) {</span>
+<span class="nc" id="L647">            int opcion = JOptionPane.showConfirmDialog(this, &quot;¿Está seguro/a que desea eliminar al &quot;</span>
+                    + &quot;evento seleccionado?&quot;, &quot;Confirme su selección&quot;,
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+<span class="nc bnc" id="L650" title="All 2 branches missed.">            if (opcion == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L651">                modelo.eliminarEventoPorPos(pos);</span>
+<span class="nc" id="L652">                cargarPanelEventosProximos();</span>
+<span class="nc" id="L653">                cargarPanelEventosDelDia();</span>
+<span class="nc" id="L654">                pintarDia(calendario.getCalendar());</span>
+<span class="nc" id="L655">                JOptionPane.showMessageDialog(this, &quot;El evento se ha borrado exitosamente&quot;</span>
+                        + &quot; del programa.&quot;, &quot;Operación completada&quot;, JOptionPane.INFORMATION_MESSAGE);
+<span class="nc" id="L657">                activarOpcionesModificacionEventos();</span>
+            }
+<span class="nc" id="L659">        } else {</span>
+<span class="nc" id="L660">            mostrarErrorSeleccionarEvento();</span>
+        }
+<span class="nc" id="L662">    }//GEN-LAST:event_opcEliminarEventoActionPerformed</span>
+
+    private void calendarioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarioPropertyChange
+<span class="nc" id="L665">        actualizarPanelFechas();</span>
+<span class="nc" id="L666">        cargarPanelEventosDelDia();</span>
+<span class="nc" id="L667">    }//GEN-LAST:event_calendarioPropertyChange</span>
+
+    private void opcCompletarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcCompletarEventoActionPerformed
+<span class="nc" id="L670">        VentanaCompletarEvento v = new VentanaCompletarEvento(modelo, getPosEventoSeleccionado(), this);</span>
+<span class="nc" id="L671">        v.setLocationRelativeTo(this);</span>
+<span class="nc" id="L672">        v.setVisible(true);</span>
+<span class="nc" id="L673">    }//GEN-LAST:event_opcCompletarEventoActionPerformed</span>
+
+    private void opcEstatura3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEstatura3ActionPerformed
+<span class="nc" id="L676">        mostrarVentanaGraficas(4);</span>
+<span class="nc" id="L677">    }//GEN-LAST:event_opcEstatura3ActionPerformed</span>
+
+    private void opcPesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcPesoActionPerformed
+<span class="nc" id="L680">        mostrarVentanaGraficas(1);</span>
+<span class="nc" id="L681">    }//GEN-LAST:event_opcPesoActionPerformed</span>
+
+    private void opcEstatura1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEstatura1ActionPerformed
+<span class="nc" id="L684">        mostrarVentanaGraficas(2);</span>
+<span class="nc" id="L685">    }//GEN-LAST:event_opcEstatura1ActionPerformed</span>
+
+    private void opcEstatura2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEstatura2ActionPerformed
+<span class="nc" id="L688">        mostrarVentanaGraficas(3);</span>
+<span class="nc" id="L689">    }//GEN-LAST:event_opcEstatura2ActionPerformed</span>
+
+    private void opcPAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcPAActionPerformed
+<span class="nc" id="L692">        mostrarVentanaGraficas(5);</span>
+<span class="nc" id="L693">    }//GEN-LAST:event_opcPAActionPerformed</span>
+
+    private void opcPerimetroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcPerimetroActionPerformed
+<span class="nc" id="L696">        mostrarVentanaGraficas(6);</span>
+<span class="nc" id="L697">    }//GEN-LAST:event_opcPerimetroActionPerformed</span>
+
+    private void opcCarneVacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcCarneVacActionPerformed
+<span class="nc" id="L700">        int pos = this.getPosHijoSeleccionado();</span>
+<span class="nc bnc" id="L701" title="All 2 branches missed.">        if (pos != -1) {</span>
+<span class="nc" id="L702">            Hijo hijoSeleccionado = modelo.getHijo(pos);</span>
+            VentanaCarneVacunas v;
+<span class="nc bnc" id="L704" title="All 2 branches missed.">            if (hijoSeleccionado.esHombre()) {</span>
+<span class="nc" id="L705">                v = new VentanaCarneVacunas(modelo, hijoSeleccionado, Amarillo, niñoOsc, niñoClaro);</span>
+            } else {
+<span class="nc" id="L707">                v = new VentanaCarneVacunas(modelo, hijoSeleccionado, Amarillo, niñaOsc, niñaClaro);</span>
+            }
+<span class="nc" id="L709">            v.setLocationRelativeTo(this);</span>
+<span class="nc" id="L710">            v.setVisible(true);</span>
+<span class="nc" id="L711">        } else {</span>
+<span class="nc" id="L712">            mostrarErrorSeleccionarHijo();</span>
+        }
+<span class="nc" id="L714">    }//GEN-LAST:event_opcCarneVacActionPerformed</span>
+
+    private void mostrarVentanaGraficas(int tipoDeGrafica) {
+<span class="nc" id="L717">        Hijo hijoSeleccionado = modelo.getHijo(getPosHijoSeleccionado());</span>
+<span class="nc" id="L718">        VentanaGraficas v = new VentanaGraficas(hijoSeleccionado, tipoDeGrafica);</span>
+<span class="nc" id="L719">        v.setLocationRelativeTo(this);</span>
+<span class="nc" id="L720">        v.setVisible(true);</span>
+<span class="nc" id="L721">    }</span>
+
+    private void modificarHijoSeleccionado() {
+<span class="nc" id="L724">        int pos = getPosHijoSeleccionado();</span>
+<span class="nc bnc" id="L725" title="All 4 branches missed.">        if (pos != -1 &amp;&amp; pos &lt; modelo.getCantidadHijos()) {</span>
+<span class="nc" id="L726">            VentanaCrearHijo v = new VentanaCrearHijo(modelo,</span>
+                    modelo.getHijo(getPosHijoSeleccionado()), true, this);
+<span class="nc" id="L728">            v.setLocationRelativeTo(this);</span>
+<span class="nc" id="L729">            v.setVisible(true);</span>
+<span class="nc" id="L730">        } else {</span>
+<span class="nc" id="L731">            mostrarErrorSeleccionarHijo();</span>
+        }
+<span class="nc" id="L733">    }</span>
+
+    private void registrarHijo() {
+<span class="nc" id="L736">        VentanaCrearHijo v = new VentanaCrearHijo(modelo, null, false, this);</span>
+<span class="nc" id="L737">        v.setLocationRelativeTo(this);</span>
+<span class="nc" id="L738">        v.setVisible(true);</span>
+<span class="nc" id="L739">    }</span>
+
+    private void eliminarHijoSeleccionado() {
+<span class="nc" id="L742">        int pos = getPosHijoSeleccionado();</span>
+<span class="nc bnc" id="L743" title="All 4 branches missed.">        if (pos != -1 &amp;&amp; pos &lt; modelo.getCantidadHijos()) {</span>
+<span class="nc" id="L744">            int opcion = JOptionPane.showConfirmDialog(this, &quot;¿Está seguro/a que desea eliminar al &quot;</span>
+                    + &quot;carné seleccionado?&quot;, &quot;Confirme su selección&quot;,
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+<span class="nc bnc" id="L747" title="All 2 branches missed.">            if (opcion == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L748">                modelo.eliminarHijoPorPos(getPosHijoSeleccionado());</span>
+<span class="nc" id="L749">                JOptionPane.showMessageDialog(this, &quot;El registro se ha borrado exitosamente&quot;</span>
+                        + &quot; del programa.&quot;, &quot;Operación completada&quot;, JOptionPane.INFORMATION_MESSAGE);
+<span class="nc" id="L751">                cargarPanelHijos();</span>
+<span class="nc" id="L752">                activarOpcionesQueRequierenHijos();</span>
+            }
+<span class="nc" id="L754">        } else {</span>
+<span class="nc" id="L755">            mostrarErrorSeleccionarHijo();</span>
+        }
+<span class="nc" id="L757">    }</span>
+
+    public final void activarOpcionesQueRequierenHijos() {
+<span class="nc bnc" id="L760" title="All 2 branches missed.">        if (modelo.getCantidadHijos() &gt; 0) {</span>
+<span class="nc" id="L761">            opcModificarRegistro.setEnabled(true);</span>
+<span class="nc" id="L762">            opcEliminarCarne.setEnabled(true);</span>
+<span class="nc" id="L763">            btnEditarHijo.setEnabled(true);</span>
+<span class="nc" id="L764">            btnEliminarHijo.setEnabled(true);</span>
+<span class="nc" id="L765">            mnuEventos.setEnabled(true);</span>
+<span class="nc" id="L766">            opcRegistrarEvento.setEnabled(true);</span>
+        } else {
+<span class="nc" id="L768">            opcModificarRegistro.setEnabled(false);</span>
+<span class="nc" id="L769">            opcEliminarCarne.setEnabled(false);</span>
+<span class="nc" id="L770">            btnEditarHijo.setEnabled(false);</span>
+<span class="nc" id="L771">            btnEliminarHijo.setEnabled(false);</span>
+<span class="nc" id="L772">            opcRegistrarEvento.setEnabled(false);</span>
+<span class="nc" id="L773">            mnuEventos.setEnabled(opcModificarEvento.isEnabled());</span>
+        }
+<span class="nc" id="L775">    }</span>
+
+    public final void activarOpcionesModificacionEventos() {
+<span class="nc bnc" id="L778" title="All 2 branches missed.">        if (modelo.getCantidadEventosARealizar() &gt; 0) {</span>
+<span class="nc" id="L779">            mnuEventos.setEnabled(true);</span>
+<span class="nc" id="L780">            opcModificarEvento.setEnabled(true);</span>
+<span class="nc" id="L781">            opcEliminarEvento.setEnabled(true);</span>
+<span class="nc" id="L782">            opcCompletarEvento.setEnabled(true);</span>
+        } else {
+<span class="nc" id="L784">            opcModificarEvento.setEnabled(false);</span>
+<span class="nc" id="L785">            opcEliminarEvento.setEnabled(false);</span>
+<span class="nc" id="L786">            opcCompletarEvento.setEnabled(false);</span>
+<span class="nc" id="L787">            mnuEventos.setEnabled(opcRegistrarEvento.isEnabled());</span>
+        }
+<span class="nc" id="L789">    }</span>
+
+    public final void cargarPanelHijos() {
+<span class="nc" id="L792">        panelHijos.removeAll();</span>
+<span class="nc bnc" id="L793" title="All 2 branches missed.">        if (modelo.getCantidadHijos() == 0) {</span>
+<span class="nc" id="L794">            panelHijos.add(Box.createRigidArea(new Dimension(150, 45)));</span>
+<span class="nc" id="L795">            JLabel label = new JLabel(&quot;Sin Hijos a mostrar&quot;);</span>
+<span class="nc" id="L796">            label.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 18));</span>
+<span class="nc" id="L797">            label.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+<span class="nc" id="L798">            panelHijos.add(label);</span>
+<span class="nc" id="L799">        } else {</span>
+<span class="nc bnc" id="L800" title="All 2 branches missed.">            for (int i = 0; i &lt; modelo.getCantidadHijos(); i++) {</span>
+<span class="nc" id="L801">                panelHijos.add(Box.createRigidArea(new Dimension(150, 25)));</span>
+<span class="nc" id="L802">                final Hijo h = modelo.getHijo(i);</span>
+<span class="nc" id="L803">                JToggleButton aux = new JToggleButton();</span>
+<span class="nc" id="L804">                aux.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+<span class="nc" id="L805">                aux.setBorderPainted(false);</span>
+<span class="nc bnc" id="L806" title="All 2 branches missed.">                aux.setBackground((h.esHombre() ? niñoClaro : niñaClaro));</span>
+<span class="nc" id="L807">                aux.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 14));</span>
+<span class="nc" id="L808">                aux.setText(&quot;     &quot; + h.getNombre() + &quot;     &quot;);</span>
+<span class="nc" id="L809">                aux.setMinimumSize(new Dimension(150, 75));</span>
+<span class="nc" id="L810">                aux.setName(&quot;&quot; + i);</span>
+<span class="nc" id="L811">                aux.addActionListener(new ActionListener() {</span>
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L814">                        repintarFondo(h.esHombre());</span>
+<span class="nc" id="L815">                        activarOpcionesGraficas(h);</span>
+<span class="nc" id="L816">                    }</span>
+                });
+<span class="nc" id="L818">                aux.setVisible(true);</span>
+<span class="nc" id="L819">                aux.setOpaque(true);</span>
+<span class="nc" id="L820">                panelHijos.add(aux);</span>
+<span class="nc" id="L821">                buttonGroupHijos.add(aux);</span>
+            }
+        }
+<span class="nc" id="L824">        panelHijos.validate();</span>
+<span class="nc" id="L825">        panelHijos.repaint();</span>
+<span class="nc" id="L826">        panelHijos.updateUI();</span>
+<span class="nc" id="L827">        panelHijos.setVisible(false);</span>
+<span class="nc" id="L828">        panelHijos.setVisible(true);</span>
+<span class="nc" id="L829">    }</span>
+
+    public final void cargarPanelEventosProximos() {
+<span class="nc" id="L832">        panelEventosProximos.removeAll();</span>
+<span class="nc bnc" id="L833" title="All 2 branches missed.">        if (modelo.getCantidadEventosARealizar() == 0) {</span>
+<span class="nc" id="L834">            panelEventosProximos.add(Box.createRigidArea(new Dimension(170, 45)));</span>
+<span class="nc" id="L835">            JLabel label = new JLabel(&quot;Sin Eventos a mostrar&quot;);</span>
+<span class="nc" id="L836">            label.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 24));</span>
+<span class="nc" id="L837">            label.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+<span class="nc" id="L838">            panelEventosProximos.add(label);</span>
+<span class="nc" id="L839">        } else {</span>
+<span class="nc bnc" id="L840" title="All 2 branches missed.">            for (int i = 0; i &lt; modelo.getCantidadEventosARealizar(); i++) {</span>
+<span class="nc" id="L841">                Evento evento = modelo.getEvento(i);</span>
+<span class="nc bnc" id="L842" title="All 2 branches missed.">                if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {</span>
+<span class="nc" id="L843">                    panelEventosProximos.add(Box.createRigidArea(new Dimension(75, 20)));</span>
+<span class="nc" id="L844">                    JToggleButton aux = generarBotonEvento(evento);</span>
+<span class="nc" id="L845">                    aux.setBackground(Color.red);</span>
+<span class="nc" id="L846">                    SimpleDateFormat formatoFecha = new SimpleDateFormat(&quot;dd-MM-yyyy&quot;);</span>
+<span class="nc" id="L847">                    aux.setText(evento.getTitulo() + &quot; (&quot;</span>
+                            + formatoFecha.format(evento.getFecha().getTime()) + &quot;)&quot;);
+<span class="nc" id="L849">                    aux.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));</span>
+<span class="nc" id="L850">                    aux.setName(&quot;&quot; + i);</span>
+<span class="nc" id="L851">                    panelEventosProximos.add(aux);</span>
+<span class="nc" id="L852">                    buttonGroupEventos.add(aux);</span>
+                }
+            }
+        }
+<span class="nc" id="L856">        panelEventosProximos.validate();</span>
+<span class="nc" id="L857">        panelEventosProximos.repaint();</span>
+<span class="nc" id="L858">        panelEventosProximos.updateUI();</span>
+<span class="nc" id="L859">        panelEventosProximos.setVisible(false);</span>
+<span class="nc" id="L860">        panelEventosProximos.setVisible(true);</span>
+<span class="nc" id="L861">    }</span>
+
+    public final void cargarPanelEventosDelDia() {
+<span class="nc" id="L864">        boolean encontro = false;</span>
+<span class="nc" id="L865">        panelDiaSeleccionado.removeAll();</span>
+<span class="nc" id="L866">        Calendar fechaSeleccionada = calendario.getCalendar();</span>
+<span class="nc bnc" id="L867" title="All 2 branches missed.">        for (int i = 0; i &lt; modelo.getCantidadEventosARealizar(); i++) {</span>
+<span class="nc" id="L868">            Evento evento = modelo.getEvento(i);</span>
+<span class="nc bnc" id="L869" title="All 2 branches missed.">            if (Auxiliares.compararFechas(evento.getFecha(), fechaSeleccionada)) {</span>
+<span class="nc" id="L870">                encontro = true;</span>
+<span class="nc" id="L871">                panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(75, 20)));</span>
+<span class="nc" id="L872">                JToggleButton botonGenerado = generarBotonEvento(evento);</span>
+<span class="nc" id="L873">                botonGenerado.setText(evento.getTitulo());</span>
+<span class="nc" id="L874">                botonGenerado.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));</span>
+<span class="nc" id="L875">                botonGenerado.setName(&quot;&quot; + i);</span>
+<span class="nc bnc" id="L876" title="All 2 branches missed.">                if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {</span>
+<span class="nc" id="L877">                    botonGenerado.setBackground(Color.red);</span>
+                } else {
+<span class="nc" id="L879">                    botonGenerado.setBackground(Color.orange);</span>
+                }
+<span class="nc" id="L881">                botonGenerado.setToolTipText(evento.getDescripcion());</span>
+<span class="nc" id="L882">                panelDiaSeleccionado.add(botonGenerado);</span>
+<span class="nc" id="L883">                buttonGroupEventos.add(botonGenerado);</span>
+<span class="nc bnc" id="L884" title="All 2 branches missed.">            } else if (evento.getFecha().compareTo(fechaSeleccionada) &gt; 0) {</span>
+<span class="nc" id="L885">                break;</span>
+            }
+        }
+<span class="nc bnc" id="L888" title="All 2 branches missed.">        for (Evento evento : modelo.getEventosCompletados()) {</span>
+<span class="nc bnc" id="L889" title="All 2 branches missed.">            if (Auxiliares.compararFechas(evento.getFecha(), fechaSeleccionada)) {</span>
+<span class="nc" id="L890">                encontro = true;</span>
+<span class="nc" id="L891">                panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(75, 15)));</span>
+<span class="nc" id="L892">                JToggleButton botonGenerado = generarBotonEvento(evento);</span>
+<span class="nc" id="L893">                botonGenerado.setText(evento.getTitulo());</span>
+<span class="nc" id="L894">                botonGenerado.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));</span>
+<span class="nc" id="L895">                botonGenerado.setToolTipText(evento.getNotas());</span>
+<span class="nc" id="L896">                botonGenerado.setBackground(niñoClaro);</span>
+<span class="nc" id="L897">                botonGenerado.setEnabled(false);</span>
+<span class="nc" id="L898">                panelDiaSeleccionado.add(botonGenerado);</span>
+<span class="nc bnc" id="L899" title="All 2 branches missed.">            } else if (evento.getFecha().compareTo(fechaSeleccionada) &gt; 0) {</span>
+<span class="nc" id="L900">                break;</span>
+            }
+<span class="nc" id="L902">        }</span>
+<span class="nc bnc" id="L903" title="All 2 branches missed.">        if (!encontro) {</span>
+<span class="nc" id="L904">            panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(170, 45)));</span>
+<span class="nc" id="L905">            JLabel label = new JLabel(&quot;Sin Eventos a mostrar&quot;);</span>
+<span class="nc" id="L906">            label.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 24));</span>
+<span class="nc" id="L907">            label.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+<span class="nc" id="L908">            panelDiaSeleccionado.add(label);</span>
+        }
+<span class="nc" id="L910">        panelDiaSeleccionado.validate();</span>
+<span class="nc" id="L911">        panelDiaSeleccionado.repaint();</span>
+<span class="nc" id="L912">        panelDiaSeleccionado.updateUI();</span>
+<span class="nc" id="L913">        panelDiaSeleccionado.setVisible(false);</span>
+<span class="nc" id="L914">        panelDiaSeleccionado.setVisible(true);</span>
+<span class="nc" id="L915">    }</span>
+
+    private JToggleButton generarBotonEvento(Evento evento) {
+<span class="nc" id="L918">        JToggleButton aux = new JToggleButton();</span>
+<span class="nc" id="L919">        aux.setBorderPainted(false);</span>
+<span class="nc" id="L920">        aux.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+<span class="nc bnc" id="L921" title="All 10 branches missed.">        switch (evento.getTipo()) {</span>
+            case &quot;Consulta&quot;:
+<span class="nc" id="L923">                aux.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 20));</span>
+<span class="nc" id="L924">                break;</span>
+            case &quot;Vacunación&quot;:
+<span class="nc" id="L926">                aux.setFont(new Font(&quot;Tahoma&quot;, Font.ITALIC, 20));</span>
+<span class="nc" id="L927">                break;</span>
+            default:
+<span class="nc" id="L929">                aux.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 20));</span>
+                break;
+        }
+<span class="nc" id="L932">        aux.setText(evento.getTitulo());</span>
+<span class="nc" id="L933">        aux.setVisible(true);</span>
+<span class="nc" id="L934">        aux.setOpaque(true);</span>
+<span class="nc" id="L935">        return aux;</span>
+    }
+
+    private void repintarFondo(boolean esHombre) {
+<span class="nc bnc" id="L939" title="All 2 branches missed.">        if (esHombre) {</span>
+<span class="nc" id="L940">            jPanel1.setBackground(niñoOsc);</span>
+<span class="nc" id="L941">            jPanel2.setBackground(niñoClaro);</span>
+<span class="nc" id="L942">            jPanel3.setBackground(niñoOsc);</span>
+<span class="nc" id="L943">            jPanel4.setBackground(niñoClaro);</span>
+        } else {
+<span class="nc" id="L945">            jPanel1.setBackground(niñaOsc);</span>
+<span class="nc" id="L946">            jPanel2.setBackground(niñaClaro);</span>
+<span class="nc" id="L947">            jPanel3.setBackground(niñaOsc);</span>
+<span class="nc" id="L948">            jPanel4.setBackground(niñaClaro);</span>
+        }
+<span class="nc" id="L950">    }</span>
+
+    private void actualizarPanelFechas() {
+<span class="nc" id="L953">        Calendar fechaSeleccionada = calendario.getCalendar();</span>
+<span class="nc" id="L954">        int diaMaximo = fechaSeleccionada.getActualMaximum(Calendar.DAY_OF_MONTH);</span>
+<span class="nc bnc" id="L955" title="All 2 branches missed.">        for (int i = 1; i &lt;= diaMaximo; i++) {</span>
+<span class="nc" id="L956">            Calendar aux = Calendar.getInstance();</span>
+<span class="nc" id="L957">            aux.set(fechaSeleccionada.get(Calendar.YEAR),</span>
+                    fechaSeleccionada.get(Calendar.MONTH), i);
+<span class="nc" id="L959">            pintarDia(aux);</span>
+        }
+<span class="nc" id="L961">    }</span>
+
+    public void activarOpcionesGraficas(Hijo h) {
+<span class="nc" id="L964">        int count = 0;</span>
+<span class="nc" id="L965">        boolean noHayPesos = h.getListaPesos().isEmpty();</span>
+<span class="nc bnc" id="L966" title="All 2 branches missed.">        if (noHayPesos) {</span>
+<span class="nc" id="L967">            opcPeso.setEnabled(false);</span>
+<span class="nc" id="L968">            mnuPeso.setEnabled(false);</span>
+<span class="nc" id="L969">            opcPA.setEnabled(false);</span>
+<span class="nc" id="L970">            mnuPA.setEnabled(false);</span>
+<span class="nc" id="L971">            count++;</span>
+        } else {
+<span class="nc" id="L973">            opcPeso.setEnabled(true);</span>
+<span class="nc" id="L974">            mnuPeso.setEnabled(true);</span>
+        }
+<span class="nc bnc" id="L976" title="All 2 branches missed.">        if (h.getListaAlturas().isEmpty()) {</span>
+<span class="nc" id="L977">            opcEstatura1.setEnabled(false);</span>
+<span class="nc" id="L978">            opcEstatura2.setEnabled(false);</span>
+<span class="nc" id="L979">            opcEstatura3.setEnabled(false);</span>
+<span class="nc" id="L980">            mnuEstatura.setEnabled(false);</span>
+<span class="nc" id="L981">            count++;</span>
+<span class="nc" id="L982">            opcPA.setEnabled(false);</span>
+<span class="nc" id="L983">            mnuPA.setEnabled(false);</span>
+        } else {
+<span class="nc bnc" id="L985" title="All 2 branches missed.">            if (!noHayPesos) {</span>
+<span class="nc" id="L986">                opcPA.setEnabled(true);</span>
+<span class="nc" id="L987">                mnuPA.setEnabled(true);</span>
+            }
+<span class="nc" id="L989">            opcEstatura1.setEnabled(true);</span>
+<span class="nc" id="L990">            opcEstatura2.setEnabled(true);</span>
+<span class="nc" id="L991">            opcEstatura3.setEnabled(true);</span>
+<span class="nc" id="L992">            mnuEstatura.setEnabled(true);</span>
+        }
+<span class="nc bnc" id="L994" title="All 2 branches missed.">        if (h.getListaPerimetrosCefalicos().isEmpty()) {</span>
+<span class="nc" id="L995">            opcPerimetro.setEnabled(false);</span>
+<span class="nc" id="L996">            mnuPerimetro.setEnabled(false);</span>
+<span class="nc" id="L997">            count++;</span>
+        } else {
+<span class="nc" id="L999">            opcPerimetro.setEnabled(true);</span>
+<span class="nc" id="L1000">            mnuPerimetro.setEnabled(true);</span>
+        }
+<span class="nc bnc" id="L1002" title="All 2 branches missed.">        mnuGraficas.setEnabled(count != 3);</span>
+<span class="nc" id="L1003">    }</span>
+
+    public void pintarDia(Calendar laFecha) {
+<span class="nc" id="L1006">        Calendar cal = Calendar.getInstance();</span>
+<span class="nc" id="L1007">        cal.set(laFecha.get(Calendar.YEAR), laFecha.get(Calendar.MONTH), 1);</span>
+<span class="nc" id="L1008">        Date primerDia = cal.getTime();</span>
+<span class="nc" id="L1009">        DateFormat sdf = new SimpleDateFormat(&quot;u&quot;);</span>
+<span class="nc" id="L1010">        int dia = laFecha.get(Calendar.DAY_OF_MONTH) + Integer.parseInt(sdf.format(primerDia)) + 5;</span>
+<span class="nc" id="L1011">        Component componentes[] = calendario.getDayChooser().getDayPanel().getComponents();</span>
+<span class="nc" id="L1012">        Component componente = componentes[dia];</span>
+<span class="nc" id="L1013">        int cantidadEventosDia = 0;</span>
+<span class="nc" id="L1014">        int cantidadEventosCompletadosDia = 0;</span>
+<span class="nc bnc" id="L1015" title="All 2 branches missed.">        for (int i = 0; i &lt; modelo.getCantidadEventosARealizar(); i++) {</span>
+<span class="nc" id="L1016">            Calendar fechaEvento = modelo.getEvento(i).getFecha();</span>
+<span class="nc bnc" id="L1017" title="All 2 branches missed.">            if (Auxiliares.compararFechas(fechaEvento, laFecha)) {</span>
+<span class="nc" id="L1018">                cantidadEventosDia++;</span>
+<span class="nc bnc" id="L1019" title="All 2 branches missed.">            } else if (fechaEvento.compareTo(laFecha) &gt; 0) {</span>
+<span class="nc" id="L1020">                break;</span>
+            }
+        }
+<span class="nc bnc" id="L1023" title="All 2 branches missed.">        for (Evento e : modelo.getEventosCompletados()) {</span>
+<span class="nc" id="L1024">            Calendar fechaEvento = e.getFecha();</span>
+<span class="nc bnc" id="L1025" title="All 2 branches missed.">            if (Auxiliares.compararFechas(fechaEvento, laFecha)) {</span>
+<span class="nc" id="L1026">                cantidadEventosCompletadosDia++;</span>
+<span class="nc bnc" id="L1027" title="All 2 branches missed.">            } else if (fechaEvento.compareTo(laFecha) &gt; 0) {</span>
+<span class="nc" id="L1028">                break;</span>
+            }
+<span class="nc" id="L1030">        }</span>
+<span class="nc bnc" id="L1031" title="All 2 branches missed.">        if (cantidadEventosDia &gt; 0) {</span>
+<span class="nc" id="L1032">            componente.setBackground(Color.orange);</span>
+<span class="nc" id="L1033">            componente.setForeground(Color.black);</span>
+<span class="nc" id="L1034">            componente.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 24));</span>
+<span class="nc bnc" id="L1035" title="All 2 branches missed.">        } else if (cantidadEventosCompletadosDia &gt; 0) {</span>
+<span class="nc" id="L1036">            componente.setBackground(niñoClaro);</span>
+<span class="nc" id="L1037">            componente.setForeground(Color.black);</span>
+<span class="nc" id="L1038">            componente.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 24));</span>
+        } else {
+<span class="nc" id="L1040">            componente.setBackground(UIManager.getColor(&quot;Panel.background&quot;));</span>
+<span class="nc" id="L1041">            componente.setForeground(Color.black);</span>
+<span class="nc" id="L1042">            componente.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 14));</span>
+        }
+<span class="nc" id="L1044">        componente.validate();</span>
+<span class="nc" id="L1045">        componente.repaint();</span>
+<span class="nc" id="L1046">        componente.setVisible(false);</span>
+<span class="nc" id="L1047">        componente.setVisible(true);</span>
+<span class="nc" id="L1048">    }</span>
+
+    private void mostrarErrorSeleccionarHijo() {
+<span class="nc" id="L1051">        JOptionPane.showMessageDialog(this, String.format(ERR_SELECCION, &quot;hijo&quot;),</span>
+                &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L1053">    }</span>
+
+    private void mostrarErrorSeleccionarEvento() {
+<span class="nc" id="L1056">        JOptionPane.showMessageDialog(this, String.format(ERR_SELECCION, &quot;evento&quot;),</span>
+                &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L1058">    }</span>
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarHijo;
+    private javax.swing.JButton btnEditarHijo;
+    private javax.swing.JButton btnEliminarHijo;
+    private javax.swing.ButtonGroup buttonGroupEventos;
+    private javax.swing.ButtonGroup buttonGroupHijos;
+    private com.toedter.calendar.JCalendar calendario;
+    private javax.swing.JMenuItem itemCargarVacunas;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator10;
+    private javax.swing.JPopupMenu.Separator jSeparator11;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JPopupMenu.Separator jSeparator8;
+    private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JMenu mnuCarneVac;
+    private javax.swing.JMenu mnuEstatura;
+    private javax.swing.JMenu mnuEventos;
+    private javax.swing.JMenu mnuGraficas;
+    private javax.swing.JMenu mnuPA;
+    private javax.swing.JMenu mnuPerimetro;
+    private javax.swing.JMenu mnuPeso;
+    private javax.swing.JMenuItem mnuSalir;
+    private javax.swing.JMenuItem opcCarneVac;
+    private javax.swing.JMenuItem opcCompletarEvento;
+    private javax.swing.JMenuItem opcEliminarCarne;
+    private javax.swing.JMenuItem opcEliminarEvento;
+    private javax.swing.JMenuItem opcEstatura1;
+    private javax.swing.JMenuItem opcEstatura2;
+    private javax.swing.JMenuItem opcEstatura3;
+    private javax.swing.JMenuItem opcModificarEvento;
+    private javax.swing.JMenuItem opcModificarRegistro;
+    private javax.swing.JMenuItem opcPA;
+    private javax.swing.JMenuItem opcPerimetro;
+    private javax.swing.JMenuItem opcPeso;
+    private javax.swing.JMenuItem opcRegistrarCarne;
+    private javax.swing.JMenuItem opcRegistrarEvento;
+    private javax.swing.JPanel panelDiaSeleccionado;
+    private javax.swing.JPanel panelEventosProximos;
+    private javax.swing.JPanel panelHijos;
+    private javax.swing.JScrollPane panelScrolleable;
+    // End of variables declaration//GEN-END:variables
+    private final Sistema modelo;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

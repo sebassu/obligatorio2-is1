@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Sistema.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UriarteZuluaga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">dominio</a> &gt; <span class="el_source">Sistema.java</span></div><h1>Sistema.java</h1><pre class="source lang-java linenums">package dominio;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import persistencia.ArchivoLectura;
+import auxiliar.Auxiliares;
+import auxiliar.Par;
+import java.util.Iterator;
+
+public class Sistema implements Serializable {
+
+    public static final long serialVersionUID = 42L;
+    
+    protected final ArrayList&lt;Hijo&gt; listaHijos;
+    protected ArrayList&lt;Vacuna&gt; listaVacunas;
+    protected final ArrayList&lt;Evento&gt; eventosRealizados;
+    protected final ArrayList&lt;Evento&gt; eventosARealizar;
+<span class="fc" id="L22">    public static int proximaIDEventos = Integer.MIN_VALUE;</span>
+
+<span class="nc" id="L24">    public Sistema() {</span>
+<span class="nc" id="L25">        listaHijos = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L26">        listaVacunas = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L27">        eventosRealizados = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L28">        eventosARealizar = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L29">    }</span>
+
+    public void agregarEvento(Evento elEvento) {
+<span class="nc" id="L32">        eventosARealizar.add(elEvento);</span>
+<span class="nc" id="L33">        Collections.sort(eventosARealizar);</span>
+<span class="nc" id="L34">    }</span>
+
+    public void modificarEvento(Evento eventoAAgregar, int posEventoAModificar) {
+<span class="nc" id="L37">        int idAnterior = eventosARealizar.get(posEventoAModificar).getId();</span>
+<span class="nc" id="L38">        eventoAAgregar.setId(idAnterior);</span>
+<span class="nc" id="L39">        eventosARealizar.set(posEventoAModificar, eventoAAgregar);</span>
+<span class="nc" id="L40">        proximaIDEventos--;</span>
+<span class="nc" id="L41">        Collections.sort(eventosARealizar);</span>
+<span class="nc" id="L42">    }</span>
+
+    public void reordenarListaEventosARealizar() {
+<span class="nc" id="L45">        Collections.sort(eventosARealizar);</span>
+<span class="nc" id="L46">    }</span>
+
+    protected boolean esHijoValido(String elNombre, Calendar laFecha,
+            String laCedulaId, String laSociedadMedica, String medicoCab)
+            throws IllegalArgumentException {
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (Auxiliares.esFechaFutura(laFecha)) {</span>
+<span class="nc" id="L52">            throw new IllegalArgumentException(&quot;La fecha ingresada es inválida.&quot;);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        } else if (Auxiliares.noContieneCaracterAlfabetico(elNombre)) {</span>
+<span class="nc" id="L54">            throw new IllegalArgumentException(&quot;El nombre es inválido.&quot;);</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        } else if (Auxiliares.esCedulaInvalida(laCedulaId)) {</span>
+<span class="nc" id="L56">            throw new IllegalArgumentException(&quot;La cedula es inválida.&quot;);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        } else if (Auxiliares.noContieneCaracterAlfabetico(laSociedadMedica)) {</span>
+<span class="nc" id="L58">            throw new IllegalArgumentException(&quot;El nombre de la sociedad médica &quot;</span>
+                    + &quot;es inválido.&quot;);
+<span class="nc bnc" id="L60" title="All 4 branches missed.">        } else if (!medicoCab.isEmpty()</span>
+                &amp;&amp; Auxiliares.noContieneCaracterAlfabetico(medicoCab)) {
+<span class="nc" id="L62">            throw new IllegalArgumentException(&quot;El nombre del médico ingresado &quot;</span>
+                    + &quot;es inválido.&quot;);
+        }
+<span class="nc" id="L65">        return true;</span>
+    }
+
+    public void agregarHijo(String elNombre, Calendar laFecha, boolean esHombre,
+            String laCedulaId, String laSociedadMedica, String medicoCab)
+            throws IllegalArgumentException, IllegalStateException {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (esHijoValido(elNombre, laFecha, laCedulaId, laSociedadMedica, medicoCab)) {</span>
+<span class="nc" id="L72">            Hijo hijoAAgregar = new Hijo(elNombre, laFecha, esHombre, laCedulaId,</span>
+                    laSociedadMedica, medicoCab);
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (listaHijos.contains(hijoAAgregar)) {</span>
+<span class="nc" id="L75">                throw new IllegalStateException(&quot;Los datos ingresados corresponden &quot;</span>
+                        + &quot;a un hijo/a ya ingresado.&quot;);
+            } else {
+<span class="nc" id="L78">                listaHijos.add(hijoAAgregar);</span>
+<span class="nc" id="L79">                Collections.sort(listaHijos);</span>
+            }
+        }
+<span class="nc" id="L82">    }</span>
+
+    public void modificarHijo(String elNombre, Calendar laFecha, boolean esHombre,
+            String laCedulaId, String laSociedadMedica, String elMedico, String laCedulaAnterior)
+            throws IllegalArgumentException, IllegalStateException {
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (esHijoValido(elNombre, laFecha, laCedulaId, laSociedadMedica, elMedico)) {</span>
+<span class="nc" id="L88">            Hijo hijoAModificar = new Hijo(laCedulaAnterior);</span>
+<span class="nc" id="L89">            int pos = listaHijos.indexOf(hijoAModificar);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (pos == -1) {</span>
+<span class="nc" id="L91">                throw new IllegalStateException(&quot;Los datos ingresados no corresponden &quot;</span>
+                        + &quot;a un hijo/a ya ingresado.&quot;);
+            } else {
+<span class="nc" id="L94">                Hijo aux = listaHijos.get(pos);</span>
+<span class="nc" id="L95">                aux.setNombre(elNombre);</span>
+<span class="nc" id="L96">                aux.setCedulaId(laCedulaId);</span>
+<span class="nc" id="L97">                aux.setFechaNacimiento(laFecha);</span>
+<span class="nc" id="L98">                aux.setGenero(esHombre);</span>
+<span class="nc" id="L99">                aux.setMedicoDeCabecera(elMedico);</span>
+<span class="nc" id="L100">                aux.setSociedadMedica(laSociedadMedica);</span>
+<span class="nc" id="L101">                Collections.sort(listaHijos);</span>
+            }
+        }
+<span class="nc" id="L104">    }</span>
+
+    public Hijo getHijo(int pos) throws IndexOutOfBoundsException {
+<span class="nc" id="L107">        return listaHijos.get(pos);</span>
+    }
+
+    public ArrayList&lt;Hijo&gt; getHijos() throws IllegalStateException {
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (listaHijos.isEmpty()) {</span>
+<span class="nc" id="L112">            throw new IllegalStateException(&quot;La lista de hijos es vacía&quot;);</span>
+        } else {
+<span class="nc" id="L114">            return listaHijos;</span>
+        }
+    }
+
+    public Evento getEvento(int pos) throws IndexOutOfBoundsException {
+<span class="nc" id="L119">        return eventosARealizar.get(pos);</span>
+    }
+
+    public int getCantidadEventosARealizar() {
+<span class="nc" id="L123">        return eventosARealizar.size();</span>
+    }
+
+    public int getCantidadHijos() {
+<span class="nc" id="L127">        return listaHijos.size();</span>
+    }
+
+    public int getCantidadVacunas() {
+<span class="nc" id="L131">        return listaVacunas.size();</span>
+    }
+
+    public void eliminarHijo(String laCedulaId) throws IllegalStateException {
+<span class="nc" id="L135">        Hijo hijoABorrar = new Hijo(laCedulaId);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (listaHijos.contains(hijoABorrar)) {</span>
+<span class="nc" id="L137">            listaHijos.remove(hijoABorrar);</span>
+<span class="nc" id="L138">            Collections.sort(listaHijos);</span>
+        } else {
+<span class="nc" id="L140">            throw new IllegalStateException(&quot;Los datos ingresados no corresponden &quot;</span>
+                    + &quot;a un hijo/a ya ingresado.&quot;);
+        }
+<span class="nc" id="L143">    }</span>
+
+    public void eliminarHijoPorPos(int posicion) throws NullPointerException {
+<span class="nc" id="L146">        listaHijos.remove(posicion);</span>
+<span class="nc" id="L147">    }</span>
+
+    public String cargarVacunasSistematicas(ArchivoLectura archivoLeido,
+            int numeroLinea, ArrayList&lt;Vacuna&gt; lista) throws IOException, IllegalArgumentException {
+<span class="nc" id="L151">        String nombre = &quot;&quot;;</span>
+<span class="nc" id="L152">        String meses = &quot;&quot;;</span>
+<span class="nc" id="L153">        String anios = &quot;&quot;;</span>
+<span class="nc" id="L154">        String descripcion = &quot;&quot;;</span>
+        String linea;
+<span class="nc" id="L156">        int cantRenglones = 0;</span>
+<span class="nc" id="L157">        boolean error = false;</span>
+<span class="nc" id="L158">        boolean vacunaTerminada = false;</span>
+<span class="nc" id="L159">        boolean saltearEspacioEnBlanco = true;</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        while (archivoLeido.hayMasLineas()) {</span>
+<span class="nc" id="L161">            linea = archivoLeido.linea().trim();</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if (!saltearEspacioEnBlanco) {</span>
+<span class="nc" id="L163">                numeroLinea++;</span>
+<span class="nc" id="L164">                String[] datosEnLinea = linea.split(&quot;:&quot;);</span>
+<span class="nc bnc" id="L165" title="All 22 branches missed.">                switch (datosEnLinea[0]) {</span>
+                    case &quot;N&quot;:
+<span class="nc bnc" id="L167" title="All 4 branches missed.">                        if (nombre.equals(&quot;&quot;) &amp;&amp; datosEnLinea.length &gt; 1) {</span>
+<span class="nc" id="L168">                            nombre = datosEnLinea[1].trim();</span>
+                        } else {
+<span class="nc" id="L170">                            error = true;</span>
+                        }
+<span class="nc" id="L172">                        break;</span>
+                    case &quot;M&quot;:
+<span class="nc bnc" id="L174" title="All 4 branches missed.">                        if (meses.equals(&quot;&quot;) &amp;&amp; datosEnLinea.length &gt; 1) {</span>
+<span class="nc" id="L175">                            meses = datosEnLinea[1].trim();</span>
+                        } else {
+<span class="nc" id="L177">                            error = true;</span>
+                        }
+<span class="nc" id="L179">                        break;</span>
+                    case &quot;A&quot;:
+<span class="nc bnc" id="L181" title="All 4 branches missed.">                        if (anios.equals(&quot;&quot;) &amp;&amp; datosEnLinea.length &gt; 1) {</span>
+<span class="nc" id="L182">                            anios = datosEnLinea[1].trim();</span>
+                        } else {
+<span class="nc" id="L184">                            error = true;</span>
+                        }
+<span class="nc" id="L186">                        break;</span>
+                    case &quot;D&quot;:
+<span class="nc bnc" id="L188" title="All 4 branches missed.">                        if (descripcion.equals(&quot;&quot;) &amp;&amp; datosEnLinea.length &gt; 1) {</span>
+<span class="nc" id="L189">                            descripcion = datosEnLinea[1].trim();</span>
+<span class="nc" id="L190">                            vacunaTerminada = true;</span>
+                        } else {
+<span class="nc" id="L192">                            error = true;</span>
+                        }
+<span class="nc" id="L194">                        break;</span>
+                    case &quot;-NO SISTEMATICAS-&quot;:
+<span class="nc" id="L196">                        return datosEnLinea[0];</span>
+                    default:
+<span class="nc" id="L198">                        throw new IllegalArgumentException(&quot;Una vacuna no tiene &quot;</span>
+                                + &quot;el campo de información '&quot; + datosEnLinea[0] + &quot;'&quot;);
+                }
+<span class="nc" id="L201">                cantRenglones++;</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">                if (cantRenglones == 4) {</span>
+<span class="nc" id="L203">                    vacunaTerminada = true;</span>
+                }
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                if (vacunaTerminada) {</span>
+<span class="nc bnc" id="L206" title="All 8 branches missed.">                    if (!nombre.equals(&quot;&quot;) &amp;&amp; !meses.equals(&quot;&quot;)</span>
+                            &amp;&amp; !anios.equals(&quot;&quot;) &amp;&amp; !descripcion.equals(&quot;&quot;)) {
+<span class="nc" id="L208">                        procesarVacunaSistematica(nombre, meses, anios, descripcion, lista);</span>
+<span class="nc" id="L209">                        vacunaTerminada = false;</span>
+<span class="nc" id="L210">                        nombre = &quot;&quot;;</span>
+<span class="nc" id="L211">                        meses = &quot;&quot;;</span>
+<span class="nc" id="L212">                        anios = &quot;&quot;;</span>
+<span class="nc" id="L213">                        descripcion = &quot;&quot;;</span>
+<span class="nc" id="L214">                        saltearEspacioEnBlanco = true;</span>
+<span class="nc" id="L215">                        cantRenglones = 0;</span>
+                    } else {
+<span class="nc" id="L217">                        throw new IllegalArgumentException(&quot;Una vacuna tenia un formato &quot;</span>
+                                + &quot;incorrecto y no se pudo procesar&quot;);
+                    }
+                }
+<span class="nc bnc" id="L221" title="All 2 branches missed.">            } else if (linea.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L222">                saltearEspacioEnBlanco = false;</span>
+            } else {
+<span class="nc" id="L224">                error = true;</span>
+            }
+<span class="nc bnc" id="L226" title="All 2 branches missed.">            if (error) {</span>
+<span class="nc" id="L227">                throw new IllegalArgumentException(&quot;Error en linea &quot; + numeroLinea</span>
+                        + &quot;, no se esperaba '&quot; + linea + &quot;'&quot;);
+            }
+        }
+<span class="nc" id="L231">        return &quot;&quot;;</span>
+    }
+
+    public void procesarVacunaSistematica(String nombre, String meses, String anios,
+            String descripcion, ArrayList&lt;Vacuna&gt; lista) throws IllegalArgumentException, NumberFormatException {
+        Vacuna vacunaNueva;
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        if (!Auxiliares.esNombreVacunaInvalido(nombre.trim())) {</span>
+<span class="nc" id="L238">            vacunaNueva = new Vacuna(nombre, true, descripcion);</span>
+<span class="nc" id="L239">            String[] mes = meses.split(&quot; &quot;);</span>
+<span class="nc" id="L240">            String[] anio = anios.split(&quot; &quot;);</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            if (!meses.equals(&quot;-&quot;)) {</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">                for (String me : mes) {</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">                    if (mesValido(me)) {</span>
+<span class="nc" id="L244">                        vacunaNueva.agregarVencimientoEnMeses(me);</span>
+                    } else {
+<span class="nc" id="L246">                        throw new IllegalArgumentException(&quot;En la vacuna &quot; + nombre</span>
+                                + &quot; el mes &quot; + me + &quot; es inválido&quot;);
+                    }
+                }
+            }
+<span class="nc bnc" id="L251" title="All 2 branches missed.">            if (!anios.equals(&quot;-&quot;)) {</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                for (String anio1 : anio) {</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                    if (anioValido(anio1)) {</span>
+<span class="nc" id="L254">                        vacunaNueva.agregarVencimientoEnAnios(anio1);</span>
+                    } else {
+<span class="nc" id="L256">                        throw new IllegalArgumentException(&quot;En la vacuna &quot; + nombre</span>
+                                + &quot; el año &quot; + anio1 + &quot; es inválido&quot;);
+                    }
+                }
+            }
+<span class="nc" id="L261">            vacunaNueva.ordenarListas();</span>
+<span class="nc" id="L262">            lista.add(vacunaNueva);</span>
+<span class="nc" id="L263">        } else {</span>
+<span class="nc" id="L264">            throw new IllegalArgumentException(&quot;El nombre de vacuna &quot; + nombre</span>
+                    + &quot; es inválido&quot;);
+        }
+<span class="nc" id="L267">    }</span>
+
+    public boolean mesValido(String mes) {
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (Auxiliares.esNumeroNatural(mes)) {</span>
+<span class="nc" id="L271">            int intMes = Integer.parseInt(mes);</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">            return intMes &lt; mesMaximoIngresable();</span>
+        }
+<span class="nc" id="L274">        return periodoMesValido(mes);</span>
+    }
+
+    public boolean periodoMesValido(String periodo) {
+<span class="nc bnc" id="L278" title="All 2 branches missed.">        if (periodo.length() &gt; 2) {</span>
+<span class="nc bnc" id="L279" title="All 4 branches missed.">            if (periodo.charAt(0) == 'c' &amp;&amp; periodo.charAt(1) == '/') {</span>
+<span class="nc" id="L280">                String[] separarMes = periodo.split(&quot;/&quot;);</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">                if (separarMes.length &gt; 1) {</span>
+<span class="nc" id="L282">                    return mesValido(separarMes[1]);</span>
+                }
+            }
+        }
+<span class="nc" id="L286">        return false;</span>
+    }
+
+    public boolean periodoAnioValido(String periodo) {
+<span class="nc bnc" id="L290" title="All 2 branches missed.">        if (periodo.length() &gt; 2) {</span>
+<span class="nc bnc" id="L291" title="All 4 branches missed.">            if (periodo.charAt(0) == 'c' &amp;&amp; periodo.charAt(1) == '/') {</span>
+<span class="nc" id="L292">                String[] separarAnio = periodo.split(&quot;/&quot;);</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">                if (separarAnio.length &gt; 1) {</span>
+<span class="nc" id="L294">                    return anioValido(separarAnio[1]);</span>
+                }
+            }
+        }
+<span class="nc" id="L298">        return false;</span>
+    }
+
+    public boolean anioValido(String anio) {
+<span class="nc bnc" id="L302" title="All 2 branches missed.">        if (Auxiliares.esNumeroNatural(anio)) {</span>
+<span class="nc" id="L303">            int intAnio = Integer.parseInt(anio);</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">            return intAnio &lt; anioMaximoIngresable();</span>
+        }
+<span class="nc" id="L306">        return periodoAnioValido(anio);</span>
+    }
+
+    public void cargarVacunasNoSistematicas(ArchivoLectura archivoLeido,
+            int numeroLinea, ArrayList&lt;Vacuna&gt; lista) throws IOException, IllegalArgumentException {
+<span class="nc" id="L311">        String nombre = &quot;&quot;;</span>
+<span class="nc" id="L312">        String descripcion = &quot;&quot;;</span>
+<span class="nc" id="L313">        int cantRenglones = 0;</span>
+<span class="nc" id="L314">        boolean error = false;</span>
+<span class="nc" id="L315">        boolean vacunaTerminada = false;</span>
+<span class="nc" id="L316">        boolean saltearEspacioEnBlanco = true;</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        while (archivoLeido.hayMasLineas()) {</span>
+<span class="nc" id="L318">            String linea = archivoLeido.linea().trim();</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">            if (!saltearEspacioEnBlanco) {</span>
+<span class="nc" id="L320">                numeroLinea++;</span>
+<span class="nc" id="L321">                String[] datosEnLinea = linea.split(&quot;:&quot;);</span>
+<span class="nc bnc" id="L322" title="All 10 branches missed.">                switch (datosEnLinea[0]) {</span>
+                    case &quot;N&quot;:
+<span class="nc bnc" id="L324" title="All 4 branches missed.">                        if (nombre.equals(&quot;&quot;) &amp;&amp; datosEnLinea.length &gt; 1) {</span>
+<span class="nc" id="L325">                            nombre = datosEnLinea[1].trim();</span>
+                        } else {
+<span class="nc" id="L327">                            error = true;</span>
+                        }
+<span class="nc" id="L329">                        break;</span>
+                    case &quot;D&quot;:
+<span class="nc bnc" id="L331" title="All 4 branches missed.">                        if (descripcion.equals(&quot;&quot;) &amp;&amp; datosEnLinea.length &gt; 1) {</span>
+<span class="nc" id="L332">                            descripcion = datosEnLinea[1].trim();</span>
+<span class="nc" id="L333">                            vacunaTerminada = true;</span>
+                        } else {
+<span class="nc" id="L335">                            error = true;</span>
+                        }
+<span class="nc" id="L337">                        break;</span>
+                    default:
+<span class="nc" id="L339">                        throw new IllegalArgumentException(&quot;Una vacuna no tiene &quot;</span>
+                                + &quot;el campo de información '&quot; + datosEnLinea[0]);
+                }
+<span class="nc" id="L342">                cantRenglones++;</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">                if (cantRenglones == 2) {</span>
+<span class="nc" id="L344">                    vacunaTerminada = true;</span>
+                }
+<span class="nc bnc" id="L346" title="All 2 branches missed.">                if (vacunaTerminada) {</span>
+<span class="nc bnc" id="L347" title="All 4 branches missed.">                    if (!nombre.equals(&quot;&quot;) &amp;&amp; !descripcion.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L348">                        procesarVacunaNoSistematica(nombre, descripcion, lista);</span>
+<span class="nc" id="L349">                        vacunaTerminada = false;</span>
+<span class="nc" id="L350">                        nombre = &quot;&quot;;</span>
+<span class="nc" id="L351">                        descripcion = &quot;&quot;;</span>
+<span class="nc" id="L352">                        saltearEspacioEnBlanco = true;</span>
+                    } else {
+<span class="nc" id="L354">                        throw new IllegalArgumentException(&quot;Una vacuna tenia un formato &quot;</span>
+                                + &quot;incorrecto y no se pudo procesar&quot;);
+                    }
+                }
+<span class="nc bnc" id="L358" title="All 2 branches missed.">            } else if (linea.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L359">                saltearEspacioEnBlanco = false;</span>
+            } else {
+<span class="nc" id="L361">                error = true;</span>
+            }
+<span class="nc bnc" id="L363" title="All 2 branches missed.">            if (error) {</span>
+<span class="nc" id="L364">                throw new IllegalArgumentException(&quot;Error en linea &quot; + numeroLinea</span>
+                        + &quot;, no se esperaba '&quot; + linea + &quot;'&quot;);
+            }
+<span class="nc" id="L367">        }</span>
+<span class="nc" id="L368">    }</span>
+
+    public void procesarVacunaNoSistematica(String nombre, String descripcion,
+            ArrayList&lt;Vacuna&gt; lista) throws IllegalArgumentException, NumberFormatException {
+        Vacuna vacunaNueva;
+<span class="nc bnc" id="L373" title="All 2 branches missed.">        if (!Auxiliares.noContieneCaracterAlfabetico(nombre.trim())) {</span>
+<span class="nc" id="L374">            vacunaNueva = new Vacuna(nombre, false, descripcion);</span>
+<span class="nc" id="L375">            lista.add(vacunaNueva);</span>
+        } else {
+<span class="nc" id="L377">            throw new IllegalArgumentException(&quot;El nombre de vacuna &quot; + nombre</span>
+                    + &quot; es inválido&quot;);
+        }
+<span class="nc" id="L380">    }</span>
+
+    public static int anioMaximoIngresable() {
+<span class="fc" id="L383">        return 12;</span>
+    }
+
+    public static int mesMaximoIngresable() {
+<span class="nc" id="L387">        return 24;</span>
+    }
+
+    public void cargarVacunasDeArchivo(String ubicacion) throws IllegalArgumentException,
+            FileNotFoundException, IOException {
+<span class="nc" id="L392">        ArrayList&lt;Vacuna&gt; listaAuxiliar = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L393">        ArchivoLectura archivoLeido = new ArchivoLectura(ubicacion);</span>
+<span class="nc" id="L394">        int numeroLinea = 0;</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">        if (archivoLeido.hayMasLineas()) {</span>
+<span class="nc" id="L396">            String linea = archivoLeido.linea().trim();</span>
+<span class="nc" id="L397">            numeroLinea++;</span>
+<span class="nc bnc" id="L398" title="All 6 branches missed.">            switch (linea) {</span>
+                case &quot;-SISTEMATICAS-&quot;:
+<span class="nc" id="L400">                    linea = cargarVacunasSistematicas(archivoLeido, numeroLinea, listaAuxiliar);</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">                    if (linea.equals(&quot;-NO SISTEMATICAS-&quot;)) {</span>
+<span class="nc" id="L402">                        cargarVacunasNoSistematicas(archivoLeido, numeroLinea, listaAuxiliar);</span>
+                    }
+<span class="nc" id="L404">                    listaVacunas = listaAuxiliar;</span>
+<span class="nc" id="L405">                    Collections.sort(listaVacunas);</span>
+<span class="nc" id="L406">                    break;</span>
+                default:
+<span class="nc" id="L408">                    throw new IllegalArgumentException(&quot;Error, se encontró un&quot;</span>
+                            + &quot;título desconocido: '&quot; + linea + &quot;'&quot;);
+            }
+        }
+<span class="nc" id="L412">        archivoLeido.cerrar();</span>
+<span class="nc" id="L413">    }</span>
+
+    public void eliminarEventoPorPos(int posEvento) {
+<span class="nc" id="L416">        eventosARealizar.remove(posEvento);</span>
+<span class="nc" id="L417">        Collections.sort(eventosARealizar);</span>
+<span class="nc" id="L418">    }</span>
+
+    public void darDeBajaEvento(int posEventoACompletar) {
+<span class="nc" id="L421">        Evento eventoACompletar = eventosARealizar.get(posEventoACompletar);</span>
+<span class="nc" id="L422">        eventosARealizar.remove(posEventoACompletar);</span>
+<span class="nc" id="L423">        eventosRealizados.add(eventoACompletar);</span>
+<span class="nc" id="L424">        Collections.sort(eventosRealizados);</span>
+<span class="nc" id="L425">        Collections.sort(eventosARealizar);</span>
+<span class="nc" id="L426">    }</span>
+
+    public String[] nombreVacunasSistematicasParaCarne(Hijo hijoSeleccionado) {
+<span class="nc" id="L429">        ArrayList&lt;String&gt; listaNombreVacunas = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L430">        Iterator&lt;Vacuna&gt; itVacunasSistema = listaVacunas.iterator();</span>
+<span class="nc" id="L431">        Iterator&lt;Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt;&gt; itVacunasHijo</span>
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+<span class="nc bnc" id="L433" title="All 2 branches missed.">        while (itVacunasHijo.hasNext()) {</span>
+<span class="nc" id="L434">            Vacuna vacunaActual = itVacunasHijo.next().getDato1();</span>
+<span class="nc bnc" id="L435" title="All 4 branches missed.">            if (vacunaActual.esSistematica()</span>
+                    &amp;&amp; !listaNombreVacunas.contains(vacunaActual.toString())) {
+<span class="nc" id="L437">                listaNombreVacunas.add(vacunaActual.toString());</span>
+            }
+<span class="nc" id="L439">        }</span>
+<span class="nc bnc" id="L440" title="All 2 branches missed.">        while (itVacunasSistema.hasNext()) {</span>
+<span class="nc" id="L441">            Vacuna vacunaActual = itVacunasSistema.next();</span>
+<span class="nc bnc" id="L442" title="All 4 branches missed.">            if (vacunaActual.esSistematica()</span>
+                    &amp;&amp; !listaNombreVacunas.contains(vacunaActual.toString())) {
+<span class="nc" id="L444">                listaNombreVacunas.add(vacunaActual.toString());</span>
+            }
+<span class="nc" id="L446">        }</span>
+<span class="nc" id="L447">        return Auxiliares.convertirArrayListStringAArrayStringConEspacioAlPrincipio(listaNombreVacunas);</span>
+    }
+
+    public String[] nombreVacunasNoSistematicasParaCarne(Hijo hijoSeleccionado) {
+<span class="nc" id="L451">        ArrayList&lt;String&gt; listaNombreVacunas = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L452">        Iterator&lt;Vacuna&gt; itVacunasSistema = listaVacunas.iterator();</span>
+<span class="nc" id="L453">        Iterator&lt;Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt;&gt; itVacunasHijo</span>
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+<span class="nc bnc" id="L455" title="All 2 branches missed.">        while (itVacunasHijo.hasNext()) {</span>
+<span class="nc" id="L456">            Vacuna vacunaActual = itVacunasHijo.next().getDato1();</span>
+<span class="nc bnc" id="L457" title="All 4 branches missed.">            if (!vacunaActual.esSistematica()</span>
+                    &amp;&amp; !listaNombreVacunas.contains(vacunaActual.toString())) {
+<span class="nc" id="L459">                listaNombreVacunas.add(vacunaActual.toString());</span>
+            }
+<span class="nc" id="L461">        }</span>
+<span class="nc bnc" id="L462" title="All 2 branches missed.">        while (itVacunasSistema.hasNext()) {</span>
+<span class="nc" id="L463">            Vacuna vacunaActual = itVacunasSistema.next();</span>
+<span class="nc bnc" id="L464" title="All 4 branches missed.">            if (!vacunaActual.esSistematica()</span>
+                    &amp;&amp; !listaNombreVacunas.contains(vacunaActual.toString())) {
+<span class="nc" id="L466">                listaNombreVacunas.add(vacunaActual.toString());</span>
+            }
+<span class="nc" id="L468">        }</span>
+<span class="nc" id="L469">        return Auxiliares.convertirArrayListStringAArrayStringConEspacioAlPrincipio(listaNombreVacunas);</span>
+    }
+
+    public String[] mesesParaCarneVacunas(Hijo hijoSeleccionado) {
+<span class="nc" id="L473">        ArrayList&lt;String&gt; meses = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L474">        Iterator&lt;Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt;&gt; itMesesHijo</span>
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+<span class="nc" id="L476">        Iterator&lt;Vacuna&gt; itVacunasSistema = listaVacunas.iterator();</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">        while (itMesesHijo.hasNext()) {</span>
+<span class="nc" id="L478">            Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt; estePar = itMesesHijo.next();</span>
+<span class="nc" id="L479">            Iterator&lt;Calendar&gt; itCalendarioHijo = estePar.getDato2().iterator();</span>
+<span class="nc bnc" id="L480" title="All 2 branches missed.">            while (itCalendarioHijo.hasNext()) {</span>
+<span class="nc" id="L481">                Calendar estaFecha = itCalendarioHijo.next();</span>
+<span class="nc" id="L482">                String mesAAgregar = &quot;&quot; + hijoSeleccionado.mesesDesdeNacimientoAFecha(estaFecha);</span>
+<span class="nc bnc" id="L483" title="All 4 branches missed.">                if (mesValido(mesAAgregar) &amp;&amp; !meses.contains(mesAAgregar)) {</span>
+<span class="nc" id="L484">                    meses.add(mesAAgregar);</span>
+                }
+<span class="nc" id="L486">                String mesRecomendadoLuegoDeVacunacion = Integer.parseInt(mesAAgregar)</span>
+                        + Integer.parseInt(estePar.getDato1().
+                                getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses()) + &quot;&quot;;
+<span class="nc bnc" id="L489" title="All 4 branches missed.">                if (mesValido(mesRecomendadoLuegoDeVacunacion)</span>
+                        &amp;&amp; !meses.contains(mesRecomendadoLuegoDeVacunacion)) {
+<span class="nc" id="L491">                    meses.add(mesRecomendadoLuegoDeVacunacion);</span>
+                }
+<span class="nc" id="L493">            }</span>
+<span class="nc" id="L494">            Iterator&lt;String&gt; itVacunaHijo = estePar.getDato1().iteradorVencimientoEnMeses();</span>
+<span class="nc bnc" id="L495" title="All 2 branches missed.">            while (itVacunaHijo.hasNext()) {</span>
+<span class="nc" id="L496">                String mesAAgregar = itVacunaHijo.next();</span>
+<span class="nc bnc" id="L497" title="All 2 branches missed.">                if (!meses.contains(mesAAgregar)) {</span>
+<span class="nc" id="L498">                    meses.add(mesAAgregar);</span>
+                }
+<span class="nc" id="L500">            }</span>
+<span class="nc" id="L501">        }</span>
+<span class="nc bnc" id="L502" title="All 2 branches missed.">        while (itVacunasSistema.hasNext()) {</span>
+<span class="nc" id="L503">            Vacuna estaVacuna = itVacunasSistema.next();</span>
+<span class="nc" id="L504">            Iterator&lt;String&gt; itMesesVacuna = estaVacuna.iteradorVencimientoEnMeses();</span>
+<span class="nc bnc" id="L505" title="All 2 branches missed.">            while (itMesesVacuna.hasNext()) {</span>
+<span class="nc" id="L506">                String mesAAgregar = itMesesVacuna.next();</span>
+<span class="nc bnc" id="L507" title="All 2 branches missed.">                if (!meses.contains(mesAAgregar)) {</span>
+<span class="nc" id="L508">                    meses.add(mesAAgregar);</span>
+                }
+<span class="nc" id="L510">            }</span>
+<span class="nc" id="L511">        }</span>
+<span class="nc" id="L512">        return Auxiliares.convertirArrayListStringAArrayMesesConEspacioAlPrincipio(meses);</span>
+    }
+
+    public String[] aniosParaCarneVacunas(Hijo hijoSeleccionado) {
+<span class="nc" id="L516">        ArrayList&lt;String&gt; anios = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L517">        Iterator&lt;Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt;&gt; itAniosHijo</span>
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+<span class="nc" id="L519">        Iterator&lt;Vacuna&gt; itVacunasSistema = listaVacunas.iterator();</span>
+<span class="nc bnc" id="L520" title="All 2 branches missed.">        while (itAniosHijo.hasNext()) {</span>
+<span class="nc" id="L521">            Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt; estePar = itAniosHijo.next();</span>
+<span class="nc" id="L522">            Iterator&lt;Calendar&gt; itCalendarioHijo = estePar.getDato2().iterator();</span>
+<span class="nc bnc" id="L523" title="All 2 branches missed.">            while (itCalendarioHijo.hasNext()) {</span>
+<span class="nc" id="L524">                Calendar estaFecha = itCalendarioHijo.next();</span>
+<span class="nc" id="L525">                String anioAAgregar = &quot;&quot; + hijoSeleccionado.aniosDesdeNacimientoAFecha(estaFecha);</span>
+<span class="nc bnc" id="L526" title="All 4 branches missed.">                if (Integer.parseInt(anioAAgregar) &gt; 1</span>
+                        &amp;&amp; !anios.contains(anioAAgregar)) {
+<span class="nc" id="L528">                    anios.add(anioAAgregar);</span>
+                }
+<span class="nc" id="L530">                int anioRecomendadoLuegoDeVacunacion = Integer.parseInt(anioAAgregar) * 12</span>
+                        + Integer.parseInt(estePar.getDato1().
+                                getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses());
+<span class="nc bnc" id="L533" title="All 4 branches missed.">                if (anioRecomendadoLuegoDeVacunacion &gt; 24</span>
+                        &amp;&amp; !anios.contains(anioRecomendadoLuegoDeVacunacion / 12 + &quot;&quot;)) {
+<span class="nc" id="L535">                    anios.add(anioRecomendadoLuegoDeVacunacion / 12 + &quot;&quot;);</span>
+                }
+<span class="nc" id="L537">            }</span>
+<span class="nc" id="L538">            Iterator&lt;String&gt; itVacunaHijo = estePar.getDato1().iteradorVencimientoEnAnios();</span>
+<span class="nc bnc" id="L539" title="All 2 branches missed.">            while (itVacunaHijo.hasNext()) {</span>
+<span class="nc" id="L540">                String anioAAgregar = itVacunaHijo.next();</span>
+<span class="nc bnc" id="L541" title="All 2 branches missed.">                if (!anios.contains(anioAAgregar)) {</span>
+<span class="nc" id="L542">                    anios.add(anioAAgregar);</span>
+                }
+<span class="nc" id="L544">            }</span>
+<span class="nc" id="L545">        }</span>
+<span class="nc bnc" id="L546" title="All 2 branches missed.">        while (itVacunasSistema.hasNext()) {</span>
+<span class="nc" id="L547">            Vacuna estaVacuna = itVacunasSistema.next();</span>
+<span class="nc" id="L548">            Iterator&lt;String&gt; itAniosVacuna = estaVacuna.iteradorVencimientoEnAnios();</span>
+<span class="nc bnc" id="L549" title="All 2 branches missed.">            while (itAniosVacuna.hasNext()) {</span>
+<span class="nc" id="L550">                String mesAAgregar = itAniosVacuna.next();</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">                if (!anios.contains(mesAAgregar)) {</span>
+<span class="nc" id="L552">                    anios.add(mesAAgregar);</span>
+                }
+<span class="nc" id="L554">            }</span>
+<span class="nc" id="L555">        }</span>
+<span class="nc" id="L556">        return Auxiliares.convertirArrayListStringAArrayAnios(anios);</span>
+    }
+
+    public final ArrayList&lt;Vacuna&gt; getVacunas() {
+<span class="nc" id="L560">        return listaVacunas;</span>
+    }
+
+    public final ArrayList&lt;Evento&gt; getEventosCompletados() {
+<span class="nc" id="L564">        return eventosRealizados;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

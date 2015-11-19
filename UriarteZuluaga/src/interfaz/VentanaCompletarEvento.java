@@ -266,15 +266,15 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCerrarActionPerformed
 
     private void txtPesoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesoKeyTyped
-        BorrarNoNumeros(evt);
+        borrarNoNumeros(evt);
     }//GEN-LAST:event_txtPesoKeyTyped
 
     private void txtAlturaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAlturaKeyTyped
-        BorrarNoNumeros(evt);
+        borrarNoNumeros(evt);
     }//GEN-LAST:event_txtAlturaKeyTyped
 
     private void txtPerimetroCefalicoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPerimetroCefalicoKeyTyped
-        BorrarNoNumeros(evt);
+        borrarNoNumeros(evt);
     }//GEN-LAST:event_txtPerimetroCefalicoKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -298,7 +298,7 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
     private final int posEventoACompletar;
     private final VentanaPrincipal ventanaPrincipal;
 
-    private void BorrarNoNumeros(KeyEvent evt) {
+    private void borrarNoNumeros(KeyEvent evt) {
         char caracter = evt.getKeyChar();
         if (!Character.isDigit(caracter) && caracter != '.' && caracter
                 != KeyEvent.VK_BACK_SPACE) {

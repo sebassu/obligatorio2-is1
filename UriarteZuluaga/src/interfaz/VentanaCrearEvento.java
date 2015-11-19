@@ -392,7 +392,9 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
                     }
                     break;
                 case "Consulta":
-                    ValidarMedico();
+                    validarMedico();
+                    break;
+                default:
                     break;
             }
             Evento eventoAAgregar;
@@ -435,7 +437,7 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCerrarActionPerformed
 
     private void txtMedicoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMedicoFocusLost
-        ValidarMedico();
+        validarMedico();
     }//GEN-LAST:event_txtMedicoFocusLost
 
     private void txtLugarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLugarFocusLost
@@ -483,6 +485,8 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
                 txtMedico.setText("");
                 txtOtro.setText("");
                 break;
+            default:
+                break;
         }
     }//GEN-LAST:event_jComboBoxTipoActionPerformed
 
@@ -490,7 +494,7 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
         jLabelErrorTitulo.setVisible(Auxiliares.noContieneCaracterAlfabetico(txtTitulo.getText()));
     }//GEN-LAST:event_txtTituloFocusLost
 
-    private void ValidarMedico() {
+    private void validarMedico() {
         String textoEscrito = txtMedico.getText().trim();
         if (textoEscrito.isEmpty()) {
             jLabelErrorMedico.setText("Campo vacío");

@@ -6,6 +6,8 @@ import java.util.Calendar;
 
 public class Evento implements Serializable, Comparable {
 
+    public static final long serialVersionUID = 42L;
+
     private int id;
     private String titulo;
     private String tipo;

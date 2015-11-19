@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VentanaCarneVacunas.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UriarteZuluaga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">interfaz</a> &gt; <span class="el_source">VentanaCarneVacunas.java</span></div><h1>VentanaCarneVacunas.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package interfaz;
+
+import auxiliar.Par;
+import auxiliar.CarneVacunas;
+import dominio.Hijo;
+import dominio.Sistema;
+import dominio.Vacuna;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import javax.swing.JButton;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+public class VentanaCarneVacunas extends javax.swing.JFrame {
+
+    private JButton[][] botonesVacunasSistematicas;
+    private JButton[][] botonesVacunasNoSistematicas;
+    private transient final CarneVacunas infoCarne;
+
+    public VentanaCarneVacunas(Sistema sis, Hijo hijoSeleccionado, Color amarillo,
+<span class="nc" id="L33">            Color oscuro, Color claro) {</span>
+<span class="nc" id="L34">        initComponents();</span>
+<span class="nc" id="L35">        infoCarne = new CarneVacunas(sis.nombreVacunasSistematicasParaCarne(hijoSeleccionado),</span>
+                sis.nombreVacunasNoSistematicasParaCarne(hijoSeleccionado),
+                sis.mesesParaCarneVacunas(hijoSeleccionado), sis.aniosParaCarneVacunas(hijoSeleccionado));
+<span class="nc" id="L38">        formatearPanelVacunasSistematicas(amarillo, oscuro, claro);</span>
+<span class="nc" id="L39">        formatearPanelVacunasNoSistematicas(amarillo, oscuro, claro);</span>
+<span class="nc" id="L40">        marcarVacunasSistematicasDadas(hijoSeleccionado);</span>
+<span class="nc" id="L41">        marcarVacunasNoSistematicasDadas(hijoSeleccionado);</span>
+<span class="nc" id="L42">        recomendarNuevasVacunaciones(hijoSeleccionado, sis, oscuro);</span>
+<span class="nc" id="L43">        cargarDescripcionesVacunas(hijoSeleccionado, sis);</span>
+<span class="nc" id="L44">        this.pack();</span>
+<span class="nc" id="L45">    }</span>
+
+    public final void cargarDescripcionesVacunas(Hijo hijoSeleccionado, Sistema sis) {
+<span class="nc" id="L48">        Iterator&lt;Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt;&gt; iteradorVacunas</span>
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+<span class="nc" id="L50">        Iterator&lt;Vacuna&gt; vacunasSistema = sis.getVacunas().iterator();</span>
+<span class="nc" id="L51">        StringBuilder buf = new StringBuilder();</span>
+<span class="nc" id="L52">        buf.append(&quot;&lt;u&gt;DESCRIPCIONES&lt;/u&gt;&quot;);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        while (iteradorVacunas.hasNext()) {</span>
+<span class="nc" id="L54">            Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt; datoActual = iteradorVacunas.next();</span>
+<span class="nc" id="L55">            Vacuna vacunaActual = datoActual.getDato1();</span>
+<span class="nc" id="L56">            buf.append(&quot;&lt;br&gt;&quot;).append(vacunaActual.getNombre()).append(&quot;: &quot;).append(vacunaActual.getDescripcion());</span>
+<span class="nc" id="L57">        }</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        while (vacunasSistema.hasNext()) {</span>
+<span class="nc" id="L59">            Vacuna vacunaActual = vacunasSistema.next();</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (!hijoSeleccionado.contieneVacunaDeEsteNombre(vacunaActual.getNombre())) {</span>
+<span class="nc" id="L61">                buf.append(&quot;&lt;br&gt;&quot;).append(vacunaActual.getNombre()).append(&quot;: &quot;).append(vacunaActual.getDescripcion());</span>
+            }
+<span class="nc" id="L63">        }</span>
+<span class="nc" id="L64">        descripcionesVacunas.setText(&quot;&lt;html&gt;&quot; + buf.toString() + &quot;&lt;/html&gt;&quot;);</span>
+<span class="nc" id="L65">    }</span>
+
+    private void recomendarNuevasVacunaciones(Hijo hijoSeleccionado, Sistema sis, Color oscuro) {
+<span class="nc" id="L68">        Iterator&lt;Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt;&gt; iteradorVacunas</span>
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+<span class="nc" id="L70">        Iterator&lt;Vacuna&gt; vacunasSistema = sis.getVacunas().iterator();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        while (iteradorVacunas.hasNext()) {</span>
+<span class="nc" id="L72">            Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt; datoActual = iteradorVacunas.next();</span>
+<span class="nc" id="L73">            ArrayList&lt;Calendar&gt; fechasVacunaciones = datoActual.getDato2();</span>
+<span class="nc" id="L74">            Vacuna vacunaActual = datoActual.getDato1();</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">            if (vacunaActual.esSistematica() &amp;&amp; fechasVacunaciones.size() &gt; 0) {</span>
+
+<span class="nc" id="L77">                Calendar fechaVacunacion = fechasVacunaciones.get(fechasVacunaciones.size() - 1);</span>
+<span class="nc" id="L78">                int periodoNuevoARecomendar = hijoSeleccionado.</span>
+                        mesesDesdeNacimientoAFecha(fechaVacunacion) + Integer.parseInt(
+                                vacunaActual.getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses());
+                int posCol;
+<span class="nc bnc" id="L82" title="All 2 branches missed.">                if (periodoNuevoARecomendar &gt; 24) {</span>
+<span class="nc" id="L83">                    periodoNuevoARecomendar = periodoNuevoARecomendar / 12;</span>
+<span class="nc" id="L84">                    posCol = infoCarne.getPosColumnaAnio(periodoNuevoARecomendar + &quot;&quot;);</span>
+                } else {
+<span class="nc" id="L86">                    posCol = infoCarne.getPosColumnaMes(periodoNuevoARecomendar + &quot;&quot;);</span>
+                }
+<span class="nc" id="L88">                int posFil = infoCarne.getPosFilVacunaSistematica(vacunaActual.getNombre());</span>
+<span class="nc" id="L89">                botonesVacunasSistematicas[posFil][posCol].setBackground(Color.gray);</span>
+            }
+<span class="nc" id="L91">        }</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        while (vacunasSistema.hasNext()) {</span>
+<span class="nc" id="L93">            Vacuna vacunaActual = vacunasSistema.next();</span>
+<span class="nc bnc" id="L94" title="All 4 branches missed.">            if (vacunaActual.esSistematica()</span>
+                    &amp;&amp; !hijoSeleccionado.contieneVacunaDeEsteNombre(vacunaActual.getNombre())) {
+                int posCol;
+<span class="nc" id="L97">                int posFil = infoCarne.getPosFilVacunaSistematica(vacunaActual.getNombre());</span>
+<span class="nc" id="L98">                ArrayList&lt;String&gt; marcarPeriodosRecomendados = vacunaActual.getVencimientoEnMeses();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                for (String s : marcarPeriodosRecomendados) {</span>
+<span class="nc" id="L100">                    posCol = infoCarne.getPosColumnaMes(s);</span>
+<span class="nc" id="L101">                    botonesVacunasSistematicas[posFil][posCol].setBackground(oscuro);</span>
+<span class="nc" id="L102">                }</span>
+<span class="nc" id="L103">                marcarPeriodosRecomendados = vacunaActual.getVencimientoEnAnios();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                for (String s : marcarPeriodosRecomendados) {</span>
+<span class="nc" id="L105">                    posCol = infoCarne.getPosColumnaAnio(s);</span>
+<span class="nc" id="L106">                    botonesVacunasSistematicas[posFil][posCol].setBackground(oscuro);</span>
+<span class="nc" id="L107">                }</span>
+            }
+<span class="nc" id="L109">        }</span>
+<span class="nc" id="L110">    }</span>
+
+    private void marcarVacunasNoSistematicasDadas(Hijo hijoSeleccionado) {
+<span class="nc" id="L113">        Iterator&lt;Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt;&gt; iteradorVacunas</span>
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        while (iteradorVacunas.hasNext()) {</span>
+<span class="nc" id="L117">            Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt; datoActual = iteradorVacunas.next();</span>
+<span class="nc" id="L118">            Iterator&lt;Calendar&gt; itFechasVacunacion = datoActual.getDato2().iterator();</span>
+<span class="nc" id="L119">            Vacuna vacunaActual = datoActual.getDato1();</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (!vacunaActual.esSistematica()) {</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                if (itFechasVacunacion.hasNext()) {</span>
+<span class="nc" id="L122">                    Calendar fecha = itFechasVacunacion.next();</span>
+<span class="nc" id="L123">                    int posFecha = infoCarne.getPosColumnaFecha();</span>
+<span class="nc" id="L124">                    int posEdad = infoCarne.getPosColumnaEdad();</span>
+<span class="nc" id="L125">                    int posFilaVacuna = infoCarne.getPosFilVacunaNoSistematica(vacunaActual.getNombre());</span>
+<span class="nc" id="L126">                    int edad = hijoSeleccionado.mesesDesdeNacimientoAFecha(fecha);</span>
+<span class="nc" id="L127">                    String edadAImprimir = edad + &quot; meses&quot;;</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">                    if (edad &gt; 24) {</span>
+<span class="nc" id="L129">                        edadAImprimir = hijoSeleccionado.aniosDesdeNacimientoAFecha(fecha) + &quot; años&quot;;</span>
+                    }
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                    if (hijoSeleccionado.esHombre()) {</span>
+<span class="nc" id="L132">                        botonesVacunasNoSistematicas[posFilaVacuna][posEdad].setBackground(Color.blue);</span>
+<span class="nc" id="L133">                        botonesVacunasNoSistematicas[posFilaVacuna][posFecha].setBackground(Color.blue);</span>
+                    } else {
+<span class="nc" id="L135">                        botonesVacunasNoSistematicas[posFilaVacuna][posEdad].setBackground(Color.magenta);</span>
+<span class="nc" id="L136">                        botonesVacunasNoSistematicas[posFilaVacuna][posFecha].setBackground(Color.magenta);</span>
+                    }
+<span class="nc" id="L138">                    SimpleDateFormat formatoFecha = new SimpleDateFormat(&quot;dd-MM-yyyy&quot;);</span>
+<span class="nc" id="L139">                    botonesVacunasNoSistematicas[posFilaVacuna][posFecha].setText(formatoFecha.format(fecha.getTime()));</span>
+<span class="nc" id="L140">                    botonesVacunasNoSistematicas[posFilaVacuna][posEdad].setText(edadAImprimir);</span>
+                }
+            }
+<span class="nc" id="L143">        }</span>
+<span class="nc" id="L144">    }</span>
+
+    private void marcarVacunasSistematicasDadas(Hijo hijoSeleccionado) {
+<span class="nc" id="L147">        Iterator&lt;Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt;&gt; iteradorVacunas</span>
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        while (iteradorVacunas.hasNext()) {</span>
+<span class="nc" id="L151">            Par&lt;Vacuna, ArrayList&lt;Calendar&gt;&gt; datoActual = iteradorVacunas.next();</span>
+<span class="nc" id="L152">            Iterator&lt;Calendar&gt; itFechasVacunacion = datoActual.getDato2().iterator();</span>
+<span class="nc" id="L153">            Vacuna vacunaActual = datoActual.getDato1();</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">            if (vacunaActual.esSistematica()) {</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                while (itFechasVacunacion.hasNext()) {</span>
+<span class="nc" id="L156">                    Calendar fechaVacunacion = itFechasVacunacion.next();</span>
+<span class="nc" id="L157">                    int periodoDesdeFecha = hijoSeleccionado.mesesDesdeNacimientoAFecha(fechaVacunacion);</span>
+                    int posCol;
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                    if (periodoDesdeFecha &gt; 24) {</span>
+<span class="nc" id="L160">                        periodoDesdeFecha = hijoSeleccionado.aniosDesdeNacimientoAFecha(fechaVacunacion);</span>
+<span class="nc" id="L161">                        posCol = infoCarne.getPosColumnaAnio(periodoDesdeFecha + &quot;&quot;);</span>
+                    } else {
+<span class="nc" id="L163">                        posCol = infoCarne.getPosColumnaMes(periodoDesdeFecha + &quot;&quot;);</span>
+                    }
+<span class="nc" id="L165">                    int posFil = infoCarne.getPosFilVacunaSistematica(vacunaActual.getNombre());</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">                    if (hijoSeleccionado.esHombre()) {</span>
+<span class="nc" id="L167">                        botonesVacunasSistematicas[posFil][posCol].setBackground(Color.blue);</span>
+                    } else {
+<span class="nc" id="L169">                        botonesVacunasSistematicas[posFil][posCol].setBackground(Color.magenta);</span>
+                    }
+<span class="nc" id="L171">                    SimpleDateFormat formatoFecha = new SimpleDateFormat(&quot;dd-MM-yyyy&quot;);</span>
+<span class="nc" id="L172">                    botonesVacunasSistematicas[posFil][posCol].setText(formatoFecha.format(fechaVacunacion.getTime()));</span>
+<span class="nc" id="L173">                }</span>
+            }
+<span class="nc" id="L175">        }</span>
+<span class="nc" id="L176">    }</span>
+
+    private void formatearPanelVacunasSistematicas(Color amarillo, Color oscuro, Color claro) {
+<span class="nc" id="L179">        String[] nombreVacunas = infoCarne.getListaVacunasSistematicas();</span>
+<span class="nc" id="L180">        String[] meses = infoCarne.getListaMeses();</span>
+<span class="nc" id="L181">        String[] anios = infoCarne.getListaAnios();</span>
+<span class="nc" id="L182">        int cantVacunas = nombreVacunas.length + 1;</span>
+<span class="nc" id="L183">        int cantMeses = meses.length;</span>
+<span class="nc" id="L184">        int cantAnios = anios.length;</span>
+<span class="nc" id="L185">        panelBotonesSistematicas.setLayout(new GridBagLayout());</span>
+<span class="nc" id="L186">        botonesVacunasSistematicas = new JButton[cantVacunas][cantMeses + cantAnios];</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">        for (int f = 0; f &lt; cantVacunas; f++) {</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            for (int c = 0; c &lt; cantMeses + cantAnios; c++) {</span>
+<span class="nc" id="L189">                boolean crearBoton = false;</span>
+<span class="nc" id="L190">                GridBagConstraints constrains = new GridBagConstraints();</span>
+<span class="nc" id="L191">                constrains.gridx = c;</span>
+<span class="nc" id="L192">                constrains.gridy = f;</span>
+<span class="nc" id="L193">                constrains.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L194">                constrains.gridwidth = 1;</span>
+<span class="nc" id="L195">                JButton jButton = new JButton();</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">                if (f == 0) {</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                    if (c == 0) {</span>
+<span class="nc" id="L198">                        jButton.setText(&quot;Vacunas&quot;);</span>
+<span class="nc" id="L199">                        jButton.setBackground(oscuro);</span>
+<span class="nc" id="L200">                        crearBoton = true;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">                    } else if (c == 1) {</span>
+<span class="nc" id="L202">                        constrains.gridwidth = cantMeses - 1;</span>
+<span class="nc" id="L203">                        jButton.setText(&quot;Edad en meses&quot;);</span>
+<span class="nc" id="L204">                        jButton.setBackground(claro);</span>
+<span class="nc" id="L205">                        crearBoton = true;</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">                    } else if (c == cantMeses) {</span>
+<span class="nc" id="L207">                        constrains.gridwidth = cantAnios;</span>
+<span class="nc" id="L208">                        jButton.setText(&quot;Edad en años&quot;);</span>
+<span class="nc" id="L209">                        jButton.setBackground(claro);</span>
+<span class="nc" id="L210">                        crearBoton = true;</span>
+                    }
+                } else {
+<span class="nc bnc" id="L213" title="All 4 branches missed.">                    if (f == 1 &amp;&amp; c == 0) {</span>
+<span class="nc" id="L214">                        jButton.setBackground(amarillo);</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                    } else if (c == 0) {</span>
+<span class="nc" id="L216">                        jButton.setText(nombreVacunas[f - 1]);</span>
+<span class="nc" id="L217">                        jButton.setBackground(claro);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">                    } else if (f == 1) {</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                        if (c &gt;= cantMeses) {</span>
+<span class="nc" id="L220">                            jButton.setText(anios[c - cantMeses]);</span>
+<span class="nc" id="L221">                            jButton.setBackground(claro);</span>
+                        } else {
+<span class="nc" id="L223">                            jButton.setText(meses[c]);</span>
+<span class="nc" id="L224">                            jButton.setBackground(claro);</span>
+                        }
+                    } else {
+<span class="nc" id="L227">                        jButton.setBackground(amarillo);</span>
+<span class="nc" id="L228">                        jButton.setEnabled(false);</span>
+                    }
+<span class="nc" id="L230">                    crearBoton = true;</span>
+                }
+<span class="nc bnc" id="L232" title="All 2 branches missed.">                if (crearBoton) {</span>
+<span class="nc" id="L233">                    jButton.setForeground(Color.black);</span>
+<span class="nc" id="L234">                    Border borde = new CompoundBorder(new LineBorder(Color.WHITE, 1),</span>
+                            new EmptyBorder(5, 5, 5, 5));
+<span class="nc" id="L236">                    jButton.setBorder(borde);</span>
+<span class="nc" id="L237">                    panelBotonesSistematicas.add(jButton, constrains);</span>
+<span class="nc" id="L238">                    botonesVacunasSistematicas[f][c] = jButton;</span>
+                }
+            }
+        }
+<span class="nc" id="L242">    }</span>
+
+    private void formatearPanelVacunasNoSistematicas(Color amarillo, Color oscuro, Color claro) {
+<span class="nc" id="L245">        String[] nombreVacunas = infoCarne.getListaVacunasNoSistematicas();</span>
+<span class="nc" id="L246">        String[] columnas = {&quot;&quot;, &quot;Fecha&quot;, &quot;Edad&quot;};</span>
+<span class="nc" id="L247">        int cantVacunas = nombreVacunas.length;</span>
+<span class="nc" id="L248">        int cantColumnas = columnas.length;</span>
+<span class="nc" id="L249">        panelBotonesNoSistematicas.setLayout(new GridBagLayout());</span>
+<span class="nc" id="L250">        botonesVacunasNoSistematicas = new JButton[cantVacunas][cantColumnas];</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">        for (int f = 0; f &lt; cantVacunas; f++) {</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">            for (int c = 0; c &lt; cantColumnas; c++) {</span>
+<span class="nc" id="L253">                GridBagConstraints constrains = new GridBagConstraints();</span>
+<span class="nc" id="L254">                constrains.gridx = c;</span>
+<span class="nc" id="L255">                constrains.gridy = f;</span>
+<span class="nc" id="L256">                constrains.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L257">                JButton jButton = new JButton();</span>
+<span class="nc bnc" id="L258" title="All 4 branches missed.">                if (c == 0 &amp;&amp; f == 0) {</span>
+<span class="nc" id="L259">                    jButton.setText(&quot;Vacunas no sistemáticas&quot;);</span>
+<span class="nc" id="L260">                    jButton.setBackground(oscuro);</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">                } else if (f == 0) {</span>
+<span class="nc" id="L262">                    jButton.setText(columnas[c]);</span>
+<span class="nc" id="L263">                    jButton.setBackground(claro);</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">                } else if (c == 0) {</span>
+<span class="nc" id="L265">                    jButton.setText(nombreVacunas[f]);</span>
+<span class="nc" id="L266">                    jButton.setBackground(claro);</span>
+                } else {
+<span class="nc" id="L268">                    jButton.setBackground(amarillo);</span>
+<span class="nc" id="L269">                    jButton.setEnabled(false);</span>
+                }
+<span class="nc" id="L271">                Border borde = new CompoundBorder(new LineBorder(Color.WHITE),</span>
+                        new EmptyBorder(5, 5, 5, 5));
+<span class="nc" id="L273">                jButton.setBorder(borde);</span>
+<span class="nc" id="L274">                jButton.setForeground(Color.black);</span>
+<span class="nc" id="L275">                panelBotonesNoSistematicas.add(jButton, constrains);</span>
+<span class="nc" id="L276">                botonesVacunasNoSistematicas[f][c] = jButton;</span>
+            }
+        }
+<span class="nc" id="L279">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+<span class="nc" id="L285">        panelBotonesSistematicas = new javax.swing.JPanel();</span>
+<span class="nc" id="L286">        panelBotonesNoSistematicas = new javax.swing.JPanel();</span>
+<span class="nc" id="L287">        descripcionesVacunas = new javax.swing.JLabel();</span>
+
+<span class="nc" id="L289">        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L290">        setTitle(&quot;Carné de vacunación&quot;);</span>
+
+<span class="nc" id="L292">        panelBotonesSistematicas.setToolTipText(&quot;Carne de vacunas sistematicas&quot;);</span>
+<span class="nc" id="L293">        panelBotonesSistematicas.setAutoscrolls(true);</span>
+<span class="nc" id="L294">        panelBotonesSistematicas.setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));</span>
+<span class="nc" id="L295">        panelBotonesSistematicas.setMaximumSize(new java.awt.Dimension(100, 100));</span>
+
+<span class="nc" id="L297">        javax.swing.GroupLayout panelBotonesSistematicasLayout = new javax.swing.GroupLayout(panelBotonesSistematicas);</span>
+<span class="nc" id="L298">        panelBotonesSistematicas.setLayout(panelBotonesSistematicasLayout);</span>
+<span class="nc" id="L299">        panelBotonesSistematicasLayout.setHorizontalGroup(</span>
+            panelBotonesSistematicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 417, Short.MAX_VALUE)
+        );
+<span class="nc" id="L303">        panelBotonesSistematicasLayout.setVerticalGroup(</span>
+            panelBotonesSistematicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 102, Short.MAX_VALUE)
+        );
+
+<span class="nc" id="L308">        javax.swing.GroupLayout panelBotonesNoSistematicasLayout = new javax.swing.GroupLayout(panelBotonesNoSistematicas);</span>
+<span class="nc" id="L309">        panelBotonesNoSistematicas.setLayout(panelBotonesNoSistematicasLayout);</span>
+<span class="nc" id="L310">        panelBotonesNoSistematicasLayout.setHorizontalGroup(</span>
+            panelBotonesNoSistematicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 386, Short.MAX_VALUE)
+        );
+<span class="nc" id="L314">        panelBotonesNoSistematicasLayout.setVerticalGroup(</span>
+            panelBotonesNoSistematicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 158, Short.MAX_VALUE)
+        );
+
+<span class="nc" id="L319">        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());</span>
+<span class="nc" id="L320">        getContentPane().setLayout(layout);</span>
+<span class="nc" id="L321">        layout.setHorizontalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(descripcionesVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelBotonesSistematicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelBotonesNoSistematicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(71, Short.MAX_VALUE))
+        );
+<span class="nc" id="L331">        layout.setVerticalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(panelBotonesSistematicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelBotonesNoSistematicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(descripcionesVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
+<span class="nc" id="L343">        pack();</span>
+<span class="nc" id="L344">    }// &lt;/editor-fold&gt;//GEN-END:initComponents</span>
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel descripcionesVacunas;
+    private javax.swing.JPanel panelBotonesNoSistematicas;
+    private javax.swing.JPanel panelBotonesSistematicas;
+    // End of variables declaration//GEN-END:variables
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

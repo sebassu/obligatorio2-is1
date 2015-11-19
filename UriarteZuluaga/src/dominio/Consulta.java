@@ -2,9 +2,12 @@ package dominio;
 
 import auxiliar.Auxiliares;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class Consulta extends Evento {
 
+    public static final long serialVersionUID = 42L;
+    
     private String medico;
 
     protected Consulta() {
@@ -28,5 +31,17 @@ public class Consulta extends Evento {
             throw new IllegalArgumentException("Nombre de médico inválido");
         }
         this.medico = elMedico;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.medico);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

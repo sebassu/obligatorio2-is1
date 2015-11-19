@@ -15,6 +15,8 @@ public class Serializacion {
     /**
      * Método ejecutado al finalizar el programa, que guarda en un archivo al
      * objeto Sistema.
+     * Clase Reutilizada de obligatorio de Sebastián Uriarte de Programación 2, 
+     * del segundo semestre del año 2014
      *
      * @param s El objeto de la clase Sistema a serializar.
      * @throws java.io.IOException

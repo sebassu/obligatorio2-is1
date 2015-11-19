@@ -1,4 +1,4 @@
-package dominio;
+package auxiliar;
 
 import java.util.HashMap;
 

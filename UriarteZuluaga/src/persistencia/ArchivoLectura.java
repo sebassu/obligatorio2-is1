@@ -4,6 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+/**
+ * Clase Reutilizada de obligatorio de Sebastián Uriarte de Programación 2, 
+ * del segundo semestre del año 2014
+ * 
+ * @author UriarteZuluaga
+ */
 
 public class ArchivoLectura {
 

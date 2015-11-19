@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VentanaCompletarEvento.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UriarteZuluaga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">interfaz</a> &gt; <span class="el_source">VentanaCompletarEvento.java</span></div><h1>VentanaCompletarEvento.java</h1><pre class="source lang-java linenums">package interfaz;
+
+import auxiliar.Auxiliares;
+import dominio.Evento;
+import dominio.Hijo;
+import dominio.Sistema;
+import dominio.Vacunacion;
+import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+
+public class VentanaCompletarEvento extends javax.swing.JFrame {
+
+<span class="nc" id="L13">    public VentanaCompletarEvento(Sistema sis, int pos, VentanaPrincipal v) {</span>
+<span class="nc" id="L14">        this.modelo = sis;</span>
+<span class="nc" id="L15">        this.posEventoACompletar = pos;</span>
+<span class="nc" id="L16">        this.ventanaPrincipal = v;</span>
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        if (pos != -1) {</span>
+<span class="nc" id="L18">            initComponents();</span>
+<span class="nc" id="L19">            Evento eventoACompletar = modelo.getEvento(pos);</span>
+<span class="nc bnc" id="L20" title="All 6 branches missed.">            switch (eventoACompletar.getTipo()) {</span>
+                case &quot;Consulta&quot;:
+<span class="nc bnc" id="L22" title="All 2 branches missed.">                    if (!eventoACompletar.getCualHijo().esBebe()) {</span>
+<span class="nc" id="L23">                        jLabelPerimetroCefalico.setVisible(false);</span>
+<span class="nc" id="L24">                        txtPerimetroCefalico.setVisible(false);</span>
+                    }
+                    break;
+                default:
+<span class="nc" id="L28">                    jLabelPeso.setVisible(false);</span>
+<span class="nc" id="L29">                    jLabelAltura.setVisible(false);</span>
+<span class="nc" id="L30">                    jLabelPerimetroCefalico.setVisible(false);</span>
+<span class="nc" id="L31">                    txtPeso.setVisible(false);</span>
+<span class="nc" id="L32">                    txtAltura.setVisible(false);</span>
+<span class="nc" id="L33">                    txtPerimetroCefalico.setVisible(false);</span>
+                    break;
+            }
+<span class="nc" id="L36">        } else {</span>
+<span class="nc" id="L37">            JOptionPane.showMessageDialog(null, &quot;Error&quot;, &quot;Debe seleccionar un &quot;</span>
+                    + &quot;carné válido.&quot;, JOptionPane.ERROR_MESSAGE);
+        }
+<span class="nc" id="L40">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+<span class="nc" id="L46">        jPanel5 = new javax.swing.JPanel();</span>
+<span class="nc" id="L47">        btnAceptar = new javax.swing.JButton();</span>
+<span class="nc" id="L48">        jPanel1 = new javax.swing.JPanel();</span>
+<span class="nc" id="L49">        jButtonCerrar = new javax.swing.JButton();</span>
+<span class="nc" id="L50">        jPanel6 = new javax.swing.JPanel();</span>
+<span class="nc" id="L51">        jPanelDatos = new javax.swing.JPanel();</span>
+<span class="nc" id="L52">        jScrollPane1 = new javax.swing.JScrollPane();</span>
+<span class="nc" id="L53">        textAreaNotas = new javax.swing.JTextArea();</span>
+<span class="nc" id="L54">        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));</span>
+<span class="nc" id="L55">        txtPeso = new javax.swing.JTextField();</span>
+<span class="nc" id="L56">        txtAltura = new javax.swing.JTextField();</span>
+<span class="nc" id="L57">        txtPerimetroCefalico = new javax.swing.JTextField();</span>
+<span class="nc" id="L58">        jLabelPeso = new javax.swing.JLabel();</span>
+<span class="nc" id="L59">        jLabelAltura = new javax.swing.JLabel();</span>
+<span class="nc" id="L60">        jLabelPerimetroCefalico = new javax.swing.JLabel();</span>
+
+<span class="nc" id="L62">        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L63">        setTitle(&quot;Completar Evento&quot;);</span>
+<span class="nc" id="L64">        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L65">        setMinimumSize(new java.awt.Dimension(200, 200));</span>
+
+<span class="nc" id="L67">        btnAceptar.setText(&quot;Aceptar&quot;);</span>
+<span class="nc" id="L68">        btnAceptar.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L70">                btnAceptarActionPerformed(evt);</span>
+<span class="nc" id="L71">            }</span>
+        });
+
+<span class="nc" id="L74">        jPanel1.setBackground(new java.awt.Color(204, 204, 204));</span>
+<span class="nc" id="L75">        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());</span>
+
+<span class="nc" id="L77">        jButtonCerrar.setText(&quot;Cerrar&quot;);</span>
+<span class="nc" id="L78">        jButtonCerrar.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L80">                jButtonCerrarActionPerformed(evt);</span>
+<span class="nc" id="L81">            }</span>
+        });
+
+<span class="nc" id="L84">        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);</span>
+<span class="nc" id="L85">        jPanel5.setLayout(jPanel5Layout);</span>
+<span class="nc" id="L86">        jPanel5Layout.setHorizontalGroup(</span>
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(272, Short.MAX_VALUE)
+                .addComponent(btnAceptar)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
+        );
+<span class="nc" id="L96">        jPanel5Layout.setVerticalGroup(</span>
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6))
+        );
+
+<span class="nc" id="L107">        jPanel6.setBackground(new java.awt.Color(255, 255, 255));</span>
+<span class="nc" id="L108">        jPanel6.setMaximumSize(new java.awt.Dimension(463, 466));</span>
+<span class="nc" id="L109">        jPanel6.setMinimumSize(new java.awt.Dimension(463, 466));</span>
+
+<span class="nc" id="L111">        jPanelDatos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, &quot;Datos del Evento&quot;, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(&quot;Tahoma&quot;, 0, 11), new java.awt.Color(0, 51, 204))); // NOI18N</span>
+<span class="nc" id="L112">        jPanelDatos.setOpaque(false);</span>
+
+<span class="nc" id="L114">        textAreaNotas.setColumns(20);</span>
+<span class="nc" id="L115">        textAreaNotas.setRows(5);</span>
+<span class="nc" id="L116">        textAreaNotas.setBorder(javax.swing.BorderFactory.createTitledBorder(&quot;Notas&quot;));</span>
+<span class="nc" id="L117">        jScrollPane1.setViewportView(textAreaNotas);</span>
+
+<span class="nc" id="L119">        txtPeso.setToolTipText(&quot;Medido en kilogramos&quot;);</span>
+<span class="nc" id="L120">        txtPeso.addKeyListener(new java.awt.event.KeyAdapter() {</span>
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+<span class="nc" id="L122">                txtPesoKeyTyped(evt);</span>
+<span class="nc" id="L123">            }</span>
+        });
+
+<span class="nc" id="L126">        txtAltura.setToolTipText(&quot;Medida en centímetros&quot;);</span>
+<span class="nc" id="L127">        txtAltura.addKeyListener(new java.awt.event.KeyAdapter() {</span>
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+<span class="nc" id="L129">                txtAlturaKeyTyped(evt);</span>
+<span class="nc" id="L130">            }</span>
+        });
+
+<span class="nc" id="L133">        txtPerimetroCefalico.setToolTipText(&quot;Medido en centímetros&quot;);</span>
+<span class="nc" id="L134">        txtPerimetroCefalico.addKeyListener(new java.awt.event.KeyAdapter() {</span>
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+<span class="nc" id="L136">                txtPerimetroCefalicoKeyTyped(evt);</span>
+<span class="nc" id="L137">            }</span>
+        });
+
+<span class="nc" id="L140">        jLabelPeso.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L141">        jLabelPeso.setLabelFor(txtPeso);</span>
+<span class="nc" id="L142">        jLabelPeso.setText(&quot;Peso (kg):&quot;);</span>
+
+<span class="nc" id="L144">        jLabelAltura.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L145">        jLabelAltura.setLabelFor(txtAltura);</span>
+<span class="nc" id="L146">        jLabelAltura.setText(&quot;Altura (cm):&quot;);</span>
+
+<span class="nc" id="L148">        jLabelPerimetroCefalico.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);</span>
+<span class="nc" id="L149">        jLabelPerimetroCefalico.setLabelFor(txtPerimetroCefalico);</span>
+<span class="nc" id="L150">        jLabelPerimetroCefalico.setText(&quot;Perímetro cefálico (cm):&quot;);</span>
+
+<span class="nc" id="L152">        javax.swing.GroupLayout jPanelDatosLayout = new javax.swing.GroupLayout(jPanelDatos);</span>
+<span class="nc" id="L153">        jPanelDatos.setLayout(jPanelDatosLayout);</span>
+<span class="nc" id="L154">        jPanelDatosLayout.setHorizontalGroup(</span>
+            jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDatosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelPeso, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelAltura, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelPerimetroCefalico, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPerimetroCefalico, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(65, 65, 65))
+        );
+<span class="nc" id="L174">        jPanelDatosLayout.setVerticalGroup(</span>
+            jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDatosLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelPeso))
+                .addGap(17, 17, 17)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelAltura))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPerimetroCefalico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelPerimetroCefalico))
+                .addContainerGap())
+        );
+
+<span class="nc" id="L196">        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);</span>
+<span class="nc" id="L197">        jPanel6.setLayout(jPanel6Layout);</span>
+<span class="nc" id="L198">        jPanel6Layout.setHorizontalGroup(</span>
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+<span class="nc" id="L205">        jPanel6Layout.setVerticalGroup(</span>
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+<span class="nc" id="L213">        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());</span>
+<span class="nc" id="L214">        getContentPane().setLayout(layout);</span>
+<span class="nc" id="L215">        layout.setHorizontalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+<span class="nc" id="L220">        layout.setVerticalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+<span class="nc" id="L228">        pack();</span>
+<span class="nc" id="L229">    }// &lt;/editor-fold&gt;//GEN-END:initComponents</span>
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        try {
+<span class="nc" id="L233">            Evento eventoACompletar = modelo.getEvento(posEventoACompletar);</span>
+<span class="nc" id="L234">            double mesesDesdeNacimiento</span>
+                    = Auxiliares.mesesDesdeLaFecha(eventoACompletar.getFecha());
+<span class="nc bnc" id="L236" title="All 6 branches missed.">            switch (eventoACompletar.getTipo()) {</span>
+                case &quot;Consulta&quot;:
+<span class="nc" id="L238">                    Hijo h = eventoACompletar.getCualHijo();</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">                    if (eventoACompletar.getCualHijo().esBebe()) {</span>
+<span class="nc" id="L240">                        h.agregarPerimetroCefalico(Double.parseDouble(txtPerimetroCefalico.getText()),</span>
+                                mesesDesdeNacimiento);
+                    }
+<span class="nc" id="L243">                    h.agregarAltura(Double.parseDouble(txtAltura.getText()), mesesDesdeNacimiento);</span>
+<span class="nc" id="L244">                    h.agregarPeso(Double.parseDouble(txtPeso.getText()), mesesDesdeNacimiento);     //Falta break; adrede.</span>
+                default:
+<span class="nc" id="L246">                    eventoACompletar.setNotas(textAreaNotas.getText().trim());</span>
+                    break;
+            }
+<span class="nc bnc" id="L249" title="All 2 branches missed.">            if (eventoACompletar.getTipo().equals(&quot;Vacunación&quot;)) {</span>
+<span class="nc" id="L250">                eventoACompletar.getCualHijo().agregarVacunaRecibida(((Vacunacion) eventoACompletar).getVacuna(),</span>
+                        eventoACompletar.getFecha());
+            }
+<span class="nc" id="L253">            modelo.darDeBajaEvento(posEventoACompletar);</span>
+<span class="nc" id="L254">            ventanaPrincipal.cargarPanelEventosProximos();</span>
+<span class="nc" id="L255">            ventanaPrincipal.pintarDia(eventoACompletar.getFecha());</span>
+<span class="nc" id="L256">            ventanaPrincipal.activarOpcionesGraficas(eventoACompletar.getCualHijo());</span>
+<span class="nc" id="L257">            this.dispose();</span>
+<span class="nc" id="L258">        } catch (NumberFormatException | NullPointerException e) {</span>
+<span class="nc" id="L259">            JOptionPane.showMessageDialog(this, &quot;Error&quot;, VentanaPrincipal.ERR_INGRESO</span>
+                    + &quot;\nError detectado: &quot; + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L261">        }</span>
+<span class="nc" id="L262">    }//GEN-LAST:event_btnAceptarActionPerformed</span>
+
+    private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed
+<span class="nc" id="L265">        this.dispose();</span>
+<span class="nc" id="L266">    }//GEN-LAST:event_jButtonCerrarActionPerformed</span>
+
+    private void txtPesoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesoKeyTyped
+<span class="nc" id="L269">        borrarNoNumeros(evt);</span>
+<span class="nc" id="L270">    }//GEN-LAST:event_txtPesoKeyTyped</span>
+
+    private void txtAlturaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAlturaKeyTyped
+<span class="nc" id="L273">        borrarNoNumeros(evt);</span>
+<span class="nc" id="L274">    }//GEN-LAST:event_txtAlturaKeyTyped</span>
+
+    private void txtPerimetroCefalicoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPerimetroCefalicoKeyTyped
+<span class="nc" id="L277">        borrarNoNumeros(evt);</span>
+<span class="nc" id="L278">    }//GEN-LAST:event_txtPerimetroCefalicoKeyTyped</span>
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.JButton jButtonCerrar;
+    private javax.swing.JLabel jLabelAltura;
+    private javax.swing.JLabel jLabelPerimetroCefalico;
+    private javax.swing.JLabel jLabelPeso;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanelDatos;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea textAreaNotas;
+    private javax.swing.JTextField txtAltura;
+    private javax.swing.JTextField txtPerimetroCefalico;
+    private javax.swing.JTextField txtPeso;
+    // End of variables declaration//GEN-END:variables
+    private final Sistema modelo;
+    private final int posEventoACompletar;
+    private final VentanaPrincipal ventanaPrincipal;
+
+    private void borrarNoNumeros(KeyEvent evt) {
+<span class="nc" id="L302">        char caracter = evt.getKeyChar();</span>
+<span class="nc bnc" id="L303" title="All 6 branches missed.">        if (!Character.isDigit(caracter) &amp;&amp; caracter != '.' &amp;&amp; caracter</span>
+                != KeyEvent.VK_BACK_SPACE) {
+<span class="nc" id="L305">            evt.consume();</span>
+        }
+<span class="nc" id="L307">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

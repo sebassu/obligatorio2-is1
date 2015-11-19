@@ -81,28 +81,28 @@ public class HijoTest {
     public void testSetNombre1() {
         Hijo h = new Hijo();
         h.setNombre("Máximo Cozzetti");
-        assertEquals(h.getMedicoDeCabecera(), "Mario Santos");
+        assertEquals(h.getNombre(), "Máximo Cozzetti");
     }
 
     @Test
     public void testSetNombre2() {
         Hijo h = new Hijo();
         h.setNombre("1214");
-        assertEquals(h.getMedicoDeCabecera(), "1214");
+        assertEquals(h.getNombre(), "1214");
     }
 
     @Test
     public void testSetNombre3() {
         Hijo h = new Hijo();
         h.setNombre("   .-.-.");
-        assertEquals(h.getMedicoDeCabecera(), "   .-.-.");
+        assertEquals(h.getNombre(), "   .-.-.");
     }
 
     @Test
     public void testSetNombre4() {
         Hijo h = new Hijo();
         h.setNombre("");
-        assertEquals(h.getMedicoDeCabecera(), "");
+        assertEquals(h.getNombre(), "");
     }
 
     /**
@@ -110,7 +110,7 @@ public class HijoTest {
      */
     @Test
     public void testSetFechaNacimiento1() {
-        Calendar c = new GregorianCalendar(1900, 12, 1);
+        Calendar c = new GregorianCalendar(1900, 5, 1);
         Hijo h = new Hijo(null, c, true, null, null, null);
         assertEquals(c, h.getFechaNacimiento());
     }

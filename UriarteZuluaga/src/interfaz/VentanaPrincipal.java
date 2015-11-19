@@ -120,7 +120,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAgregarHijo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/imagenes/plus-icon.png"))); // NOI18N
-        btnAgregarHijo.setToolTipText("Agregar nuevo jugador");
+        btnAgregarHijo.setToolTipText("Agregar nuevo carné");
         btnAgregarHijo.setFocusable(false);
         btnAgregarHijo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAgregarHijo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -131,7 +131,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
 
         btnEditarHijo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/imagenes/textfield-rename-icon.png"))); // NOI18N
-        btnEditarHijo.setToolTipText("Ver propiedades");
+        btnEditarHijo.setToolTipText("Modificar carné");
         btnEditarHijo.setEnabled(false);
         btnEditarHijo.setFocusable(false);
         btnEditarHijo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -147,7 +147,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         btnEliminarHijo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/imagenes/edit_delete.png"))); // NOI18N
-        btnEliminarHijo.setToolTipText("Eliminar jugadores seleccionados");
+        btnEliminarHijo.setToolTipText("Eliminar carné");
         btnEliminarHijo.setEnabled(false);
         btnEliminarHijo.setFocusable(false);
         btnEliminarHijo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
