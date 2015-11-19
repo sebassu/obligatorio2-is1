@@ -479,10 +479,15 @@ public class Sistema implements Serializable {
             while (itCalendarioHijo.hasNext()) {
                 Calendar estaFecha = itCalendarioHijo.next();
                 String mesAAgregar = "" + hijoSeleccionado.mesesDesdeNacimientoAFecha(estaFecha);
-                int valorIntegerDeMesAAgregar = Integer.parseInt(mesAAgregar);
-                if (valorIntegerDeMesAAgregar > -1 && valorIntegerDeMesAAgregar < 24
-                        && !meses.contains(mesAAgregar)) {
+                if (mesValido(mesAAgregar) && !meses.contains(mesAAgregar)) {
                     meses.add(mesAAgregar);
+                }
+                String mesRecomendadoLuegoDeVacunacion = Integer.parseInt(mesAAgregar) 
+                        + Integer.parseInt(estePar.getDato1().
+                                getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses()) + "";
+                if (mesValido(mesRecomendadoLuegoDeVacunacion) 
+                        && !meses.contains(mesRecomendadoLuegoDeVacunacion)) {
+                    meses.add(mesRecomendadoLuegoDeVacunacion);
                 }
             }
             Iterator<String> itVacunaHijo = estePar.getDato1().iteradorVencimientoEnMeses();
@@ -520,6 +525,13 @@ public class Sistema implements Serializable {
                 if (Integer.parseInt(anioAAgregar) > 1
                         && !anios.contains(anioAAgregar)) {
                     anios.add(anioAAgregar);
+                }
+                int anioRecomendadoLuegoDeVacunacion = Integer.parseInt(anioAAgregar)*12
+                        + Integer.parseInt(estePar.getDato1().
+                                getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses());
+                if (anioRecomendadoLuegoDeVacunacion > 24 
+                        && !anios.contains(anioRecomendadoLuegoDeVacunacion/12+"")) {
+                    anios.add(anioRecomendadoLuegoDeVacunacion/12+"");
                 }
             }
             Iterator<String> itVacunaHijo = estePar.getDato1().iteradorVencimientoEnAnios();
