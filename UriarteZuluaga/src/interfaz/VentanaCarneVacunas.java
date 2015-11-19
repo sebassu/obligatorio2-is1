@@ -38,11 +38,73 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
         formatearPanelVacunasNoSistematicas(sis, hijoSeleccionado, amarillo, oscuro, claro);
         marcarVacunasSistematicasDadas(hijoSeleccionado);
         marcarVacunasNoSistematicasDadas(hijoSeleccionado);
-        recomendarNuevasVacunaciones(hijoSeleccionado, oscuro);
+        recomendarNuevasVacunaciones(hijoSeleccionado, sis, oscuro);
+        cargarDescripcionesVacunas(hijoSeleccionado, sis);
     }
 
-    private void recomendarNuevasVacunaciones(Hijo hijoSeleccionado, Color oscuro) {
+    public void cargarDescripcionesVacunas(Hijo hijoSeleccionado, Sistema sis) {
+        Iterator<Par<Vacuna, ArrayList<Calendar>>> iteradorVacunas
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+        Iterator<Vacuna> vacunasSistema = sis.getVacunas().iterator();
+        String ret = "<u>DESCRIPCIONES</u>";
+        while (iteradorVacunas.hasNext()) {
+            Par<Vacuna, ArrayList<Calendar>> datoActual = iteradorVacunas.next();
+            Vacuna vacunaActual = datoActual.getDato1();
+            ret = ret + "<br>" + vacunaActual.getNombre() + ": " + vacunaActual.getDescripcion();
+        }
+        while (vacunasSistema.hasNext()) {
+            Vacuna vacunaActual = vacunasSistema.next();
+            if (!hijoSeleccionado.contieneVacunaDeEsteNombre(vacunaActual.getNombre())) {
+                ret = ret + "<br>" + vacunaActual.getNombre() + ": " + vacunaActual.getDescripcion();
+            }
+        }
+        descripcionesVacunas.setText("<html>" + ret + "</html>");
+    }
 
+    private void recomendarNuevasVacunaciones(Hijo hijoSeleccionado, Sistema sis, Color oscuro) {
+        Iterator<Par<Vacuna, ArrayList<Calendar>>> iteradorVacunas
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
+        Iterator<Vacuna> vacunasSistema = sis.getVacunas().iterator();
+        while (iteradorVacunas.hasNext()) {
+            Par<Vacuna, ArrayList<Calendar>> datoActual = iteradorVacunas.next();
+            ArrayList<Calendar> fechasVacunaciones = datoActual.getDato2();
+            Vacuna vacunaActual = datoActual.getDato1();
+            if (vacunaActual.esSistematica() && fechasVacunaciones.size() > 0) {
+
+                Calendar fechaVacunacion = fechasVacunaciones.get(fechasVacunaciones.size() - 1);
+                int periodoNuevoARecomendar = hijoSeleccionado.
+                        mesesDesdeNacimientoAFecha(fechaVacunacion) + Integer.parseInt(
+                                vacunaActual.getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses());
+                int posCol = -1;
+                if (periodoNuevoARecomendar > 24) {
+                    periodoNuevoARecomendar = periodoNuevoARecomendar / 12;
+                    posCol = infoCarne.getPosColumnaAnio(periodoNuevoARecomendar + "");
+                } else {
+                    posCol = infoCarne.getPosColumnaMes(periodoNuevoARecomendar + "");
+                }
+                int posFil = infoCarne.getPosFilVacunaSistematica(vacunaActual.getNombre());
+                botonesVacunasSistematicas[posFil][posCol].setBackground(Color.gray);
+            }
+        }
+        while (vacunasSistema.hasNext()) {
+            Vacuna vacunaActual = vacunasSistema.next();
+            boolean agregarPeriodoRecomendado = true;
+            if (vacunaActual.esSistematica() 
+                    && !hijoSeleccionado.contieneVacunaDeEsteNombre(vacunaActual.getNombre())) {
+                int posCol = -1;
+                int posFil = infoCarne.getPosFilVacunaSistematica(vacunaActual.getNombre());
+                ArrayList<String> marcarPeriodosRecomendados = vacunaActual.getVencimientoEnMeses();
+                for (int i = 0; i < marcarPeriodosRecomendados.size(); i++) {
+                    posCol = infoCarne.getPosColumnaMes(marcarPeriodosRecomendados.get(i));
+                    botonesVacunasSistematicas[posFil][posCol].setBackground(oscuro);
+                }
+                marcarPeriodosRecomendados = vacunaActual.getVencimientoEnAnios();
+                for (int i = 0; i < marcarPeriodosRecomendados.size(); i++) {
+                    posCol = infoCarne.getPosColumnaAnio(marcarPeriodosRecomendados.get(i));
+                    botonesVacunasSistematicas[posFil][posCol].setBackground(oscuro);
+                }
+            }
+        }
     }
 
     private void marcarVacunasNoSistematicasDadas(Hijo hijoSeleccionado) {
@@ -220,6 +282,7 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
 
         panelBotonesSistematicas = new javax.swing.JPanel();
         panelBotonesNoSistematicas = new javax.swing.JPanel();
+        descripcionesVacunas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -255,26 +318,30 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(descripcionesVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelBotonesSistematicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelBotonesNoSistematicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
+                .addGap(26, 26, 26)
                 .addComponent(panelBotonesSistematicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelBotonesNoSistematicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(descripcionesVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel descripcionesVacunas;
     private javax.swing.JPanel panelBotonesNoSistematicas;
     private javax.swing.JPanel panelBotonesSistematicas;
     // End of variables declaration//GEN-END:variables

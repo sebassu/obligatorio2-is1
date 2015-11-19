@@ -20,8 +20,7 @@ public class Hijo implements Serializable, Comparable {
     protected final ArrayList<Par<Double, Double>> listaPesos;
     protected final ArrayList<Par<Double, Double>> listaPerimetrosCefalicos;
     protected final ArrayList<Par<Double, Double>> listaAlturas;
-    protected ArrayList<Par<Vacuna,ArrayList<Calendar>>> historialVacunaciones;
-
+    protected ArrayList<Par<Vacuna, ArrayList<Calendar>>> historialVacunaciones;
 
     public Hijo() {
         this("9.999.999-9");
@@ -147,102 +146,115 @@ public class Hijo implements Serializable, Comparable {
     }
 
     public void agregarVacunaRecibida(Vacuna v, Calendar dia) {
-        Par<Vacuna,ArrayList<Calendar>> vacunaNueva =
-                new Par<>(new Vacuna(v), new ArrayList<Calendar>());
+        Par<Vacuna, ArrayList<Calendar>> vacunaNueva
+                = new Par<>(new Vacuna(v), new ArrayList<Calendar>());
         vacunaNueva.getDato2().add(dia);
         if (!historialVacunaciones.contains(vacunaNueva)) {
             historialVacunaciones.add(vacunaNueva);
         } else {
             historialVacunaciones.get(historialVacunaciones.indexOf(
-                vacunaNueva)).getDato2().add(dia);
+                    vacunaNueva)).getDato2().add(dia);
             Collections.sort(historialVacunaciones.get(historialVacunaciones.indexOf(
-                vacunaNueva)).getDato2());
+                    vacunaNueva)).getDato2());
         }
     }
 
     public void eliminarVacunaRecivida(Vacuna v) {
-        Par<Vacuna,ArrayList<Calendar>> vacunaBuscada = new Par<>(v, new ArrayList<Calendar>());
+        Par<Vacuna, ArrayList<Calendar>> vacunaBuscada = new Par<>(v, new ArrayList<Calendar>());
         historialVacunaciones.remove(vacunaBuscada);
     }
-    
+
     public void eliminarFechaVacunaRecivida(Vacuna v, Calendar fecha) {
-        Par<Vacuna,ArrayList<Calendar>> vacunaBuscada = new Par<>(v, new ArrayList<Calendar>());
+        Par<Vacuna, ArrayList<Calendar>> vacunaBuscada = new Par<>(v, new ArrayList<Calendar>());
         historialVacunaciones.get(historialVacunaciones.indexOf(
                 vacunaBuscada)).getDato2().remove(fecha);
     }
 
-    public Iterator<Par<Vacuna,ArrayList<Calendar>>> getIteradorHistorialVacunaciones() {
+    public Iterator<Par<Vacuna, ArrayList<Calendar>>> getIteradorHistorialVacunaciones() {
         return historialVacunaciones.iterator();
     }
-    
+
     public XYSeries obtenerPesosParaGrafica() {
         XYSeries pesos = new XYSeries("Peso por Edad");
-        Iterator<Par<Double, Double>> itListaPesos =
-                listaPesos.iterator();
+        Iterator<Par<Double, Double>> itListaPesos
+                = listaPesos.iterator();
         while (itListaPesos.hasNext()) {
-            
+
             Par<Double, Double> estePar = itListaPesos.next();
             pesos.add(estePar.getDato1(), estePar.getDato2());
         }
-        
+
         return pesos;
     }
-    
+
     public XYSeries obtenerEstaturaParaGrafica() {
         XYSeries estaturas = new XYSeries("Longitud / Estatura por Edad");
-        Iterator<Par<Double, Double>> itListaEstaturas =
-                listaPesos.iterator();
+        Iterator<Par<Double, Double>> itListaEstaturas
+                = listaPesos.iterator();
         while (itListaEstaturas.hasNext()) {
-            
+
             Par<Double, Double> estePar = itListaEstaturas.next();
             estaturas.add(estePar.getDato1(), estePar.getDato2());
         }
-        
+
         return estaturas;
     }
-    
+
     public XYSeries obtenerPerimCefalicoParaGrafica() {
         XYSeries perimCefalico = new XYSeries("Perímetro Cefálico por Edad");
-        Iterator<Par<Double, Double>> itListaPerimetros =
-                listaPesos.iterator();
+        Iterator<Par<Double, Double>> itListaPerimetros
+                = listaPesos.iterator();
         while (itListaPerimetros.hasNext()) {
-            
+
             Par<Double, Double> estePar = itListaPerimetros.next();
             perimCefalico.add(estePar.getDato1(), estePar.getDato2());
         }
-        
+
         return perimCefalico;
     }
-    
+
     public XYSeries obtenerPesoEstaturaParaGrafica() {
         XYSeries pesosEstaturas = new XYSeries("Peso por Estatura");
-        Iterator<Par<Double, Double>> itListaEstaturas =
-                listaPesos.iterator();
-        Iterator<Par<Double, Double>> itListaPesos =
-                listaPesos.iterator();
+        Iterator<Par<Double, Double>> itListaEstaturas
+                = listaPesos.iterator();
+        Iterator<Par<Double, Double>> itListaPesos
+                = listaPesos.iterator();
         while (itListaEstaturas.hasNext() && itListaPesos.hasNext()) {
-            
+
             Par<Double, Double> esteParEstatura = itListaEstaturas.next();
             Par<Double, Double> esteParPeso = itListaPesos.next();
             pesosEstaturas.add(esteParEstatura.getDato2(), esteParPeso.getDato2());
         }
-        
+
         return pesosEstaturas;
     }
-    
+
     public int mesesDesdeNacimientoAFecha(Calendar fecha) {
-  
-        return ((fechaNacimiento.get(Calendar.YEAR)) 
-                - fecha.get(Calendar.YEAR)) * 12 + 
-                fechaNacimiento.get(Calendar.MONTH) - fecha.get(Calendar.MONTH);
+
+        return ((fechaNacimiento.get(Calendar.YEAR))
+                - fecha.get(Calendar.YEAR)) * 12
+                + fechaNacimiento.get(Calendar.MONTH) - fecha.get(Calendar.MONTH);
     }
-    
+
     public int aniosDesdeNacimientoAFecha(Calendar fecha) {
-  
-        return ((fechaNacimiento.get(Calendar.YEAR)) 
+
+        return ((fechaNacimiento.get(Calendar.YEAR))
                 - fecha.get(Calendar.YEAR));
     }
-    
+
+    public boolean contieneVacunaDeEsteNombre(String nombreVacunaBuscada) {
+
+        Iterator<Par<Vacuna, ArrayList<Calendar>>> itHistorialVacunas
+                = getIteradorHistorialVacunaciones();
+        while (itHistorialVacunas.hasNext()) {
+            String nombreVacunaActual = itHistorialVacunas.next().getDato1().toString();
+            if (nombreVacunaActual.equals(nombreVacunaBuscada)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {

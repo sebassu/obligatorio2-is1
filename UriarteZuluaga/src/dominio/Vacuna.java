@@ -15,6 +15,7 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     private boolean sistematica;
     private ArrayList<String> vencimientoEnMeses;
     private ArrayList<String> vencimientoEnAnios;
+    private String ultimoVencimientoEliminado;
     private String descripcion;
 
     //Constructor.
@@ -25,17 +26,19 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
         vencimientoEnMeses = new ArrayList<>();
         vencimientoEnAnios = new ArrayList<>();
         descripcion = descrip;
+        ultimoVencimientoEliminado = "0";
     }
-    
-    public Vacuna (Vacuna vacunaACopiar) {
-        
+
+    public Vacuna(Vacuna vacunaACopiar) {
+
         nombre = vacunaACopiar.nombre;
         sistematica = vacunaACopiar.sistematica;
         descripcion = vacunaACopiar.descripcion;
-        vencimientoEnMeses = 
-                (ArrayList<String>)vacunaACopiar.vencimientoEnMeses.clone();
-        vencimientoEnAnios = 
-                (ArrayList<String>)vacunaACopiar.vencimientoEnAnios.clone();
+        vencimientoEnMeses
+                = (ArrayList<String>) vacunaACopiar.vencimientoEnMeses.clone();
+        vencimientoEnAnios
+                = (ArrayList<String>) vacunaACopiar.vencimientoEnAnios.clone();
+        ultimoVencimientoEliminado = vacunaACopiar.ultimoVencimientoEliminado;
     }
 
     //Constructor privado para pruebas.
@@ -76,11 +79,11 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
         this.descripcion = descripcion;
     }
 
-    public String definirMenorVencimiento(String vencimientoMes,
+   /* public String definirMenorVencimiento(String vencimientoMes,
             String vencimientoAnio) {
 
         if (vencimientoMes.charAt(0) != 'c' && vencimientoAnio.charAt(0) != 'c') {
-            if (Integer.parseInt(vencimientoMes) 
+            if (Integer.parseInt(vencimientoMes)
                     > Integer.parseInt(vencimientoAnio) * 12) {
                 return vencimientoMes;
             } else {
@@ -120,7 +123,7 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
                 return "";
             }
         }
-    }
+    }*/
 
     public void agregarVencimientoEnMeses(String dato)
             throws IllegalStateException {
@@ -134,6 +137,98 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
         } else {
             throw new IllegalStateException("Esta vacuna no es Sistemática");
         }
+    }
+
+    public void eliminarVencimientoMasReciente() {
+        boolean eliminado = false;
+        if (vencimientoEnMeses.size() > 0) {
+            String vencimientoAEliminar = vencimientoEnMeses.get(0);
+            if (vencimientoAEliminar.charAt(0) != 'c') {
+                ultimoVencimientoEliminado = "m"+vencimientoAEliminar;
+                eliminarVencimientoEnMeses(vencimientoAEliminar);
+                eliminado = true;
+            }
+        }
+        if (!eliminado) {
+            if (vencimientoEnAnios.size() > 0) {
+                String vencimientoAEliminar = vencimientoEnAnios.get(0);
+                if (vencimientoAEliminar.charAt(0) != 'c') {
+                    ultimoVencimientoEliminado = "a"+vencimientoAEliminar;
+                    eliminarVencimientoEnAnios(vencimientoAEliminar);
+                    eliminado = true;
+                }
+            }
+            if (!eliminado) {
+                throw new IllegalStateException("No hay vencimientos para eliminar");
+            }
+        }
+    }
+
+    public String getUltimoVencimientoEliminado() {
+        return ultimoVencimientoEliminado;
+    }
+
+    public void setUltimoVencimientoEliminado(String ultimoVencimientoEliminado) {
+        this.ultimoVencimientoEliminado = ultimoVencimientoEliminado;
+    }
+    
+    public String getSiguienteVencimiento() {
+        
+        if (vencimientoEnMeses.size() > 0) {
+            String vencimientoSiguiente = vencimientoEnMeses.get(0);
+            if (vencimientoSiguiente.charAt(0) != 'c') {
+                return vencimientoSiguiente;
+                
+            } else if (vencimientoEnAnios.isEmpty()) {
+                return vencimientoSiguiente;
+            }
+        } else {
+            if (vencimientoEnAnios.size() > 0) {
+                String vencimientoSiguiente = vencimientoEnAnios.get(0);
+                return vencimientoSiguiente;
+            } 
+        }
+        throw new IllegalStateException("No hay vencimientos para conseguir");
+    }
+
+    public ArrayList<String> getVencimientoEnMeses() {
+        return vencimientoEnMeses;
+    }
+
+    public void setVencimientoEnMeses(ArrayList<String> vencimientoEnMeses) {
+        this.vencimientoEnMeses = vencimientoEnMeses;
+    }
+
+    public ArrayList<String> getVencimientoEnAnios() {
+        return vencimientoEnAnios;
+    }
+
+    public void setVencimientoEnAnios(ArrayList<String> vencimientoEnAnios) {
+        this.vencimientoEnAnios = vencimientoEnAnios;
+    }
+    
+    public String getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses() {
+        String periodo = "";
+        for (int i = 1; i < ultimoVencimientoEliminado.length(); i++) {
+            periodo = periodo + ultimoVencimientoEliminado.charAt(i);
+        }
+        if (ultimoVencimientoEliminado.charAt(0) == 'm') {
+            if (!vencimientoEnMeses.isEmpty() && vencimientoEnMeses.get(0).charAt(0) != 'c') {
+                int valorPeriodo = Integer.parseInt(vencimientoEnMeses.get(0)) - 
+                        Integer.parseInt(periodo);
+                return valorPeriodo+"";
+            }
+        } else if (ultimoVencimientoEliminado.charAt(0) == 'a') {
+            if (!vencimientoEnAnios.isEmpty() && vencimientoEnAnios.get(0).charAt(0) != 'c') {
+                int valorPeriodo = Integer.parseInt(vencimientoEnAnios.get(0))*12 - 
+                        Integer.parseInt(periodo);
+                return valorPeriodo+"";
+            }
+        } else {
+            return getSiguienteVencimiento();
+        }
+        throw new IllegalStateException("Hubo un problema y no se pudo devolver "
+                + "el periodo entre vencimiento siguiente y anterior");
     }
 
     public void eliminarVencimientoEnMeses(String dato)
@@ -188,8 +283,6 @@ public class Vacuna implements Serializable, Comparable<Vacuna> {
     public Iterator<String> iteradorVencimientoEnAnios() {
         return vencimientoEnAnios.iterator();
     }
-    
-    
 
     /**
      * Comparación entre vacunas - Se valida la unicidad del nombre.
