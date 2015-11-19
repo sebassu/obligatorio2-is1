@@ -1,7 +1,6 @@
 package interfaz;
 
 import auxiliar.Auxiliares;
-import com.toedter.calendar.JDayChooser;
 import dominio.Evento;
 import dominio.Hijo;
 import dominio.Sistema;
@@ -11,8 +10,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -26,9 +23,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -47,11 +42,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.modelo = sis;
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
-        if (activarOpcionesQueRequierenHijos()) {
-            activarOpcionesModificacionEventos();
-        }
+        activarOpcionesQueRequierenHijos();
+        activarOpcionesModificacionEventos();
         panelHijos.setLayout(new BoxLayout(panelHijos, BoxLayout.Y_AXIS));
         panelEventosProximos.setLayout(new BoxLayout(panelEventosProximos, BoxLayout.Y_AXIS));
+        calendario.setCalendar(Calendar.getInstance());
         cargarPanelHijos();
         cargarPanelEventosProximos();
     }
@@ -73,7 +68,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelHijos = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jCalendar1 = new com.toedter.calendar.JCalendar();
+        calendario = new com.toedter.calendar.JCalendar();
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -98,7 +93,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         opcModificarEvento = new javax.swing.JMenuItem();
         opcEliminarEvento = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        opcCompletarEvento = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         opcGraficaPeso = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
@@ -210,9 +205,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(135, 186, 19));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
 
-        jCalendar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jCalendar1.setDecorationBackgroundColor(new java.awt.Color(233, 224, 40));
-        jCalendar1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        calendario.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        calendario.setDecorationBackgroundColor(new java.awt.Color(233, 224, 40));
+        calendario.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        calendario.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                calendarioPropertyChange(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         jLabel1.setText("Calendario de eventos:");
@@ -224,7 +224,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(calendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 138, Short.MAX_VALUE)))
@@ -236,7 +236,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(48, 48, 48)
                 .addComponent(jLabel1)
                 .addGap(26, 26, 26)
-                .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(calendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(39, 39, 39))
         );
 
@@ -418,10 +418,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         mnuEventos.add(opcEliminarEvento);
         mnuEventos.add(jSeparator9);
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
-        jMenuItem1.setText("Completar Evento");
-        jMenuItem1.setEnabled(false);
-        mnuEventos.add(jMenuItem1);
+        opcCompletarEvento.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
+        opcCompletarEvento.setText("Completar Evento");
+        opcCompletarEvento.setEnabled(false);
+        opcCompletarEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcCompletarEventoActionPerformed(evt);
+            }
+        });
+        mnuEventos.add(opcCompletarEvento);
 
         jMenuBar1.add(mnuEventos);
 
@@ -553,39 +558,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         VentanaCrearEvento v = new VentanaCrearEvento(modelo, getPosEventoSeleccionado(), this);
         v.setLocationRelativeTo(this);
         v.setVisible(true);
-        v.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                activarOpcionesModificacionEventos();
-                cargarPanelEventosProximos();
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-                activarOpcionesModificacionEventos();
-                cargarPanelEventosProximos();
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
-        });
     }//GEN-LAST:event_opcModificarEventoActionPerformed
 
     private void opcEliminarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEliminarEventoActionPerformed
@@ -597,18 +569,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             if (opcion == JOptionPane.YES_OPTION) {
                 modelo.eliminarEventoPorPos(pos);
                 cargarPanelEventosProximos();
+                pintarDia(calendario.getCalendar());
                 JOptionPane.showMessageDialog(this, "El evento se ha borrado exitosamente"
                         + " del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
-                if (modelo.getCantidadEventosARealizar() == 0) {
-                    opcModificarEvento.setEnabled(false);
-                    opcEliminarEvento.setEnabled(false);
-                }
+                activarOpcionesModificacionEventos();
             }
         } else {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un evento válido para utilizar "
                     + "esta operación del programa.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_opcEliminarEventoActionPerformed
+
+    private void calendarioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarioPropertyChange
+        actualizarPanelFechas();
+        cargarPanelEventosDelDia();
+    }//GEN-LAST:event_calendarioPropertyChange
+
+    private void opcCompletarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcCompletarEventoActionPerformed
+        VentanaCompletarEvento v = new VentanaCompletarEvento(modelo, getPosEventoSeleccionado(), this);
+        v.setLocationRelativeTo(this);
+        v.setVisible(true);
+    }//GEN-LAST:event_opcCompletarEventoActionPerformed
 
     private void modificarHijoSeleccionado() {
         int pos = getPosHijoSeleccionado();
@@ -640,12 +621,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "El registro se ha borrado exitosamente"
                         + " del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
                 cargarPanelHijos();
-                if (modelo.getCantidadHijos() == 0) {
-                    opcModificarRegistro.setEnabled(false);
-                    opcEliminarCarne.setEnabled(false);
-                    btnEditarHijo.setEnabled(false);
-                    btnEliminarHijo.setEnabled(false);
-                }
+                activarOpcionesQueRequierenHijos();
             }
         } else {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un hijo válido para utilizar "
@@ -653,23 +629,35 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    public final boolean activarOpcionesQueRequierenHijos() {
-        boolean activar = modelo.getCantidadHijos() > 0;
-        if (activar) {
+    public final void activarOpcionesQueRequierenHijos() {
+        if (modelo.getCantidadHijos() > 0) {
             opcModificarRegistro.setEnabled(true);
             opcEliminarCarne.setEnabled(true);
             btnEditarHijo.setEnabled(true);
             btnEliminarHijo.setEnabled(true);
             mnuEventos.setEnabled(true);
             opcRegistrarEvento.setEnabled(true);
+        } else {
+            opcModificarRegistro.setEnabled(false);
+            opcEliminarCarne.setEnabled(false);
+            btnEditarHijo.setEnabled(false);
+            btnEliminarHijo.setEnabled(false);
+            opcRegistrarEvento.setEnabled(false);
+            mnuEventos.setEnabled(!opcModificarEvento.isEnabled());
         }
-        return activar;
     }
 
     public final void activarOpcionesModificacionEventos() {
         if (modelo.getCantidadEventosARealizar() > 0) {
+            mnuEventos.setEnabled(true);
             opcModificarEvento.setEnabled(true);
             opcEliminarEvento.setEnabled(true);
+            opcCompletarEvento.setEnabled(true);
+        } else {
+            opcModificarEvento.setEnabled(false);
+            opcEliminarEvento.setEnabled(false);
+            opcCompletarEvento.setEnabled(false);
+            mnuEventos.setEnabled(!opcRegistrarEvento.isEnabled());
         }
     }
 
@@ -690,7 +678,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 aux.setBorderPainted(false);
                 aux.setBackground((h.esHombre() ? niñoClaro : niñaClaro));
                 aux.setFont(new Font("Tahoma", Font.BOLD, 14));
-                aux.setText(h.getNombre());
+                aux.setText("     " + h.getNombre() + "     ");
                 aux.setMinimumSize(new Dimension(panelHijos.getWidth(), 75));
                 aux.setName("" + i);
                 aux.addActionListener(new ActionListener() {
@@ -715,8 +703,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public final void cargarPanelEventosProximos() {
         panelEventosProximos.removeAll();
         if (modelo.getCantidadEventosARealizar() == 0) {
-            panelEventosProximos.add(Box.createRigidArea(
-                    new Dimension(panelEventosProximos.getWidth(), 45)));
+            panelEventosProximos.add(Box.createRigidArea(new Dimension(170, 45)));
             JLabel label = new JLabel("Sin Eventos a mostrar");
             label.setFont(new Font("Tahoma", Font.BOLD, 24));
             label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -725,29 +712,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
                 Evento evento = modelo.getEvento(i);
                 if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {
-                    panelEventosProximos.add(Box.createRigidArea(new Dimension(170, 20)));
-                    JToggleButton aux = new JToggleButton();
-                    aux.setBorderPainted(false);
-                    aux.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    panelEventosProximos.add(Box.createRigidArea(new Dimension(100, 20)));
+                    JToggleButton aux = generarBotonEvento(evento);
                     aux.setBackground(Color.red);
-                    switch (evento.getTipo()) {
-                        case "Consulta":
-                            aux.setFont(new Font("Tahoma", Font.BOLD, 20));
-                            break;
-                        case "Vacunación":
-                            aux.setFont(new Font("Tahoma", Font.ITALIC, 20));
-                            break;
-                        default:
-                            aux.setFont(new Font("Tahoma", Font.PLAIN, 20));
-                            break;
-                    }
                     SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
                     aux.setText(evento.getTitulo() + " ("
                             + formatoFecha.format(evento.getFecha().getTime()) + ")");
                     aux.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));
                     aux.setName("" + i);
-                    aux.setVisible(true);
-                    aux.setOpaque(true);
                     panelEventosProximos.add(aux);
                     buttonGroupEventos.add(aux);
                 }
@@ -758,6 +730,79 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelEventosProximos.updateUI();
         panelEventosProximos.setVisible(false);
         panelEventosProximos.setVisible(true);
+    }
+
+    public final void cargarPanelEventosDelDia() {
+        panelDiaSeleccionado.removeAll();
+        if (modelo.getCantidadEventosARealizar() == 0 && modelo.getEventosCompletados().isEmpty()) {
+            panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(170, 45)));
+            JLabel label = new JLabel("Sin Eventos a mostrar");
+            label.setFont(new Font("Tahoma", Font.BOLD, 24));
+            label.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panelDiaSeleccionado.add(label);
+        } else {
+            Calendar fechaSeleccionada = calendario.getCalendar();
+            for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
+                Evento evento = modelo.getEvento(i);
+                if (Auxiliares.compararFechas(evento.getFecha(), fechaSeleccionada)) {
+                    panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(100, 20)));
+                    JToggleButton aux = generarBotonEvento(evento);
+                    aux.setText(evento.getTitulo());
+                    aux.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));
+                    aux.setName("" + i);
+                    if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {
+                        aux.setBackground(Color.red);
+                    } else {
+                        aux.setBackground(Color.orange);
+                    }
+                    aux.setToolTipText(evento.getDescripcion());
+                    panelDiaSeleccionado.add(aux);
+                    buttonGroupEventos.add(aux);
+                } else if (fechaSeleccionada.compareTo(evento.getFecha()) > 0) {
+                    break;
+                }
+            }
+            for (Evento evento : modelo.getEventosCompletados()) {
+                if (Auxiliares.compararFechas(evento.getFecha(), fechaSeleccionada)) {
+                    panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(100, 15)));
+                    JToggleButton aux = generarBotonEvento(evento);
+                    aux.setText(evento.getTitulo());
+                    aux.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));
+                    aux.setToolTipText(evento.getNotas());
+                    aux.setBackground(Color.green);
+                    aux.setEnabled(false);
+                    panelDiaSeleccionado.add(aux);
+                } else if (fechaSeleccionada.compareTo(evento.getFecha()) > 0) {
+                    break;
+                }
+            }
+            panelDiaSeleccionado.validate();
+            panelDiaSeleccionado.repaint();
+            panelDiaSeleccionado.updateUI();
+            panelDiaSeleccionado.setVisible(false);
+            panelDiaSeleccionado.setVisible(true);
+        }
+    }
+
+    private JToggleButton generarBotonEvento(Evento evento) {
+        JToggleButton aux = new JToggleButton();
+        aux.setBorderPainted(false);
+        aux.setAlignmentX(Component.CENTER_ALIGNMENT);
+        switch (evento.getTipo()) {
+            case "Consulta":
+                aux.setFont(new Font("Tahoma", Font.BOLD, 20));
+                break;
+            case "Vacunación":
+                aux.setFont(new Font("Tahoma", Font.ITALIC, 20));
+                break;
+            default:
+                aux.setFont(new Font("Tahoma", Font.PLAIN, 20));
+                break;
+        }
+        aux.setText(evento.getTitulo());
+        aux.setVisible(true);
+        aux.setOpaque(true);
+        return aux;
     }
 
     private void repintarFondo(boolean esHombre) {
@@ -774,42 +819,57 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    public void pintarDia(Calendar laFecha, boolean agrego) {
-        jCalendar1.setCalendar(laFecha);
+    private void actualizarPanelFechas() {
+        Calendar fechaSeleccionada = calendario.getCalendar();
+        int diaMaximo = fechaSeleccionada.getActualMaximum(Calendar.DAY_OF_MONTH);
+        for (int i = 1; i <= diaMaximo; i++) {
+            Calendar aux = Calendar.getInstance();
+            aux.set(fechaSeleccionada.get(Calendar.YEAR),
+                    fechaSeleccionada.get(Calendar.MONTH), i);
+            pintarDia(aux);
+        }
+    }
+
+    public void pintarDia(Calendar laFecha) {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DATE, 1);
-        cal.set(Calendar.MONTH, laFecha.get(Calendar.MONTH));
-        cal.set(Calendar.YEAR, laFecha.get(Calendar.YEAR));
+        cal.set(laFecha.get(Calendar.YEAR), laFecha.get(Calendar.MONTH), 1);
         Date primerDia = cal.getTime();
         DateFormat sdf = new SimpleDateFormat("u");
         int dia = laFecha.get(Calendar.DAY_OF_MONTH) + Integer.parseInt(sdf.format(primerDia)) + 5;
-        Component componentes[] = jCalendar1.getDayChooser().getDayPanel().getComponents();
+        Component componentes[] = calendario.getDayChooser().getDayPanel().getComponents();
         Component componente = componentes[dia];
-        int cantidadEventosDia;
-        String[] aux = {};
-        if (componente.getName() == null) {
-            cantidadEventosDia = 0;
-        } else {
-            aux = componente.getName().split(" - ");
-            cantidadEventosDia = Integer.parseInt(aux[0].split(" ")[0]);
-        }
-        if (agrego) {
-            cantidadEventosDia++;
-            componente.setBackground(Color.magenta);
-            componente.setForeground(Color.red);
-            componente.setFont(new Font("Tahoma", Font.BOLD, 22));
-        } else {
-            if (--cantidadEventosDia == 0 && !(aux[1].split(" ")[0]).equals("0")) {
-                componente.setBackground(Color.cyan);
-                componente.setForeground(Color.blue);
-                componente.setFont(new Font("Tahoma", Font.BOLD, 22));
-            } else {
-                componente.setBackground(UIManager.getColor("Panel.background"));
-                componente.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        int cantidadEventosDia = 0;
+        int cantidadEventosCompletadosDia = 0;
+        for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
+            Calendar fechaEvento = modelo.getEvento(i).getFecha();
+            if (fechaEvento.get(Calendar.DAY_OF_MONTH) == laFecha.get(Calendar.DAY_OF_MONTH)) {
+                cantidadEventosDia++;
+            } else if (fechaEvento.compareTo(laFecha) > 0) {
+                break;
             }
-            componente.setName(cantidadEventosDia + " eventos - " + aux[1]);
         }
-        componente.setName(cantidadEventosDia + " eventos - 0 completados");
+        for (Evento e : modelo.getEventosCompletados()) {
+            Calendar fechaEvento = e.getFecha();
+            if (fechaEvento.get(Calendar.DAY_OF_MONTH) == laFecha.get(Calendar.DAY_OF_MONTH)) {
+                cantidadEventosCompletadosDia++;
+            } else if (fechaEvento.compareTo(laFecha) > 0) {
+                break;
+            }
+        }
+        if (cantidadEventosDia > 0) {
+            componente.setBackground(Color.red);
+            componente.setForeground(Color.magenta);
+            componente.setFont(new Font("Tahoma", Font.BOLD, 24));
+        } else if (cantidadEventosCompletadosDia > 0) {
+            componente.setBackground(Color.cyan);
+            componente.setForeground(Color.blue);
+            componente.setFont(new Font("Tahoma", Font.BOLD, 24));
+        } else {
+            componente.setBackground(UIManager.getColor("Panel.background"));
+            componente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        }
+        componente.setName(cantidadEventosDia + " eventos - "
+                + cantidadEventosCompletadosDia + " eventos completados.");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -818,8 +878,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarHijo;
     private javax.swing.ButtonGroup buttonGroupEventos;
     private javax.swing.ButtonGroup buttonGroupHijos;
+    private com.toedter.calendar.JCalendar calendario;
     private javax.swing.JMenuItem itemCargarVacunas;
-    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -827,7 +887,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -845,6 +904,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JMenu mnuEventos;
     private javax.swing.JMenuItem mnuSalir;
+    private javax.swing.JMenuItem opcCompletarEvento;
     private javax.swing.JMenuItem opcEliminarCarne;
     private javax.swing.JMenuItem opcEliminarEvento;
     private javax.swing.JMenuItem opcGraficaAltura;

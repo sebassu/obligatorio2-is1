@@ -1,21 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dominio;
 
 import auxiliar.Par;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Sebastián
- */
 public class HijoTest {
 
     /**
@@ -206,139 +197,158 @@ public class HijoTest {
         h.setSociedadMedica("");
         assertEquals(h.getSociedadMedica(), "");
     }
-/*
-    //////////////////////////////////
-    
-    
-    
-    
-    
-    //////////////////////////////////////
-    */
-    /**
-     * Test of agregarPeso method, of class Hijo.
-     */
+
     @Test
-    public void testAgregarPeso() {
-        System.out.println("agregarPeso");
-        int dato = 0;
-        Calendar dia = null;
-        Hijo instance = null;
-        instance.agregarPeso(dato, dia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testAgregarPeso1() {
+        Hijo h = new Hijo();
+        h.agregarPeso(40D, 10D);
+        assertTrue(h.listaPesos.contains(new Par<>(40D, 10D)));
+    }
+
+    @Test
+    public void testAgregarPeso2() {
+        Hijo h = new Hijo();
+        h.agregarPeso(0D, -100D);
+        assertTrue(h.listaPesos.contains(new Par<>(0D, -100D)));
     }
 
     /**
      * Test of modificarPeso method, of class Hijo.
      */
     @Test
-    public void testModificarPeso() {
-        System.out.println("modificarPeso");
-        int dato = 0;
-        Calendar dia = null;
-        Hijo instance = null;
-        instance.modificarPeso(dato, dia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testModificarPeso1() {
+        Hijo h = new Hijo();
+        h.agregarPeso(30D, 10D);
+        h.modificarPeso(30D, -1D);
+        assertTrue(h.listaPesos.contains(new Par<>(30D, -1D)));
+    }
+
+    @Test
+    public void testModificarPeso2() {
+        Hijo h = new Hijo();
+        h.agregarPeso(0D, 0D);
+        h.modificarPeso(0D, -0.5D);
+        assertTrue(h.listaPesos.contains(new Par<>(0D, -0.5D)));
     }
 
     /**
      * Test of getIteradorListaPesos method, of class Hijo.
      */
     @Test
-    public void testGetIteradorListaPesos() {
-        System.out.println("getIteradorListaPesos");
-        Hijo instance = null;
-        Iterator<Par<Calendar, Integer>> expResult = null;
-        Iterator<Par<Calendar, Integer>> result = instance.getIteradorListaPesos();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testGetIteradorListaPesos1() {
+        Hijo h = new Hijo();
+        assertEquals(h.getIteradorListaPesos(), h.listaPesos.iterator());
+    }
+
+    @Test
+    public void testGetIteradorListaPesos2() {
+        Hijo h = new Hijo();
+        h.agregarPeso(0D, 0D);
+        assertEquals(h.getIteradorListaPesos(), h.listaPesos.iterator());
     }
 
     /**
      * Test of agregarAltura method, of class Hijo.
      */
     @Test
-    public void testAgregarAltura() {
-        System.out.println("agregarAltura");
-        int dato = 0;
-        Calendar dia = null;
-        Hijo instance = null;
-        instance.agregarAltura(dato, dia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testAgregarAltura1() {
+        Hijo h = new Hijo();
+        h.agregarAltura(40D, 10D);
+        assertTrue(h.listaAlturas.contains(new Par<>(40D, 10D)));
+    }
+
+    @Test
+    public void testAgregarAltura2() {
+        Hijo h = new Hijo();
+        h.agregarAltura(0D, -100D);
+        assertTrue(h.listaAlturas.contains(new Par<>(0D, -100D)));
     }
 
     /**
      * Test of modificarAltura method, of class Hijo.
      */
     @Test
-    public void testModificarAltura() {
-        System.out.println("modificarAltura");
-        int dato = 0;
-        Calendar dia = null;
-        Hijo instance = null;
-        instance.modificarAltura(dato, dia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testModificarAltura1() {
+        Hijo h = new Hijo();
+        h.agregarAltura(30D, 10D);
+        h.modificarAltura(30D, -1D);
+        assertTrue(h.listaAlturas.contains(new Par<>(30D, -1D)));
+    }
+
+    @Test
+    public void testModificarAltura2() {
+        Hijo h = new Hijo();
+        h.agregarAltura(0D, 0D);
+        h.modificarAltura(0D, -0.5D);
+        assertTrue(h.listaAlturas.contains(new Par<>(0D, -0.5D)));
     }
 
     /**
      * Test of getIteradorListaAlturas method, of class Hijo.
      */
     @Test
-    public void testGetIteradorListaAlturas() {
-        System.out.println("getIteradorListaAlturas");
-        Hijo instance = null;
-        Iterator<Par<Calendar, Integer>> expResult = null;
-        Iterator<Par<Calendar, Integer>> result = instance.getIteradorListaAlturas();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testGetIteradorListaAlturas1() {
+        Hijo h = new Hijo();
+        assertEquals(h.getIteradorListaAlturas(), h.listaAlturas.iterator());
+    }
+
+    @Test
+    public void testGetIteradorListaAlturas2() {
+        Hijo h = new Hijo();
+        h.agregarAltura(0D, 0D);
+        assertEquals(h.getIteradorListaAlturas(), h.listaAlturas.iterator());
     }
 
     /**
      * Test of agregarPerimetroCefalico method, of class Hijo.
      */
     @Test
-    public void testAgregarPerimetroCefalico() {
-        System.out.println("agregarPerimetroCefalico");
-        int dato = 0;
-        Calendar dia = null;
-        Hijo instance = null;
-        instance.agregarPerimetroCefalico(dato, dia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testAgregarPerimetroCefalico1() {
+        Hijo h = new Hijo();
+        h.agregarPerimetroCefalico(40D, 10D);
+        assertTrue(h.listaPerimetrosCefalicos.contains(new Par<>(40D, 10D)));
+    }
+
+    @Test
+    public void testAgregarPerimetroCefalico2() {
+        Hijo h = new Hijo();
+        h.agregarPerimetroCefalico(0D, -100D);
+        assertTrue(h.listaPerimetrosCefalicos.contains(new Par<>(0D, -100D)));
     }
 
     /**
      * Test of modificarPerimetroCefalico method, of class Hijo.
      */
     @Test
-    public void testModificarPerimetroCefalico() {
-        System.out.println("modificarPerimetroCefalico");
-        int dato = 0;
-        Calendar dia = null;
-        Hijo instance = null;
-        instance.modificarPerimetroCefalico(dato, dia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testModificarPerimetroCefalico1() {
+        Hijo h = new Hijo();
+        h.agregarPerimetroCefalico(30D, 10D);
+        h.modificarPerimetroCefalico(30D, -1D);
+        assertTrue(h.listaPerimetrosCefalicos.contains(new Par<>(30D, -1D)));
+    }
+
+    @Test
+    public void testModificarPerimetroCefalico2() {
+        Hijo h = new Hijo();
+        h.agregarPerimetroCefalico(0D, 0D);
+        h.modificarPerimetroCefalico(0D, -0.5D);
+        assertTrue(h.listaPerimetrosCefalicos.contains(new Par<>(30D, -1D)));
     }
 
     /**
      * Test of getIteradorListaPerimetrosCefalicos method, of class Hijo.
      */
     @Test
-    public void testGetIteradorListaPerimetrosCefalicos() {
-        System.out.println("getIteradorListaPerimetrosCefalicos");
-        Hijo instance = null;
-        Iterator<Par<Calendar, Integer>> expResult = null;
-        Iterator<Par<Calendar, Integer>> result = instance.getIteradorListaPerimetrosCefalicos();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testGetIteradorListaPerimetrosCefalicos1() {
+        Hijo h = new Hijo();
+        assertEquals(h.getIteradorListaPerimetrosCefalicos(), h.listaPerimetrosCefalicos.iterator());
+    }
+
+    @Test
+    public void testGetIteradorListaPerimetrosCefalicos2() {
+        Hijo h = new Hijo();
+        h.agregarPerimetroCefalico(0D, 0D);
+        assertEquals(h.getIteradorListaPerimetrosCefalicos(), h.listaPerimetrosCefalicos.iterator());
     }
 
     /**
@@ -346,70 +356,78 @@ public class HijoTest {
      */
     @Test
     public void testAgregarVacuna() {
-        System.out.println("agregarVacuna");
-        Vacuna v = null;
-        Calendar dia = null;
-        Hijo instance = null;
-        instance.agregarVacuna(v, dia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of modificarVacuna method, of class Hijo.
-     */
-    @Test
-    public void testModificarVacuna() {
-        System.out.println("modificarVacuna");
-        Vacuna v = null;
-        Calendar dia = null;
-        Hijo instance = null;
-        instance.modificarVacuna(v, dia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Hijo h = new Hijo();
+        Vacuna v = new Vacuna();
+        Calendar c = Calendar.getInstance();
+        ArrayList<Calendar> aux = new ArrayList<>();
+        aux.add(c);
+        h.agregarVacunaRecibida(v, c);
+        assertTrue(h.historialVacunaciones.contains(new Par<>(v, aux)));
     }
 
     /**
      * Test of getIteradorHistorialVacunaciones method, of class Hijo.
      */
     @Test
-    public void testGetIteradorHistorialVacunaciones() {
-        System.out.println("getIteradorHistorialVacunaciones");
-        Hijo instance = null;
-        Iterator<Par<Calendar, Vacuna>> expResult = null;
-        Iterator<Par<Calendar, Vacuna>> result = instance.getIteradorHistorialVacunaciones();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testGetIteradorHistorialVacunaciones1() {
+        Hijo h = new Hijo();
+        assertEquals(h.getIteradorHistorialVacunaciones(), h.historialVacunaciones.iterator());
+    }
+
+    @Test
+    public void testGetIteradorHistorialVacunaciones2() {
+        Hijo h = new Hijo();
+        Vacuna v = new Vacuna();
+        Calendar c = Calendar.getInstance();
+        h.agregarVacunaRecibida(v, c);
+        assertEquals(h.getIteradorHistorialVacunaciones(), h.historialVacunaciones.iterator());
     }
 
     /**
      * Test of equals method, of class Hijo.
      */
     @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Object obj = null;
-        Hijo instance = null;
-        boolean expResult = false;
-        boolean result = instance.equals(obj);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testEquals1() {
+        Hijo h = new Hijo();
+        Hijo j = new Hijo();
+        assertTrue(h.equals(j));
+        assertTrue(j.equals(h));
+    }
+
+    @Test
+    public void testEquals2() {
+        Hijo h = new Hijo();
+        assertTrue(h.equals(h));
+    }
+
+    @Test
+    public void testEquals3() {
+        Hijo h = new Hijo("5.555.555-1");
+        Hijo j = new Hijo("5.555.555-1");
+        assertTrue(h.equals(j));
+        assertTrue(j.equals(h));
     }
 
     /**
      * Test of compareTo method, of class Hijo.
      */
     @Test
-    public void testCompareTo() {
-        System.out.println("compareTo");
-        Object obj = null;
-        Hijo instance = null;
-        int expResult = 0;
-        int result = instance.compareTo(obj);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testCompareTo1() {
+        Hijo h = new Hijo();
+        assertTrue(h.compareTo(h) == 0);
+    }
+
+    @Test
+    public void testCompareTo2() {
+        Hijo h = new Hijo("abc", null, true, null, null, null);
+        Hijo j = new Hijo("def", null, true, null, null, null);
+        assertTrue(h.compareTo(j) < 0);
+    }
+
+    @Test
+    public void testCompareTo3() {
+        Hijo h = new Hijo("abc", null, true, null, null, null);
+        Hijo j = new Hijo("def", null, true, null, null, null);
+        assertTrue(j.compareTo(h) > 0);
     }
 }

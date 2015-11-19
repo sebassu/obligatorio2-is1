@@ -36,6 +36,12 @@ public final class Auxiliares {
         return nuevo;
     }
 
+    public static boolean compararFechas(Calendar f1, Calendar f2) {
+        return f1.get(Calendar.YEAR) == f2.get(Calendar.YEAR)
+                && f1.get(Calendar.MONTH) == f2.get(Calendar.MONTH)
+                && f1.get(Calendar.DAY_OF_MONTH) == f2.get(Calendar.DAY_OF_MONTH);
+    }
+
     public static String[] convertirArrayListStringAArrayMesesConEspacioAlPrincipio(
             ArrayList<String> original) {
         String[] nuevo = new String[original.size() + 1];
@@ -50,7 +56,7 @@ public final class Auxiliares {
         }
         return nuevo;
     }
-    
+
     public static String[] convertirArrayListStringAArrayAnios(
             ArrayList<String> original) {
         String[] nuevo = new String[original.size()];

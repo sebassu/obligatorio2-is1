@@ -395,7 +395,7 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
                     ValidarMedico();
                     break;
             }
-            Evento eventoAAgregar = null;
+            Evento eventoAAgregar;
             switch (tipo) {
                 case "Consulta":
                     eventoAAgregar = new Consulta(Sistema.proximaIDEventos++, titulo, tipo,
@@ -417,7 +417,7 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
             }
             if (posEventoAModificar == -1) {
                 modelo.agregarEvento(eventoAAgregar);
-                ventanaPrincipal.pintarDia(jDateChooserFecha.getCalendar(), true);
+                ventanaPrincipal.pintarDia(jDateChooserFecha.getCalendar());
             } else {
                 modelo.modificarEvento(eventoAAgregar, posEventoAModificar);
             }

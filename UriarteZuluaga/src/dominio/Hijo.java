@@ -17,10 +17,10 @@ public class Hijo implements Serializable, Comparable {
     private String cedulaId;
     private String sociedadMedica;
     private String medicoDeCabecera;
-    private final ArrayList<Par<Double, Double>> listaPesos;
-    private final ArrayList<Par<Double, Double>> listaPerimetrosCefalicos;
-    private final ArrayList<Par<Double, Double>> listaAlturas;
-    private ArrayList<Par<Vacuna,ArrayList<Calendar>>> historialVacunaciones;
+    protected final ArrayList<Par<Double, Double>> listaPesos;
+    protected final ArrayList<Par<Double, Double>> listaPerimetrosCefalicos;
+    protected final ArrayList<Par<Double, Double>> listaAlturas;
+    protected ArrayList<Par<Vacuna,ArrayList<Calendar>>> historialVacunaciones;
 
 
     public Hijo() {
@@ -146,7 +146,7 @@ public class Hijo implements Serializable, Comparable {
         return listaPerimetrosCefalicos.iterator();
     }
 
-    public void agregarVacunaRecivida(Vacuna v, Calendar dia) {
+    public void agregarVacunaRecibida(Vacuna v, Calendar dia) {
         Par<Vacuna,ArrayList<Calendar>> vacunaNueva =
                 new Par<>(new Vacuna(v), new ArrayList<Calendar>());
         vacunaNueva.getDato2().add(dia);

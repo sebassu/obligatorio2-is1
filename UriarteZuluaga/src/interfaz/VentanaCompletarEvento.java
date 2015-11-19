@@ -10,9 +10,11 @@ import javax.swing.JOptionPane;
 
 public class VentanaCompletarEvento extends javax.swing.JFrame {
 
-    public VentanaCompletarEvento(Sistema sis, int pos) {
+    public VentanaCompletarEvento(Sistema sis, int pos, VentanaPrincipal v) {
         this.modelo = sis;
         this.posEventoACompletar = pos;
+        this.ventanaPrincipal = v;
+        initComponents();
         Evento eventoACompletar = modelo.getEvento(pos);
         switch (eventoACompletar.getTipo()) {
             case "Consulta":
@@ -28,6 +30,7 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
                 txtPeso.setVisible(false);
                 txtAltura.setVisible(false);
                 txtPerimetroCefalico.setVisible(false);
+                break;
         }
     }
 
@@ -224,8 +227,8 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
         try {
             Evento eventoACompletar = modelo.getEvento(posEventoACompletar);
             eventoACompletar.setFecha(Calendar.getInstance());
-            double mesesDesdeNacimiento = 
-                    Auxiliares.mesesDesdeLaFecha(eventoACompletar.getFecha());
+            double mesesDesdeNacimiento
+                    = Auxiliares.mesesDesdeLaFecha(eventoACompletar.getFecha());
             switch (eventoACompletar.getTipo()) {
                 case "Consulta":
                     Hijo h = eventoACompletar.getCualHijo();
@@ -239,10 +242,9 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
                     eventoACompletar.setNotas(textAreaNotas.getText().trim());
                     break;
             }
-            JOptionPane.showMessageDialog(this, "El evento se ha completado exitosamente "
-                    + "en el sistema.", "Operación completada",
-                    JOptionPane.INFORMATION_MESSAGE);
             modelo.darDeBajaEvento(posEventoACompletar);
+            ventanaPrincipal.cargarPanelEventosProximos();
+            ventanaPrincipal.pintarDia(eventoACompletar.getFecha());
         } catch (NumberFormatException | NullPointerException e) {
             JOptionPane.showMessageDialog(this, "Error", VentanaPrincipal.ERR_INGRESO
                     + "\nError detectado: " + e.getMessage(), JOptionPane.ERROR_MESSAGE);
@@ -284,6 +286,7 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private final Sistema modelo;
     private final int posEventoACompletar;
+    private final VentanaPrincipal ventanaPrincipal;
 
     private void BorrarNoNumeros(KeyEvent evt) {
         char caracter = evt.getKeyChar();

@@ -546,4 +546,8 @@ public class Sistema implements Serializable {
     public final ArrayList<Vacuna> getVacunas() {
         return listaVacunas;
     }
+
+    public final ArrayList<Evento> getEventosCompletados() {
+        return eventosRealizados;
+    }
 }
