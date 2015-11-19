@@ -15,8 +15,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.Box;
@@ -26,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -303,11 +306,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane5)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -725,8 +725,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
                 Evento evento = modelo.getEvento(i);
                 if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {
-                    panelEventosProximos.add(Box.createRigidArea(
-                            new Dimension(panelEventosProximos.getWidth(), 20)));
+                    panelEventosProximos.add(Box.createRigidArea(new Dimension(170, 20)));
                     JToggleButton aux = new JToggleButton();
                     aux.setBorderPainted(false);
                     aux.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -776,15 +775,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     public void pintarDia(Calendar laFecha, boolean agrego) {
+        jCalendar1.setCalendar(laFecha);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, 1);
+        cal.set(Calendar.MONTH, laFecha.get(Calendar.MONTH));
+        cal.set(Calendar.YEAR, laFecha.get(Calendar.YEAR));
+        Date primerDia = cal.getTime();
+        DateFormat sdf = new SimpleDateFormat("u");
+        int dia = laFecha.get(Calendar.DAY_OF_MONTH) + Integer.parseInt(sdf.format(primerDia)) + 5;
         Component componentes[] = jCalendar1.getDayChooser().getDayPanel().getComponents();
-        int i = 7;
-        while (((JDayChooser) componentes[i]).getDay() < laFecha.get(Calendar.DAY_OF_MONTH)) {
-            i++;
-        }
-        Component componente = componentes[i];
+        Component componente = componentes[dia];
         int cantidadEventosDia;
         String[] aux = {};
-        if (!componente.getName().equals("")) {
+        if (componente.getName() == null) {
             cantidadEventosDia = 0;
         } else {
             aux = componente.getName().split(" - ");
@@ -794,18 +797,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             cantidadEventosDia++;
             componente.setBackground(Color.magenta);
             componente.setForeground(Color.red);
-            componente.setFont(new Font("Tahoma", Font.BOLD, 14));
+            componente.setFont(new Font("Tahoma", Font.BOLD, 22));
         } else {
             if (--cantidadEventosDia == 0 && !(aux[1].split(" ")[0]).equals("0")) {
                 componente.setBackground(Color.cyan);
                 componente.setForeground(Color.blue);
-                componente.setFont(new Font("Tahoma", Font.BOLD, 14));
+                componente.setFont(new Font("Tahoma", Font.BOLD, 22));
             } else {
                 componente.setBackground(UIManager.getColor("Panel.background"));
                 componente.setFont(new Font("Tahoma", Font.PLAIN, 12));
             }
             componente.setName(cantidadEventosDia + " eventos - " + aux[1]);
         }
+        componente.setName(cantidadEventosDia + " eventos - 0 completados");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -425,7 +425,7 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
             ventanaPrincipal.cargarPanelEventosProximos();
             this.dispose();
         } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Error", VentanaPrincipal.ERR_INGRESO
+            JOptionPane.showMessageDialog(this, VentanaPrincipal.ERR_INGRESO, "Error"
                     + e.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
