@@ -14,7 +14,7 @@ import java.util.Iterator;
 public class Sistema implements Serializable {
 
     private final ArrayList<Hijo> listaHijos;
-    private final ArrayList<Vacuna> listaVacunas;
+    private ArrayList<Vacuna> listaVacunas;
     private final ArrayList<Evento> eventosRealizados;
     private final ArrayList<Evento> eventosARealizar;
     public static int proximaIDEventos = Integer.MIN_VALUE;
@@ -145,7 +145,7 @@ public class Sistema implements Serializable {
     }
 
     public String cargarVacunasSistematicas(ArchivoLectura archivoLeido,
-            int numeroLinea) throws IOException, IllegalArgumentException {
+            int numeroLinea, ArrayList<Vacuna> lista) throws IOException, IllegalArgumentException {
         String nombre = "";
         String meses = "";
         String anios = "";
@@ -204,7 +204,7 @@ public class Sistema implements Serializable {
                     if (!nombre.equals("") && !meses.equals("")
                             && !anios.equals("") && !descripcion.equals("")) {
 
-                        procesarVacunaSistematica(nombre, meses, anios, descripcion);
+                        procesarVacunaSistematica(nombre, meses, anios, descripcion, lista);
                         vacunaTerminada = false;
                         nombre = "";
                         meses = "";
@@ -231,7 +231,7 @@ public class Sistema implements Serializable {
     }
 
     public void procesarVacunaSistematica(String nombre, String meses, String anios,
-            String descripcion) throws IllegalArgumentException, NumberFormatException {
+            String descripcion, ArrayList<Vacuna> lista) throws IllegalArgumentException, NumberFormatException {
         Vacuna vacunaNueva;
         if (!Auxiliares.esNombreVacunaInvalido(nombre.trim())) {
             vacunaNueva = new Vacuna(nombre, true, descripcion);
@@ -258,7 +258,7 @@ public class Sistema implements Serializable {
                 }
             }
             vacunaNueva.ordenarListas();
-            listaVacunas.add(vacunaNueva);
+            lista.add(vacunaNueva);
         } else {
             throw new IllegalArgumentException("El nombre de vacuna " + nombre
                     + " es inválido");
@@ -306,7 +306,7 @@ public class Sistema implements Serializable {
     }
 
     public void cargarVacunasNoSistematicas(ArchivoLectura archivoLeido,
-            int numeroLinea) throws IOException, IllegalArgumentException {
+            int numeroLinea, ArrayList<Vacuna> lista) throws IOException, IllegalArgumentException {
         String nombre = "";
         String descripcion = "";
         int cantRenglones = 0;
@@ -344,8 +344,7 @@ public class Sistema implements Serializable {
                 }
                 if (vacunaTerminada) {
                     if (!nombre.equals("") && !descripcion.equals("")) {
-
-                        procesarVacunaNoSistematica(nombre, descripcion);
+                        procesarVacunaNoSistematica(nombre, descripcion, lista);
                         vacunaTerminada = false;
                         nombre = "";
                         descripcion = "";
@@ -367,12 +366,12 @@ public class Sistema implements Serializable {
         }
     }
 
-    public void procesarVacunaNoSistematica(String nombre, String descripcion)
-            throws IllegalArgumentException, NumberFormatException {
+    public void procesarVacunaNoSistematica(String nombre, String descripcion,
+            ArrayList<Vacuna> lista) throws IllegalArgumentException, NumberFormatException {
         Vacuna vacunaNueva;
         if (!Auxiliares.noContieneCaracterAlfabetico(nombre.trim())) {
             vacunaNueva = new Vacuna(nombre, false, descripcion);
-            listaVacunas.add(vacunaNueva);
+            lista.add(vacunaNueva);
         } else {
             throw new IllegalArgumentException("El nombre de vacuna " + nombre
                     + " es inválido");
@@ -389,7 +388,7 @@ public class Sistema implements Serializable {
 
     public void cargarVacunasDeArchivo(String ubicacion) throws IllegalArgumentException,
             FileNotFoundException, IOException {
-        listaVacunas.clear();
+        ArrayList<Vacuna> listaAuxiliar = new ArrayList<>();
         ArchivoLectura archivoLeido = new ArchivoLectura(ubicacion);
         int numeroLinea = 0;
         if (archivoLeido.hayMasLineas()) {
@@ -397,10 +396,12 @@ public class Sistema implements Serializable {
             numeroLinea++;
             switch (linea) {
                 case "-SISTEMATICAS-":
-                    linea = cargarVacunasSistematicas(archivoLeido, numeroLinea);
+                    linea = cargarVacunasSistematicas(archivoLeido, numeroLinea, listaAuxiliar);
                     if (linea.equals("-NO SISTEMATICAS-")) {
-                        cargarVacunasNoSistematicas(archivoLeido, numeroLinea);
+                        cargarVacunasNoSistematicas(archivoLeido, numeroLinea, listaAuxiliar);
                     }
+                    listaVacunas = listaAuxiliar;
+                    Collections.sort(listaVacunas);
                     break;
                 default:
                     throw new IllegalArgumentException("Error, se encontró un"
@@ -422,70 +423,74 @@ public class Sistema implements Serializable {
         Collections.sort(eventosRealizados);
         Collections.sort(eventosARealizar);
     }
-    
+
     public String[] nombreVacunasSistematicasParaCarne(Hijo hijoSeleccionado) {
         ArrayList<String> listaNombreVacunas = new ArrayList<>();
         Iterator<Vacuna> itVacunasSistema = listaVacunas.iterator();
-        Iterator<Par<Vacuna,ArrayList<Calendar>>> itVacunasHijo =
-                 hijoSeleccionado.getIteradorHistorialVacunaciones();
+        Iterator<Par<Vacuna, ArrayList<Calendar>>> itVacunasHijo
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
         while (itVacunasHijo.hasNext()) {
             Vacuna vacunaActual = itVacunasHijo.next().getDato1();
-            if (vacunaActual.esSistematica() 
+            if (vacunaActual.esSistematica()
                     && !listaNombreVacunas.contains(vacunaActual.toString())) {
                 listaNombreVacunas.add(vacunaActual.toString());
             }
         }
         while (itVacunasSistema.hasNext()) {
             Vacuna vacunaActual = itVacunasSistema.next();
-            if (vacunaActual.esSistematica() 
+            if (vacunaActual.esSistematica()
                     && !listaNombreVacunas.contains(vacunaActual.toString())) {
                 listaNombreVacunas.add(vacunaActual.toString());
             }
         }
         return Auxiliares.convertirArrayListStringAArrayStringConEspacioAlPrincipio(listaNombreVacunas);
     }
-    
+
     public String[] nombreVacunasNoSistematicasParaCarne(Hijo hijoSeleccionado) {
         ArrayList<String> listaNombreVacunas = new ArrayList<>();
         Iterator<Vacuna> itVacunasSistema = listaVacunas.iterator();
-        Iterator<Par<Vacuna,ArrayList<Calendar>>> itVacunasHijo =
-                 hijoSeleccionado.getIteradorHistorialVacunaciones();
+        Iterator<Par<Vacuna, ArrayList<Calendar>>> itVacunasHijo
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
         while (itVacunasHijo.hasNext()) {
             Vacuna vacunaActual = itVacunasHijo.next().getDato1();
-            if (!vacunaActual.esSistematica() 
+            if (!vacunaActual.esSistematica()
                     && !listaNombreVacunas.contains(vacunaActual.toString())) {
                 listaNombreVacunas.add(vacunaActual.toString());
             }
         }
         while (itVacunasSistema.hasNext()) {
             Vacuna vacunaActual = itVacunasSistema.next();
-            if (!vacunaActual.esSistematica() 
+            if (!vacunaActual.esSistematica()
                     && !listaNombreVacunas.contains(vacunaActual.toString())) {
                 listaNombreVacunas.add(vacunaActual.toString());
             }
         }
         return Auxiliares.convertirArrayListStringAArrayStringConEspacioAlPrincipio(listaNombreVacunas);
     }
-    
+
     public String[] mesesParaCarneVacunas(Hijo hijoSeleccionado) {
         ArrayList<String> meses = new ArrayList<>();
-        Iterator<Par<Vacuna,ArrayList<Calendar>>> itMesesHijo = 
-                hijoSeleccionado.getIteradorHistorialVacunaciones();
+        Iterator<Par<Vacuna, ArrayList<Calendar>>> itMesesHijo
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
         Iterator<Vacuna> itVacunasSistema = listaVacunas.iterator();
         while (itMesesHijo.hasNext()) {
-            Par<Vacuna,ArrayList<Calendar>> estePar = itMesesHijo.next();
+            Par<Vacuna, ArrayList<Calendar>> estePar = itMesesHijo.next();
             Iterator<Calendar> itCalendarioHijo = estePar.getDato2().iterator();
             while (itCalendarioHijo.hasNext()) {
                 Calendar estaFecha = itCalendarioHijo.next();
-                String mesAAgregar = ""+hijoSeleccionado.mesesDesdeNacimientoAFecha(estaFecha);
+                String mesAAgregar = "" + hijoSeleccionado.mesesDesdeNacimientoAFecha(estaFecha);
                 int valorIntegerDeMesAAgregar = Integer.parseInt(mesAAgregar);
-                if (valorIntegerDeMesAAgregar > -1 && valorIntegerDeMesAAgregar < 24 
-                        && !meses.contains(mesAAgregar)) meses.add(mesAAgregar);
+                if (valorIntegerDeMesAAgregar > -1 && valorIntegerDeMesAAgregar < 24
+                        && !meses.contains(mesAAgregar)) {
+                    meses.add(mesAAgregar);
+                }
             }
             Iterator<String> itVacunaHijo = estePar.getDato1().iteradorVencimientoEnMeses();
             while (itVacunaHijo.hasNext()) {
                 String mesAAgregar = itVacunaHijo.next();
-                if (!meses.contains(mesAAgregar)) meses.add(mesAAgregar);
+                if (!meses.contains(mesAAgregar)) {
+                    meses.add(mesAAgregar);
+                }
             }
         }
         while (itVacunasSistema.hasNext()) {
@@ -493,30 +498,36 @@ public class Sistema implements Serializable {
             Iterator<String> itMesesVacuna = estaVacuna.iteradorVencimientoEnMeses();
             while (itMesesVacuna.hasNext()) {
                 String mesAAgregar = itMesesVacuna.next();
-                if (!meses.contains(mesAAgregar)) meses.add(mesAAgregar);
+                if (!meses.contains(mesAAgregar)) {
+                    meses.add(mesAAgregar);
+                }
             }
         }
         return Auxiliares.convertirArrayListStringAArrayMesesConEspacioAlPrincipio(meses);
     }
-    
-   public String[] aniosParaCarneVacunas(Hijo hijoSeleccionado) {
+
+    public String[] aniosParaCarneVacunas(Hijo hijoSeleccionado) {
         ArrayList<String> anios = new ArrayList<>();
-        Iterator<Par<Vacuna,ArrayList<Calendar>>> itAniosHijo = 
-                hijoSeleccionado.getIteradorHistorialVacunaciones();
+        Iterator<Par<Vacuna, ArrayList<Calendar>>> itAniosHijo
+                = hijoSeleccionado.getIteradorHistorialVacunaciones();
         Iterator<Vacuna> itVacunasSistema = listaVacunas.iterator();
         while (itAniosHijo.hasNext()) {
-            Par<Vacuna,ArrayList<Calendar>> estePar = itAniosHijo.next();
+            Par<Vacuna, ArrayList<Calendar>> estePar = itAniosHijo.next();
             Iterator<Calendar> itCalendarioHijo = estePar.getDato2().iterator();
             while (itCalendarioHijo.hasNext()) {
                 Calendar estaFecha = itCalendarioHijo.next();
-                String anioAAgregar = ""+hijoSeleccionado.aniosDesdeNacimientoAFecha(estaFecha);
-                if (Integer.parseInt(anioAAgregar) > 1 && 
-                        !anios.contains(anioAAgregar)) anios.add(anioAAgregar);
+                String anioAAgregar = "" + hijoSeleccionado.aniosDesdeNacimientoAFecha(estaFecha);
+                if (Integer.parseInt(anioAAgregar) > 1
+                        && !anios.contains(anioAAgregar)) {
+                    anios.add(anioAAgregar);
+                }
             }
             Iterator<String> itVacunaHijo = estePar.getDato1().iteradorVencimientoEnAnios();
             while (itVacunaHijo.hasNext()) {
                 String anioAAgregar = itVacunaHijo.next();
-                if (!anios.contains(anioAAgregar)) anios.add(anioAAgregar);
+                if (!anios.contains(anioAAgregar)) {
+                    anios.add(anioAAgregar);
+                }
             }
         }
         while (itVacunasSistema.hasNext()) {
@@ -524,9 +535,15 @@ public class Sistema implements Serializable {
             Iterator<String> itAniosVacuna = estaVacuna.iteradorVencimientoEnAnios();
             while (itAniosVacuna.hasNext()) {
                 String mesAAgregar = itAniosVacuna.next();
-                if (!anios.contains(mesAAgregar)) anios.add(mesAAgregar);
+                if (!anios.contains(mesAAgregar)) {
+                    anios.add(mesAAgregar);
+                }
             }
         }
         return Auxiliares.convertirArrayListStringAArrayAnios(anios);
+    }
+
+    public final ArrayList<Vacuna> getVacunas() {
+        return listaVacunas;
     }
 }

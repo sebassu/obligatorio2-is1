@@ -17,14 +17,16 @@ import javax.swing.SwingConstants;
 
 public class VentanaCrearEvento extends javax.swing.JFrame {
 
-    public VentanaCrearEvento(Sistema sis, int posEvento) {
+    public VentanaCrearEvento(Sistema sis, int posEvento, VentanaPrincipal v) {
         this.modelo = sis;
         this.posEventoAModificar = posEvento;
+        this.ventanaPrincipal = v;
         try {
             initComponents();
             ((JLabel) jComboBoxTipo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
             ((JLabel) jComboBoxHijo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
             jComboBoxHijo.setModel(new DefaultComboBoxModel(modelo.getHijos().toArray()));
+            jComboBoxVacunas.setModel(new DefaultComboBoxModel(modelo.getVacunas().toArray()));
             ArrayList<String> aux = new ArrayList<>();
             aux.add("Otro");
             aux.add("Consulta");
@@ -42,16 +44,20 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
                 Evento eventoAModificar = modelo.getEvento(posEvento);
                 txtOtro.setEnabled(false);
                 jComboBoxTipo.setEnabled(false);
+                jComboBoxHijo.setEnabled(false);
                 txtTitulo.setText(eventoAModificar.getTitulo());
                 txtLugar.setText(eventoAModificar.getLugar());
                 jComboBoxHijo.setSelectedItem(eventoAModificar.getCualHijo());
-                if (!eventoAModificar.getTipo().equals("Consulta")
-                        && !eventoAModificar.getTipo().equals("Vacunación")) {
-                    jLabelOtro.setVisible(true);
-                    txtOtro.setVisible(true);
-                    txtOtro.setText(eventoAModificar.getTipo());
-                } else {
-                    jComboBoxTipo.setSelectedItem(eventoAModificar.getTipo());
+                switch (eventoAModificar.getTipo()) {
+                    case "Vacunación":
+                    case "Consulta":
+                        jComboBoxTipo.setSelectedItem(eventoAModificar.getTipo());
+                        break;
+                    default:
+                        jLabelOtro.setVisible(true);
+                        txtOtro.setVisible(true);
+                        txtOtro.setText(eventoAModificar.getTipo());
+                        break;
                 }
                 textAreaDesc.setText(eventoAModificar.getDescripcion());
             }
@@ -411,14 +417,15 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
             }
             if (posEventoAModificar == -1) {
                 modelo.agregarEvento(eventoAAgregar);
+                ventanaPrincipal.pintarDia(jDateChooserFecha.getCalendar(), true);
             } else {
                 modelo.modificarEvento(eventoAAgregar, posEventoAModificar);
             }
-            JOptionPane.showMessageDialog(this, "El evento se ha agregado/modificado "
-                    + "exitosamente en el sistema", "Operación completada",
-                    JOptionPane.INFORMATION_MESSAGE);
+            ventanaPrincipal.activarOpcionesModificacionEventos();
+            ventanaPrincipal.cargarPanelEventosProximos();
+            this.dispose();
         } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Error", VentanaPrincipal.ERR_INGRESO
+            JOptionPane.showMessageDialog(this, VentanaPrincipal.ERR_INGRESO, "Error"
                     + e.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
@@ -480,7 +487,7 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxTipoActionPerformed
 
     private void txtTituloFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTituloFocusLost
-        jLabelErrorTitulo.setVisible(txtTitulo.getText().trim().isEmpty());
+        jLabelErrorTitulo.setVisible(Auxiliares.noContieneCaracterAlfabetico(txtTitulo.getText()));
     }//GEN-LAST:event_txtTituloFocusLost
 
     private void ValidarMedico() {
@@ -531,4 +538,5 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private final Sistema modelo;
     private final int posEventoAModificar;
+    private VentanaPrincipal ventanaPrincipal;
 }
