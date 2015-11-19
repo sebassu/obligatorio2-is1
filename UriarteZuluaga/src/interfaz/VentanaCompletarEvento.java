@@ -4,8 +4,8 @@ import auxiliar.Auxiliares;
 import dominio.Evento;
 import dominio.Hijo;
 import dominio.Sistema;
+import dominio.Vacunacion;
 import java.awt.event.KeyEvent;
-import java.util.Calendar;
 import javax.swing.JOptionPane;
 
 public class VentanaCompletarEvento extends javax.swing.JFrame {
@@ -14,23 +14,28 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
         this.modelo = sis;
         this.posEventoACompletar = pos;
         this.ventanaPrincipal = v;
-        initComponents();
-        Evento eventoACompletar = modelo.getEvento(pos);
-        switch (eventoACompletar.getTipo()) {
-            case "Consulta":
-                if (!eventoACompletar.getCualHijo().esBebe()) {
+        if (pos != -1) {
+            initComponents();
+            Evento eventoACompletar = modelo.getEvento(pos);
+            switch (eventoACompletar.getTipo()) {
+                case "Consulta":
+                    if (!eventoACompletar.getCualHijo().esBebe()) {
+                        jLabelPerimetroCefalico.setVisible(false);
+                        txtPerimetroCefalico.setVisible(false);
+                    }
+                    break;
+                default:
+                    jLabelPeso.setVisible(false);
+                    jLabelAltura.setVisible(false);
                     jLabelPerimetroCefalico.setVisible(false);
+                    txtPeso.setVisible(false);
+                    txtAltura.setVisible(false);
                     txtPerimetroCefalico.setVisible(false);
-                }
-                break;
-            default:
-                jLabelPeso.setVisible(false);
-                jLabelAltura.setVisible(false);
-                jLabelPerimetroCefalico.setVisible(false);
-                txtPeso.setVisible(false);
-                txtAltura.setVisible(false);
-                txtPerimetroCefalico.setVisible(false);
-                break;
+                    break;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Error", "Debe seleccionar un "
+                    + "carné válido.", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -226,7 +231,6 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         try {
             Evento eventoACompletar = modelo.getEvento(posEventoACompletar);
-            eventoACompletar.setFecha(Calendar.getInstance());
             double mesesDesdeNacimiento
                     = Auxiliares.mesesDesdeLaFecha(eventoACompletar.getFecha());
             switch (eventoACompletar.getTipo()) {
@@ -242,9 +246,15 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
                     eventoACompletar.setNotas(textAreaNotas.getText().trim());
                     break;
             }
+            if (eventoACompletar.getTipo().equals("Vacunación")) {
+                eventoACompletar.getCualHijo().agregarVacunaRecibida(((Vacunacion) eventoACompletar).getVacuna(),
+                        eventoACompletar.getFecha());
+            }
             modelo.darDeBajaEvento(posEventoACompletar);
             ventanaPrincipal.cargarPanelEventosProximos();
             ventanaPrincipal.pintarDia(eventoACompletar.getFecha());
+            ventanaPrincipal.activarOpcionesGraficas(eventoACompletar.getCualHijo());
+            this.dispose();
         } catch (NumberFormatException | NullPointerException e) {
             JOptionPane.showMessageDialog(this, "Error", VentanaPrincipal.ERR_INGRESO
                     + "\nError detectado: " + e.getMessage(), JOptionPane.ERROR_MESSAGE);

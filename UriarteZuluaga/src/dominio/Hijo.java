@@ -285,6 +285,18 @@ public class Hijo implements Serializable, Comparable {
         return hash;
     }
 
+    public ArrayList<Par<Double, Double>> getListaPesos() {
+        return listaPesos;
+    }
+
+    public ArrayList<Par<Double, Double>> getListaPerimetrosCefalicos() {
+        return listaPerimetrosCefalicos;
+    }
+
+    public ArrayList<Par<Double, Double>> getListaAlturas() {
+        return listaAlturas;
+    }
+
     @Override
     public String toString() {
         return nombre;

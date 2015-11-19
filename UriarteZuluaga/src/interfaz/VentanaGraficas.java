@@ -12,6 +12,8 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
 
@@ -22,7 +24,6 @@ public class VentanaGraficas extends javax.swing.JFrame {
             int yLow, int yHigh, boolean esHombre) {
         JFreeChart chart = ChartFactory.createXYLineChart(titulo, labelX, labelY,
                 datos);
-
         XYPlot plot = chart.getXYPlot();
         NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
         xAxis.setLowerBound(xLow);
@@ -49,7 +50,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
         return new ChartPanel(chart);
     }
 
-    public JPanel graficarPesoAnios2(XYSeries datosNiñoa, boolean hombre)
+    public final JPanel graficarPesoAnios2(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Peso para la edad (percentiles de nacimiento a 2 años)";
         String xAxisLabel = "Edad (en meses cumplidos)";
@@ -64,7 +65,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
                 26, hombre);
     }
 
-    public JPanel graficarPesoEstaturaAnios2(XYSeries datosNiñoa, boolean hombre)
+    public final JPanel graficarPesoEstaturaAnios2(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Peso / Estatura (percentiles hasta los 5 años)";
         String xAxisLabel = "Estatura (cm)";
@@ -79,7 +80,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
                 46, hombre);
     }
 
-    public JPanel graficarEstaturaAnios2(XYSeries datosNiñoa, boolean hombre)
+    public final JPanel graficarEstaturaAnios2(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Longitud para la edad (percentiles de nacimiento a"
                 + " 2 años)";
@@ -95,7 +96,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
                 130, hombre);
     }
 
-    public JPanel graficarEstaturaAnios2A5(XYSeries datosNiñoa, boolean hombre)
+    public final JPanel graficarEstaturaAnios2A5(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Estatura para la edad (percentiles de 2 a 5 años)";
         String xAxisLabel = "Edad (en meses cumplidos)";
@@ -110,7 +111,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
                 130, hombre);
     }
 
-    public JPanel graficarEstaturaAnios5A15(XYSeries datosNiñoa, boolean hombre)
+    public final JPanel graficarEstaturaAnios5A15(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Estatura para la edad (percentiles de 5 a 15 años)";
         String xAxisLabel = "Edad (en meses cumplidos)";
@@ -125,7 +126,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
                 230, hombre);
     }
 
-    public JPanel graficarPerimCefaAnios3(XYSeries datosNiñoa, boolean hombre)
+    public final JPanel graficarPerimCefaAnios3(XYSeries datosNiñoa, boolean hombre)
             throws IOException {
         String chartTitle = "Perímetro cefálico para la edad (percentiles de "
                 + "nacimiento a 36 meses)";
@@ -141,22 +142,45 @@ public class VentanaGraficas extends javax.swing.JFrame {
                 230, hombre);
     }
 
-    public VentanaGraficas(Hijo h, String tipoDeGrafica) {
-        switch (tipoDeGrafica) {
-            case "Peso":
-                if (h.getEdad() <= 2) {
-
-                }
-
+    public VentanaGraficas(Hijo h, int tipoDeGrafica) {
+        try {
+            JPanel chartPanel = null;
+            switch (tipoDeGrafica) {
+                case 1:
+                    chartPanel = graficarPesoAnios2(h.obtenerPesosParaGrafica(), h.esHombre());
+                    break;
+                case 2:
+                    chartPanel = graficarEstaturaAnios2(h.obtenerEstaturaParaGrafica(), h.esHombre());
+                    break;
+                case 3:
+                    chartPanel = graficarEstaturaAnios2A5(h.obtenerEstaturaParaGrafica(), h.esHombre());
+                    break;
+                case 4:
+                    chartPanel = graficarEstaturaAnios5A15(h.obtenerEstaturaParaGrafica(), h.esHombre());
+                    break;
+                case 5:
+                    chartPanel = graficarPesoEstaturaAnios2(h.obtenerPesoEstaturaParaGrafica(), h.esHombre());
+                    break;
+                case 6:
+                    chartPanel = graficarPerimCefaAnios3(h.obtenerPerimCefalicoParaGrafica(), h.esHombre());
+                    break;
+                default:
+                    mostrarError();
+                    break;
+            }
+            initComponents();
+            panelPrinc.setLayout(new BoxLayout(panelPrinc, BoxLayout.Y_AXIS));
+            panelPrinc.add(chartPanel, BorderLayout.CENTER);
+            setSize(640, 480);
+            setLocationRelativeTo(null);
+        } catch (IOException e) {
+            mostrarError();
         }
-        initComponents();
-        super("XY Line Chart Example with JFreechart");
+    }
 
-        JPanel chartPanel = graficarEstaturaAnios2Masculino();
-        add(chartPanel, BorderLayout.CENTER);
-
-        setSize(640, 480);
-        setLocationRelativeTo(null);
+    private void mostrarError() {
+        JOptionPane.showMessageDialog(this, "Error al generar la gráfica seleccionada.",
+                "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @SuppressWarnings("unchecked")

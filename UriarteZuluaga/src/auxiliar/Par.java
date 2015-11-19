@@ -1,8 +1,9 @@
 package auxiliar;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Par<D1, D2> {
+public class Par<D1, D2> implements Serializable {
 
     private D1 dato1;
     private D2 dato2;

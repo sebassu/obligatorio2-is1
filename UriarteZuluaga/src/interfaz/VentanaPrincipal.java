@@ -94,12 +94,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         opcEliminarEvento = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
         opcCompletarEvento = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        opcGraficaPeso = new javax.swing.JMenuItem();
-        jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        opcGraficaAltura = new javax.swing.JMenuItem();
-        jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        opcGraficaPerimetroCefalico = new javax.swing.JMenuItem();
+        mnuGraficas = new javax.swing.JMenu();
+        mnuPeso = new javax.swing.JMenu();
+        opcPeso = new javax.swing.JMenuItem();
+        jSeparator10 = new javax.swing.JPopupMenu.Separator();
+        mnuEstatura = new javax.swing.JMenu();
+        opcEstatura1 = new javax.swing.JMenuItem();
+        opcEstatura2 = new javax.swing.JMenuItem();
+        opcEstatura3 = new javax.swing.JMenuItem();
+        jSeparator11 = new javax.swing.JPopupMenu.Separator();
+        mnuPA = new javax.swing.JMenu();
+        opcPA = new javax.swing.JMenuItem();
+        jSeparator8 = new javax.swing.JPopupMenu.Separator();
+        mnuPerimetro = new javax.swing.JMenu();
+        opcPerimetro = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 153, 255));
@@ -431,29 +439,87 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(mnuEventos);
 
-        jMenu2.setText("Gráficas");
+        mnuGraficas.setText("Gráficas");
+        mnuGraficas.setEnabled(false);
 
-        opcGraficaPeso.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.SHIFT_MASK));
-        opcGraficaPeso.setText("Peso");
-        jMenu2.add(opcGraficaPeso);
-        jMenu2.add(jSeparator6);
+        mnuPeso.setText("Peso");
+        mnuPeso.setEnabled(false);
 
-        opcGraficaAltura.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.SHIFT_MASK));
-        opcGraficaAltura.setText("Altura");
-        opcGraficaAltura.addActionListener(new java.awt.event.ActionListener() {
+        opcPeso.setText("< 2 años");
+        opcPeso.setEnabled(false);
+        opcPeso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opcGraficaAlturaActionPerformed(evt);
+                opcPesoActionPerformed(evt);
             }
         });
-        jMenu2.add(opcGraficaAltura);
-        jMenu2.add(jSeparator5);
+        mnuPeso.add(opcPeso);
 
-        opcGraficaPerimetroCefalico.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.SHIFT_MASK));
-        opcGraficaPerimetroCefalico.setText("Perímetro Cefálico");
-        opcGraficaPerimetroCefalico.setToolTipText("El hijo seleccionado no es bebé");
-        jMenu2.add(opcGraficaPerimetroCefalico);
+        mnuGraficas.add(mnuPeso);
+        mnuGraficas.add(jSeparator10);
 
-        jMenuBar1.add(jMenu2);
+        mnuEstatura.setText("Estatura");
+        mnuEstatura.setEnabled(false);
+
+        opcEstatura1.setText("< 2 años");
+        opcEstatura1.setEnabled(false);
+        opcEstatura1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcEstatura1ActionPerformed(evt);
+            }
+        });
+        mnuEstatura.add(opcEstatura1);
+
+        opcEstatura2.setText("2 a 5 años");
+        opcEstatura2.setEnabled(false);
+        opcEstatura2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcEstatura2ActionPerformed(evt);
+            }
+        });
+        mnuEstatura.add(opcEstatura2);
+
+        opcEstatura3.setText("> 5 años");
+        opcEstatura3.setEnabled(false);
+        opcEstatura3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcEstatura3ActionPerformed(evt);
+            }
+        });
+        mnuEstatura.add(opcEstatura3);
+
+        mnuGraficas.add(mnuEstatura);
+        mnuGraficas.add(jSeparator11);
+
+        mnuPA.setText("Peso / Altura");
+        mnuPA.setEnabled(false);
+
+        opcPA.setText("< 2 años");
+        opcPA.setEnabled(false);
+        opcPA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcPAActionPerformed(evt);
+            }
+        });
+        mnuPA.add(opcPA);
+
+        mnuGraficas.add(mnuPA);
+        mnuGraficas.add(jSeparator8);
+
+        mnuPerimetro.setText("Perímetro Cefálico");
+        mnuPerimetro.setEnabled(false);
+
+        opcPerimetro.setText("< 3 años");
+        opcPerimetro.setEnabled(false);
+        opcPerimetro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcPerimetroActionPerformed(evt);
+            }
+        });
+        mnuPerimetro.add(opcPerimetro);
+
+        mnuGraficas.add(mnuPerimetro);
+
+        jMenuBar1.add(mnuGraficas);
 
         setJMenuBar(jMenuBar1);
 
@@ -510,10 +576,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
         this.dispose();
     }//GEN-LAST:event_mnuSalirActionPerformed
-
-    private void opcGraficaAlturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcGraficaAlturaActionPerformed
-
-    }//GEN-LAST:event_opcGraficaAlturaActionPerformed
 
     private void opcModificarRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcModificarRegistroActionPerformed
         modificarHijoSeleccionado();
@@ -593,6 +655,37 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         v.setLocationRelativeTo(this);
         v.setVisible(true);
     }//GEN-LAST:event_opcCompletarEventoActionPerformed
+
+    private void opcEstatura3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEstatura3ActionPerformed
+        mostrarVentanaGraficas(4);
+    }//GEN-LAST:event_opcEstatura3ActionPerformed
+
+    private void opcPesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcPesoActionPerformed
+        mostrarVentanaGraficas(1);
+    }//GEN-LAST:event_opcPesoActionPerformed
+
+    private void opcEstatura1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEstatura1ActionPerformed
+        mostrarVentanaGraficas(2);
+    }//GEN-LAST:event_opcEstatura1ActionPerformed
+
+    private void opcEstatura2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcEstatura2ActionPerformed
+        mostrarVentanaGraficas(3);
+    }//GEN-LAST:event_opcEstatura2ActionPerformed
+
+    private void opcPAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcPAActionPerformed
+        mostrarVentanaGraficas(5);
+    }//GEN-LAST:event_opcPAActionPerformed
+
+    private void opcPerimetroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcPerimetroActionPerformed
+        mostrarVentanaGraficas(6);
+    }//GEN-LAST:event_opcPerimetroActionPerformed
+
+    private void mostrarVentanaGraficas(int tipoDeGrafica) {
+        Hijo hijoSeleccionado = modelo.getHijo(getPosHijoSeleccionado());
+        VentanaGraficas v = new VentanaGraficas(hijoSeleccionado, tipoDeGrafica);
+        v.setVisible(true);
+        v.setLocationRelativeTo(this);
+    }
 
     private void modificarHijoSeleccionado() {
         int pos = getPosHijoSeleccionado();
@@ -688,6 +781,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         repintarFondo(h.esHombre());
+                        activarOpcionesGraficas(h);
                     }
                 });
                 aux.setVisible(true);
@@ -835,6 +929,48 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    public void activarOpcionesGraficas(Hijo h) {
+        int count = 0;
+        boolean aux = h.getListaPesos().isEmpty();
+        if (aux) {
+            opcPeso.setEnabled(false);
+            mnuPeso.setEnabled(false);
+            opcPA.setEnabled(false);
+            mnuPA.setEnabled(false);
+            count++;
+        } else {
+            opcPeso.setEnabled(true);
+            mnuPeso.setEnabled(true);
+        }
+        if (h.getListaAlturas().isEmpty()) {
+            opcEstatura1.setEnabled(false);
+            opcEstatura2.setEnabled(false);
+            opcEstatura3.setEnabled(false);
+            mnuEstatura.setEnabled(false);
+            count++;
+            opcPA.setEnabled(false);
+            mnuPA.setEnabled(false);
+        } else {
+            if (aux) {
+                opcPA.setEnabled(true);
+                mnuPA.setEnabled(true);
+            }
+            opcEstatura1.setEnabled(true);
+            opcEstatura2.setEnabled(true);
+            opcEstatura3.setEnabled(true);
+            mnuEstatura.setEnabled(true);
+        }
+        if (h.getListaPerimetrosCefalicos().isEmpty()) {
+            opcPerimetro.setEnabled(false);
+            mnuPerimetro.setEnabled(false);
+            count++;
+        } else {
+            opcPerimetro.setEnabled(true);
+            mnuPerimetro.setEnabled(true);
+        }
+        mnuGraficas.setEnabled(count != 3);
+    }
+
     public void pintarDia(Calendar laFecha) {
         Calendar cal = Calendar.getInstance();
         cal.set(laFecha.get(Calendar.YEAR), laFecha.get(Calendar.MONTH), 1);
@@ -892,7 +1028,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
@@ -902,23 +1037,32 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator10;
+    private javax.swing.JPopupMenu.Separator jSeparator11;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JPopupMenu.Separator jSeparator5;
-    private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JMenu mnuEstatura;
     private javax.swing.JMenu mnuEventos;
+    private javax.swing.JMenu mnuGraficas;
+    private javax.swing.JMenu mnuPA;
+    private javax.swing.JMenu mnuPerimetro;
+    private javax.swing.JMenu mnuPeso;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenuItem opcCompletarEvento;
     private javax.swing.JMenuItem opcEliminarCarne;
     private javax.swing.JMenuItem opcEliminarEvento;
-    private javax.swing.JMenuItem opcGraficaAltura;
-    private javax.swing.JMenuItem opcGraficaPerimetroCefalico;
-    private javax.swing.JMenuItem opcGraficaPeso;
+    private javax.swing.JMenuItem opcEstatura1;
+    private javax.swing.JMenuItem opcEstatura2;
+    private javax.swing.JMenuItem opcEstatura3;
     private javax.swing.JMenuItem opcModificarEvento;
     private javax.swing.JMenuItem opcModificarRegistro;
+    private javax.swing.JMenuItem opcPA;
+    private javax.swing.JMenuItem opcPerimetro;
+    private javax.swing.JMenuItem opcPeso;
     private javax.swing.JMenuItem opcRegistrarCarne;
     private javax.swing.JMenuItem opcRegistrarEvento;
     private javax.swing.JPanel panelDiaSeleccionado;

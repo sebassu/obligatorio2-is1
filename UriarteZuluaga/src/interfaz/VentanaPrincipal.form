@@ -144,43 +144,104 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
+        <Menu class="javax.swing.JMenu" name="mnuGraficas">
           <Properties>
             <Property name="text" type="java.lang.String" value="Gr&#xe1;ficas"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="opcGraficaPeso">
+            <Menu class="javax.swing.JMenu" name="mnuPeso">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+1"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Peso"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="opcPeso">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&lt; 2 a&#xf1;os"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcPesoActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator10">
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator6">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="opcGraficaAltura">
+            <Menu class="javax.swing.JMenu" name="mnuEstatura">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+2"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Altura"/>
+                <Property name="text" type="java.lang.String" value="Estatura"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcGraficaAlturaActionPerformed"/>
-              </Events>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="opcEstatura1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&lt; 2 a&#xf1;os"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcEstatura1ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="opcEstatura2">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="2 a 5 a&#xf1;os"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcEstatura2ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="opcEstatura3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&gt; 5 a&#xf1;os"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcEstatura3ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator11">
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator5">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="opcGraficaPerimetroCefalico">
+            <Menu class="javax.swing.JMenu" name="mnuPA">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+3"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Peso / Altura"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="opcPA">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&lt; 2 a&#xf1;os"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcPAActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator8">
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="mnuPerimetro">
+              <Properties>
                 <Property name="text" type="java.lang.String" value="Per&#xed;metro Cef&#xe1;lico"/>
-                <Property name="toolTipText" type="java.lang.String" value="El hijo seleccionado no es beb&#xe9;"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-            </MenuItem>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="opcPerimetro">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&lt; 3 a&#xf1;os"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcPerimetroActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
           </SubComponents>
         </Menu>
       </SubComponents>
