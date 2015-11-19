@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package graficas;
 
 import java.io.FileNotFoundException;
@@ -12,16 +7,11 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import persistencia.ArchivoLectura;
 
-/**
- *
- * @author user
- */
 public class DataSet {
 
     private static XYSeries leerPercentilesDeArchivo(XYSeries p, String ubicacion,
             String percentil)
             throws FileNotFoundException, IOException {
-
         int colP = -1;
         ArchivoLectura archivoLeido = new ArchivoLectura(ubicacion);
         while (archivoLeido.hayMasLineas()) {
@@ -104,7 +94,6 @@ public class DataSet {
     public static XYDataset datasetEstaturaAnios2Masculino(XYSeries datosNiño)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(estaturaP97Anios2Masculino());
         dataset.addSeries(estaturaP85Anios2Masculino());
         dataset.addSeries(estaturaP50Anios2Masculino());
@@ -118,7 +107,6 @@ public class DataSet {
     public static XYDataset datasetEstaturaAnios2Femenino(XYSeries datosNiña)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(estaturaP97Anios2Femenino());
         dataset.addSeries(estaturaP85Anios2Femenino());
         dataset.addSeries(estaturaP50Anios2Femenino());
@@ -162,7 +150,6 @@ public class DataSet {
     public static XYDataset datasetEstaturaAnios2A5Masculino(XYSeries datosNiño)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(estaturaP97Anios2A5Masculino());
         dataset.addSeries(estaturaP85Anios2A5Masculino());
         dataset.addSeries(estaturaP50Anios2A5Masculino());
@@ -206,7 +193,6 @@ public class DataSet {
     public static XYDataset datasetEstaturaAnios2A5Femenino(XYSeries datosNiña)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(estaturaP97Anios2A5Femenino());
         dataset.addSeries(estaturaP85Anios2A5Femenino());
         dataset.addSeries(estaturaP50Anios2A5Femenino());
@@ -250,7 +236,6 @@ public class DataSet {
     public static XYDataset datasetEstaturaAnios5A15Masculino(XYSeries datosNiño)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(estaturaP97Anios5A15Masculino());
         dataset.addSeries(estaturaP85Anios5A15Masculino());
         dataset.addSeries(estaturaP50Anios5A15Masculino());
@@ -294,7 +279,6 @@ public class DataSet {
     public static XYDataset datasetEstaturaAnios5A15Femenino(XYSeries datosNiña)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(estaturaP97Anios5A15Femenino());
         dataset.addSeries(estaturaP85Anios5A15Femenino());
         dataset.addSeries(estaturaP50Anios5A15Femenino());
@@ -338,7 +322,6 @@ public class DataSet {
     public static XYDataset datasetPerimCefaAnios3Masculino(XYSeries datosNiño)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(perimCefaP97Anios3Masculino());
         dataset.addSeries(perimCefaP85Anios3Masculino());
         dataset.addSeries(perimCefaP50Anios3Masculino());
@@ -378,11 +361,10 @@ public class DataSet {
         leerPercentilesDeArchivo(p3, "resources//tab_hcfa_girls_p_0_5.txt", "P3");
         return p3;
     }
-    
+
     public static XYDataset datasetPerimCefaAnios3Femenino(XYSeries datosNiña)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(perimCefaP97Anios3Femenino());
         dataset.addSeries(perimCefaP85Anios3Femenino());
         dataset.addSeries(perimCefaP50Anios3Femenino());
@@ -392,7 +374,7 @@ public class DataSet {
 
         return dataset;
     }
-    
+
     public static XYSeries pesoP97Anios2Masculino() throws IOException {
         XYSeries p97 = new XYSeries("1.Cuidado");
         leerPercentilesDeArchivo(p97, "resources//tab_wfa_boys_p_0_5.txt", "P97");
@@ -422,11 +404,10 @@ public class DataSet {
         leerPercentilesDeArchivo(p3, "resources//tab_wfa_boys_p_0_5.txt", "P3");
         return p3;
     }
-    
+
     public static XYDataset datasetPesoAnios2Masculino(XYSeries datosNiño)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(pesoP97Anios2Masculino());
         dataset.addSeries(pesoP85Anios2Masculino());
         dataset.addSeries(pesoP50Anios2Masculino());
@@ -436,7 +417,7 @@ public class DataSet {
 
         return dataset;
     }
-    
+
     public static XYSeries pesoP97Anios2Femenino() throws IOException {
         XYSeries p97 = new XYSeries("1.Cuidado");
         leerPercentilesDeArchivo(p97, "resources//tab_wfa_girls_p_0_5.txt", "P97");
@@ -466,11 +447,10 @@ public class DataSet {
         leerPercentilesDeArchivo(p3, "resources//tab_wfa_girls_p_0_5.txt", "P3");
         return p3;
     }
-    
+
     public static XYDataset datasetPesoAnios2Femenino(XYSeries datosNiña)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(pesoP97Anios2Femenino());
         dataset.addSeries(pesoP85Anios2Femenino());
         dataset.addSeries(pesoP50Anios2Femenino());
@@ -480,7 +460,7 @@ public class DataSet {
 
         return dataset;
     }
-    
+
     public static XYSeries pesoEstaturaP97Anios5Masculino() throws IOException {
         XYSeries p97 = new XYSeries("1.Cuidado");
         leerPercentilesDeArchivo(p97, "resources//tab_wfh_boys_p_0_5.txt", "P97");
@@ -510,11 +490,10 @@ public class DataSet {
         leerPercentilesDeArchivo(p3, "resources//tab_wfh_boys_p_0_5.txt", "P3");
         return p3;
     }
-    
+
     public static XYDataset datasetPesoEstaturaAnios5Masculino(XYSeries datosNiño)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(pesoEstaturaP97Anios5Masculino());
         dataset.addSeries(pesoEstaturaP85Anios5Masculino());
         dataset.addSeries(pesoEstaturaP50Anios5Masculino());
@@ -524,8 +503,8 @@ public class DataSet {
 
         return dataset;
     }
-    
-       public static XYSeries pesoEstaturaP97Anios5Femenino() throws IOException {
+
+    public static XYSeries pesoEstaturaP97Anios5Femenino() throws IOException {
         XYSeries p97 = new XYSeries("1.Cuidado");
         leerPercentilesDeArchivo(p97, "resources//tab_wfh_girls_p_0_5.txt", "P97");
         return p97;
@@ -554,11 +533,10 @@ public class DataSet {
         leerPercentilesDeArchivo(p3, "resources//tab_wfh_girls_p_0_5.txt", "P3");
         return p3;
     }
-    
+
     public static XYDataset datasetPesoEstaturaAnios5Femenino(XYSeries datosNiña)
             throws IOException {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         dataset.addSeries(pesoEstaturaP97Anios5Femenino());
         dataset.addSeries(pesoEstaturaP85Anios5Femenino());
         dataset.addSeries(pesoEstaturaP50Anios5Femenino());

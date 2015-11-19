@@ -3,142 +3,274 @@ package dominio;
 import java.util.Calendar;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 public class EventoTest {
+
+    @Rule
+    public ExpectedException ex = ExpectedException.none();
 
     /**
      * Test of setId method, of class Evento.
      */
     @Test
-    public void testSetId() {
-        System.out.println("setId");
-        int laId = 0;
-        Evento instance = new Evento();
-        instance.setId(laId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSetId1() {
+        Evento e = new Evento();
+        e.setId(0);
+        assertTrue(e.getId() == 0);
+    }
+
+    @Test
+    public void testSetId3() {
+        int aux = 115;
+        Evento e = new Evento();
+        e.setId(aux);
+        assertTrue(e.getId() == aux);
     }
 
     /**
      * Test of setTipo method, of class Evento.
      */
     @Test
-    public void testSetTipo() {
-        System.out.println("setTipo");
-        String tipo = "";
-        Evento instance = new Evento();
-        instance.setTipo(tipo);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSetTipo1() {
+        Evento e = new Evento();
+        e.setTipo("OOM");
+        assertEquals(e.getTipo(), "OOM");
+    }
+
+    @Test
+    public void testSetTipo2() {
+        String aux = "OMGWTFBBQ";
+        Evento e = new Evento();
+        e.setTipo(aux);
+        assertEquals(e.getTipo(), aux);
+    }
+
+    @Test
+    public void testSetTipo3() {
+        ex.expect(IllegalArgumentException.class);
+        ex.expectMessage("Tipo inválido");
+        String aux = "1234";
+        Evento e = new Evento();
+        e.setTipo(aux);
+    }
+
+    @Test
+    public void testSetTipo4() {
+        ex.expect(IllegalArgumentException.class);
+        ex.expectMessage("Tipo inválido");
+        String aux = "  *-*-*-";
+        Evento e = new Evento();
+        e.setTipo(aux);
+    }
+
+    @Test
+    public void testSetTipo5() {
+        ex.expect(IllegalArgumentException.class);
+        ex.expectMessage("Tipo inválido");
+        String aux = "";
+        Evento e = new Evento();
+        e.setTipo(aux);
     }
 
     /**
      * Test of setDescripcion method, of class Evento.
      */
     @Test
-    public void testSetDescripcion() {
-        System.out.println("setDescripcion");
-        String descripcion = "";
-        Evento instance = new Evento();
-        instance.setDescripcion(descripcion);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSetDescripcion1() {
+        Evento e = new Evento();
+        e.setDescripcion("BRB");
+        assertEquals(e.getDescripcion(), "BRB");
+    }
+
+    @Test
+    public void testSetDescripcion2() {
+        Evento e = new Evento();
+        e.setDescripcion("987");
+        assertEquals(e.getDescripcion(), "987");
+    }
+
+    @Test
+    public void testSetDescripcion3() {
+        Evento e = new Evento();
+        e.setDescripcion(" -*-*-*-*-");
+        assertEquals(e.getDescripcion(), " -*-*-*-*-");
+    }
+
+    @Test
+    public void testSetDescripcion4() {
+        Evento e = new Evento();
+        e.setDescripcion("");
+        assertEquals(e.getDescripcion(), "");
     }
 
     /**
      * Test of setFecha method, of class Evento.
      */
     @Test
-    public void testSetFecha() {
-        System.out.println("setFecha");
-        Calendar fecha = null;
-        Evento instance = new Evento();
-        instance.setFecha(fecha);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSetFecha1() {
+        Evento e = new Evento();
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, 789);
+        e.setFecha(c);
+        assertEquals(c, e.getFecha());
+    }
+
+    @Test
+    public void testSetFecha2() {
+        ex.expect(NullPointerException.class);
+        ex.expectMessage("Fecha nula.");
+        Evento e = new Evento();
+        e.setFecha(null);
     }
 
     /**
      * Test of setCualHijo method, of class Evento.
      */
     @Test
-    public void testSetCualHijo() {
-        System.out.println("setCualHijo");
-        Hijo cualHijo = null;
-        Evento instance = new Evento();
-        instance.setCualHijo(cualHijo);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSetCualHijo1() {
+        Evento e = new Evento();
+        Hijo h = new Hijo("5.123.123-9");
+        e.setCualHijo(h);
+        assertEquals(e.getCualHijo(), h);
+    }
+
+    @Test
+    public void testSetCualHijo2() {
+        ex.expect(NullPointerException.class);
+        ex.expectMessage("Hijo nulo.");
+        Evento e = new Evento();
+        e.setCualHijo(null);
     }
 
     /**
      * Test of setLugar method, of class Evento.
      */
     @Test
-    public void testSetLugar() {
-        System.out.println("setLugar");
-        String elLugar = "";
-        Evento instance = new Evento();
-        instance.setLugar(elLugar);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSetLugar1() {
+        Evento e = new Evento();
+        e.setLugar("Aquí mismo.");
+        assertEquals(e.getLugar(), "Aquí mismo.");
+    }
+
+    @Test
+    public void testSetLugar2() {
+        String aux = "Allí";
+        Evento e = new Evento();
+        e.setLugar(aux);
+        assertEquals(e.getLugar(), aux);
+    }
+
+    @Test
+    public void testSetLugar3() {
+        String aux = "1234";
+        Evento e = new Evento();
+        e.setLugar(aux);
+        assertEquals(e.getLugar(), aux);
+    }
+
+    @Test
+    public void testSetLugar4() {
+        String aux = "    *-*-*-*";
+        Evento e = new Evento();
+        e.setLugar(aux);
+        assertEquals(e.getLugar(), aux);
+    }
+
+    @Test
+    public void testSetLugar5() {
+        String aux = "";
+        Evento e = new Evento();
+        e.setLugar(aux);
+        assertEquals(e.getLugar(), aux);
     }
 
     /**
      * Test of setTitulo method, of class Evento.
      */
     @Test
-    public void testSetTitulo() {
-        System.out.println("setTitulo");
-        String elTitulo = "";
-        Evento instance = new Evento();
-        instance.setTitulo(elTitulo);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSetTitulo1() {
+        Evento e = new Evento();
+        e.setTitulo("lol");
+        assertEquals(e.getLugar(), "lol");
     }
 
-    /**
-     * Test of hashCode method, of class Evento.
-     */
     @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        Evento instance = new Evento();
-        int expResult = 0;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSetTitulo2() {
+        String aux = "rotfl";
+        Evento e = new Evento();
+        e.setTitulo(aux);
+        assertEquals(e.getLugar(), aux);
+    }
+
+    @Test
+    public void testSetTitulo3() {
+        String aux = "1234";
+        Evento e = new Evento();
+        e.setTitulo(aux);
+        assertEquals(e.getLugar(), aux);
+    }
+
+    @Test
+    public void testSetTitulo4() {
+        String aux = "    *-*-*-*";
+        Evento e = new Evento();
+        e.setTitulo(aux);
+        assertEquals(e.getLugar(), aux);
+    }
+
+    @Test
+    public void testSetTitulo5() {
+        String aux = "";
+        Evento e = new Evento();
+        e.setTitulo(aux);
+        assertEquals(e.getLugar(), aux);
     }
 
     /**
      * Test of equals method, of class Evento.
      */
     @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Object obj = null;
-        Evento instance = new Evento();
-        boolean expResult = false;
-        boolean result = instance.equals(obj);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testEquals1() {
+        Evento e = new Evento();
+        assertEquals(e, e);
+    }
+
+    @Test
+    public void testEquals2() {
+        Evento e = new Evento();
+        Evento f = new Evento();
+        assertEquals(e, f);
+        assertEquals(f, e);
     }
 
     /**
      * Test of compareTo method, of class Evento.
      */
     @Test
-    public void testCompareTo() {
-        System.out.println("compareTo");
-        Object obj = null;
-        Evento instance = new Evento();
-        int expResult = 0;
-        int result = instance.compareTo(obj);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testCompareTo1() {
+        Evento e = new Evento();
+        assertTrue(e.compareTo(e) == 0);
     }
-    
+
+    @Test
+    public void testCompareTo2() {
+        Evento e = new Evento();
+        Evento f = new Evento();
+        Calendar aux = Calendar.getInstance();
+        aux.set(Calendar.YEAR, 9);
+        e.setFecha(aux);
+        assertTrue(f.compareTo(e) < 0);
+    }
+
+    @Test
+    public void testCompareTo3() {
+        Evento e = new Evento();
+        Evento f = new Evento();
+        Calendar aux = Calendar.getInstance();
+        aux.set(Calendar.YEAR, 2119);
+        e.setFecha(aux);
+        assertTrue(e.compareTo(f) > 0);
+    }
 }

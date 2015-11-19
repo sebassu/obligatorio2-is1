@@ -1,5 +1,6 @@
 package dominio;
 
+import java.util.Calendar;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -21,5 +22,14 @@ public class VacunacionTest {
         Vacuna vac = new Vacuna("ABC", true, null);
         v.setVacuna(vac);
         assertEquals(vac, v.getVacuna());
+    }
+
+    @Test
+    public void testVacunacion() {
+        Vacuna vac = new Vacuna("AAB", true, "");
+        Vacunacion v = new Vacunacion(0, "", "", "",
+                Calendar.getInstance(), new Hijo(), "", vac);
+        assertTrue(vac.equals(v.getVacuna()));  //Los demás parámetros son 
+        //asignados por super(), probado en otra clase.
     }
 }

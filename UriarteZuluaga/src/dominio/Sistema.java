@@ -13,10 +13,10 @@ import java.util.Iterator;
 
 public class Sistema implements Serializable {
 
-    private final ArrayList<Hijo> listaHijos;
-    private ArrayList<Vacuna> listaVacunas;
-    private final ArrayList<Evento> eventosRealizados;
-    private final ArrayList<Evento> eventosARealizar;
+    protected final ArrayList<Hijo> listaHijos;
+    protected ArrayList<Vacuna> listaVacunas;
+    protected final ArrayList<Evento> eventosRealizados;
+    protected final ArrayList<Evento> eventosARealizar;
     public static int proximaIDEventos = Integer.MIN_VALUE;
 
     public Sistema() {
@@ -203,7 +203,6 @@ public class Sistema implements Serializable {
                 if (vacunaTerminada) {
                     if (!nombre.equals("") && !meses.equals("")
                             && !anios.equals("") && !descripcion.equals("")) {
-
                         procesarVacunaSistematica(nombre, meses, anios, descripcion, lista);
                         vacunaTerminada = false;
                         nombre = "";
@@ -482,10 +481,10 @@ public class Sistema implements Serializable {
                 if (mesValido(mesAAgregar) && !meses.contains(mesAAgregar)) {
                     meses.add(mesAAgregar);
                 }
-                String mesRecomendadoLuegoDeVacunacion = Integer.parseInt(mesAAgregar) 
+                String mesRecomendadoLuegoDeVacunacion = Integer.parseInt(mesAAgregar)
                         + Integer.parseInt(estePar.getDato1().
                                 getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses()) + "";
-                if (mesValido(mesRecomendadoLuegoDeVacunacion) 
+                if (mesValido(mesRecomendadoLuegoDeVacunacion)
                         && !meses.contains(mesRecomendadoLuegoDeVacunacion)) {
                     meses.add(mesRecomendadoLuegoDeVacunacion);
                 }
@@ -526,12 +525,12 @@ public class Sistema implements Serializable {
                         && !anios.contains(anioAAgregar)) {
                     anios.add(anioAAgregar);
                 }
-                int anioRecomendadoLuegoDeVacunacion = Integer.parseInt(anioAAgregar)*12
+                int anioRecomendadoLuegoDeVacunacion = Integer.parseInt(anioAAgregar) * 12
                         + Integer.parseInt(estePar.getDato1().
                                 getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses());
-                if (anioRecomendadoLuegoDeVacunacion > 24 
-                        && !anios.contains(anioRecomendadoLuegoDeVacunacion/12+"")) {
-                    anios.add(anioRecomendadoLuegoDeVacunacion/12+"");
+                if (anioRecomendadoLuegoDeVacunacion > 24
+                        && !anios.contains(anioRecomendadoLuegoDeVacunacion / 12 + "")) {
+                    anios.add(anioRecomendadoLuegoDeVacunacion / 12 + "");
                 }
             }
             Iterator<String> itVacunaHijo = estePar.getDato1().iteradorVencimientoEnAnios();

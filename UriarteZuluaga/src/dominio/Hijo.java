@@ -183,7 +183,6 @@ public class Hijo implements Serializable, Comparable {
             Par<Double, Double> estePar = itListaPesos.next();
             pesos.add(estePar.getDato1(), estePar.getDato2());
         }
-
         return pesos;
     }
 
@@ -196,8 +195,19 @@ public class Hijo implements Serializable, Comparable {
             Par<Double, Double> estePar = itListaEstaturas.next();
             estaturas.add(estePar.getDato1(), estePar.getDato2());
         }
-
         return estaturas;
+    }
+
+    public int getEdad() {
+        Calendar hoy = Calendar.getInstance();
+        int edad = Calendar.getInstance().get(Calendar.YEAR)
+                - this.getFechaNacimiento().get(Calendar.YEAR);
+        if (hoy.get(Calendar.MONTH) > getFechaNacimiento().get(Calendar.MONTH)
+                || (hoy.get(Calendar.MONTH) == getFechaNacimiento().get(Calendar.MONTH)
+                && hoy.get(Calendar.DAY_OF_MONTH) == getFechaNacimiento().get(Calendar.DAY_OF_MONTH))) {
+            edad++;
+        }
+        return edad;
     }
 
     public XYSeries obtenerPerimCefalicoParaGrafica() {
@@ -205,11 +215,9 @@ public class Hijo implements Serializable, Comparable {
         Iterator<Par<Double, Double>> itListaPerimetros
                 = listaPesos.iterator();
         while (itListaPerimetros.hasNext()) {
-
             Par<Double, Double> estePar = itListaPerimetros.next();
             perimCefalico.add(estePar.getDato1(), estePar.getDato2());
         }
-
         return perimCefalico;
     }
 
@@ -225,25 +233,21 @@ public class Hijo implements Serializable, Comparable {
             Par<Double, Double> esteParPeso = itListaPesos.next();
             pesosEstaturas.add(esteParEstatura.getDato2(), esteParPeso.getDato2());
         }
-
         return pesosEstaturas;
     }
 
     public int mesesDesdeNacimientoAFecha(Calendar fecha) {
-
         return ((fechaNacimiento.get(Calendar.YEAR))
                 - fecha.get(Calendar.YEAR)) * 12
                 + fechaNacimiento.get(Calendar.MONTH) - fecha.get(Calendar.MONTH);
     }
 
     public int aniosDesdeNacimientoAFecha(Calendar fecha) {
-
         return ((fechaNacimiento.get(Calendar.YEAR))
                 - fecha.get(Calendar.YEAR));
     }
 
     public boolean contieneVacunaDeEsteNombre(String nombreVacunaBuscada) {
-
         Iterator<Par<Vacuna, ArrayList<Calendar>>> itHistorialVacunas
                 = getIteradorHistorialVacunaciones();
         while (itHistorialVacunas.hasNext()) {

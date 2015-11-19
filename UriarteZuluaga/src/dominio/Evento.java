@@ -16,11 +16,11 @@ public class Evento implements Serializable, Comparable {
     private String notas;
 
     protected Evento() throws IllegalArgumentException, NullPointerException {
-        this(0, "", "", "", Calendar.getInstance(), new Hijo(), "");
+        this(0, "A", "A", "", Calendar.getInstance(), new Hijo(), "");
     }
 
     public Evento(int laId) throws IllegalArgumentException, NullPointerException {
-        this(laId, "", "", "", Calendar.getInstance(), new Hijo(), "");
+        this(laId, "A", "A", "", Calendar.getInstance(), new Hijo(), "");
     }
 
     public Evento(int laId, String elTitulo, String elTipo, Calendar laFecha, Hijo elHijo)

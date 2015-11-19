@@ -46,6 +46,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         activarOpcionesModificacionEventos();
         panelHijos.setLayout(new BoxLayout(panelHijos, BoxLayout.Y_AXIS));
         panelEventosProximos.setLayout(new BoxLayout(panelEventosProximos, BoxLayout.Y_AXIS));
+        panelDiaSeleccionado.setLayout(new BoxLayout(panelDiaSeleccionado, BoxLayout.Y_AXIS));
         calendario.setCalendar(Calendar.getInstance());
         cargarPanelHijos();
         cargarPanelEventosProximos();
@@ -75,8 +76,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         panelDiaSeleccionado = new javax.swing.JPanel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jScrollPane6 = new javax.swing.JScrollPane();
+        jScrollPane7 = new javax.swing.JScrollPane();
         panelEventosProximos = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
@@ -159,7 +159,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         );
         panelHijosLayout.setVerticalGroup(
             panelHijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 386, Short.MAX_VALUE)
+            .addGap(0, 465, Short.MAX_VALUE)
         );
 
         panelScrolleable.setViewportView(panelHijos);
@@ -179,9 +179,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarHijo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 80, Short.MAX_VALUE))
             .addComponent(jSeparator3)
-            .addComponent(panelScrolleable)
+            .addComponent(panelScrolleable, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,10 +224,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(calendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(calendario, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 138, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -271,11 +271,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelDiaSeleccionado.setLayout(panelDiaSeleccionadoLayout);
         panelDiaSeleccionadoLayout.setHorizontalGroup(
             panelDiaSeleccionadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 163, Short.MAX_VALUE)
+            .addGap(0, 196, Short.MAX_VALUE)
         );
         panelDiaSeleccionadoLayout.setVerticalGroup(
             panelDiaSeleccionadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 186, Short.MAX_VALUE)
+            .addGap(0, 344, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(panelDiaSeleccionado);
@@ -286,28 +286,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelEventosProximos.setLayout(panelEventosProximosLayout);
         panelEventosProximosLayout.setHorizontalGroup(
             panelEventosProximosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 161, Short.MAX_VALUE)
+            .addGap(0, 196, Short.MAX_VALUE)
         );
         panelEventosProximosLayout.setVerticalGroup(
             panelEventosProximosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 178, Short.MAX_VALUE)
+            .addGap(0, 318, Short.MAX_VALUE)
         );
 
-        jScrollPane6.setViewportView(panelEventosProximos);
-
-        jScrollPane5.setViewportView(jScrollPane6);
+        jScrollPane7.setViewportView(panelEventosProximos);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane5)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(0, 26, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -315,12 +316,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addGap(2, 2, 2)
-                .addComponent(jScrollPane5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -465,7 +466,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -569,6 +571,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             if (opcion == JOptionPane.YES_OPTION) {
                 modelo.eliminarEventoPorPos(pos);
                 cargarPanelEventosProximos();
+                cargarPanelEventosDelDia();
                 pintarDia(calendario.getCalendar());
                 JOptionPane.showMessageDialog(this, "El evento se ha borrado exitosamente"
                         + " del programa.", "Operación completada", JOptionPane.INFORMATION_MESSAGE);
@@ -643,7 +646,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             btnEditarHijo.setEnabled(false);
             btnEliminarHijo.setEnabled(false);
             opcRegistrarEvento.setEnabled(false);
-            mnuEventos.setEnabled(!opcModificarEvento.isEnabled());
+            mnuEventos.setEnabled(opcModificarEvento.isEnabled());
         }
     }
 
@@ -657,21 +660,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             opcModificarEvento.setEnabled(false);
             opcEliminarEvento.setEnabled(false);
             opcCompletarEvento.setEnabled(false);
-            mnuEventos.setEnabled(!opcRegistrarEvento.isEnabled());
+            mnuEventos.setEnabled(opcRegistrarEvento.isEnabled());
         }
     }
 
     public final void cargarPanelHijos() {
         panelHijos.removeAll();
         if (modelo.getCantidadHijos() == 0) {
-            panelHijos.add(Box.createRigidArea(new Dimension(panelHijos.getWidth(), 45)));
+            panelHijos.add(Box.createRigidArea(new Dimension(150, 45)));
             JLabel label = new JLabel("Sin Hijos a mostrar");
             label.setFont(new Font("Tahoma", Font.BOLD, 18));
             label.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelHijos.add(label);
         } else {
             for (int i = 0; i < modelo.getCantidadHijos(); i++) {
-                panelHijos.add(Box.createRigidArea(new Dimension(panelHijos.getWidth(), 25)));
+                panelHijos.add(Box.createRigidArea(new Dimension(150, 25)));
                 final Hijo h = modelo.getHijo(i);
                 JToggleButton aux = new JToggleButton();
                 aux.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -679,7 +682,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 aux.setBackground((h.esHombre() ? niñoClaro : niñaClaro));
                 aux.setFont(new Font("Tahoma", Font.BOLD, 14));
                 aux.setText("     " + h.getNombre() + "     ");
-                aux.setMinimumSize(new Dimension(panelHijos.getWidth(), 75));
+                aux.setMinimumSize(new Dimension(150, 75));
                 aux.setName("" + i);
                 aux.addActionListener(new ActionListener() {
                     @Override
@@ -712,7 +715,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
                 Evento evento = modelo.getEvento(i);
                 if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {
-                    panelEventosProximos.add(Box.createRigidArea(new Dimension(100, 20)));
+                    panelEventosProximos.add(Box.createRigidArea(new Dimension(75, 20)));
                     JToggleButton aux = generarBotonEvento(evento);
                     aux.setBackground(Color.red);
                     SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
@@ -733,55 +736,57 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     public final void cargarPanelEventosDelDia() {
+        boolean encontro = false;
         panelDiaSeleccionado.removeAll();
-        if (modelo.getCantidadEventosARealizar() == 0 && modelo.getEventosCompletados().isEmpty()) {
+        Calendar fechaSeleccionada = calendario.getCalendar();
+        for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
+            Evento evento = modelo.getEvento(i);
+            if (Auxiliares.compararFechas(evento.getFecha(), fechaSeleccionada)) {
+                encontro = true;
+                panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(75, 20)));
+                JToggleButton botonGenerado = generarBotonEvento(evento);
+                botonGenerado.setText(evento.getTitulo());
+                botonGenerado.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));
+                botonGenerado.setName("" + i);
+                if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {
+                    botonGenerado.setBackground(Color.red);
+                } else {
+                    botonGenerado.setBackground(Color.orange);
+                }
+                botonGenerado.setToolTipText(evento.getDescripcion());
+                panelDiaSeleccionado.add(botonGenerado);
+                buttonGroupEventos.add(botonGenerado);
+            } else if (evento.getFecha().compareTo(fechaSeleccionada) > 0) {
+                break;
+            }
+        }
+        for (Evento evento : modelo.getEventosCompletados()) {
+            if (Auxiliares.compararFechas(evento.getFecha(), fechaSeleccionada)) {
+                encontro = true;
+                panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(75, 15)));
+                JToggleButton botonGenerado = generarBotonEvento(evento);
+                botonGenerado.setText(evento.getTitulo());
+                botonGenerado.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));
+                botonGenerado.setToolTipText(evento.getNotas());
+                botonGenerado.setBackground(niñoClaro);
+                botonGenerado.setEnabled(false);
+                panelDiaSeleccionado.add(botonGenerado);
+            } else if (evento.getFecha().compareTo(fechaSeleccionada) > 0) {
+                break;
+            }
+        }
+        if (!encontro) {
             panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(170, 45)));
             JLabel label = new JLabel("Sin Eventos a mostrar");
             label.setFont(new Font("Tahoma", Font.BOLD, 24));
             label.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelDiaSeleccionado.add(label);
-        } else {
-            Calendar fechaSeleccionada = calendario.getCalendar();
-            for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
-                Evento evento = modelo.getEvento(i);
-                if (Auxiliares.compararFechas(evento.getFecha(), fechaSeleccionada)) {
-                    panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(100, 20)));
-                    JToggleButton aux = generarBotonEvento(evento);
-                    aux.setText(evento.getTitulo());
-                    aux.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));
-                    aux.setName("" + i);
-                    if (Auxiliares.caeEnEstaSemana(evento.getFecha())) {
-                        aux.setBackground(Color.red);
-                    } else {
-                        aux.setBackground(Color.orange);
-                    }
-                    aux.setToolTipText(evento.getDescripcion());
-                    panelDiaSeleccionado.add(aux);
-                    buttonGroupEventos.add(aux);
-                } else if (fechaSeleccionada.compareTo(evento.getFecha()) > 0) {
-                    break;
-                }
-            }
-            for (Evento evento : modelo.getEventosCompletados()) {
-                if (Auxiliares.compararFechas(evento.getFecha(), fechaSeleccionada)) {
-                    panelDiaSeleccionado.add(Box.createRigidArea(new Dimension(100, 15)));
-                    JToggleButton aux = generarBotonEvento(evento);
-                    aux.setText(evento.getTitulo());
-                    aux.setMinimumSize(new Dimension(panelEventosProximos.getWidth(), 75));
-                    aux.setToolTipText(evento.getNotas());
-                    aux.setBackground(Color.green);
-                    aux.setEnabled(false);
-                    panelDiaSeleccionado.add(aux);
-                } else if (fechaSeleccionada.compareTo(evento.getFecha()) > 0) {
-                    break;
-                }
-            }
-            panelDiaSeleccionado.validate();
-            panelDiaSeleccionado.repaint();
-            panelDiaSeleccionado.updateUI();
-            panelDiaSeleccionado.setVisible(false);
-            panelDiaSeleccionado.setVisible(true);
         }
+        panelDiaSeleccionado.validate();
+        panelDiaSeleccionado.repaint();
+        panelDiaSeleccionado.updateUI();
+        panelDiaSeleccionado.setVisible(false);
+        panelDiaSeleccionado.setVisible(true);
     }
 
     private JToggleButton generarBotonEvento(Evento evento) {
@@ -842,7 +847,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         int cantidadEventosCompletadosDia = 0;
         for (int i = 0; i < modelo.getCantidadEventosARealizar(); i++) {
             Calendar fechaEvento = modelo.getEvento(i).getFecha();
-            if (fechaEvento.get(Calendar.DAY_OF_MONTH) == laFecha.get(Calendar.DAY_OF_MONTH)) {
+            if (Auxiliares.compararFechas(fechaEvento, laFecha)) {
                 cantidadEventosDia++;
             } else if (fechaEvento.compareTo(laFecha) > 0) {
                 break;
@@ -850,26 +855,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         for (Evento e : modelo.getEventosCompletados()) {
             Calendar fechaEvento = e.getFecha();
-            if (fechaEvento.get(Calendar.DAY_OF_MONTH) == laFecha.get(Calendar.DAY_OF_MONTH)) {
+            if (Auxiliares.compararFechas(fechaEvento, laFecha)) {
                 cantidadEventosCompletadosDia++;
             } else if (fechaEvento.compareTo(laFecha) > 0) {
                 break;
             }
         }
         if (cantidadEventosDia > 0) {
-            componente.setBackground(Color.red);
-            componente.setForeground(Color.magenta);
+            componente.setBackground(Color.orange);
+            componente.setForeground(Color.darkGray);
             componente.setFont(new Font("Tahoma", Font.BOLD, 24));
         } else if (cantidadEventosCompletadosDia > 0) {
-            componente.setBackground(Color.cyan);
-            componente.setForeground(Color.blue);
+            componente.setBackground(niñoClaro);
+            componente.setForeground(Color.darkGray);
             componente.setFont(new Font("Tahoma", Font.BOLD, 24));
         } else {
             componente.setBackground(UIManager.getColor("Panel.background"));
+            componente.setForeground(Color.black);
             componente.setFont(new Font("Tahoma", Font.PLAIN, 14));
         }
-        componente.setName(cantidadEventosDia + " eventos - "
-                + cantidadEventosCompletadosDia + " eventos completados.");
+        componente.validate();
+        componente.repaint();
+        componente.setVisible(false);
+        componente.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -892,8 +900,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

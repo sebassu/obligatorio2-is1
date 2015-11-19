@@ -14,9 +14,7 @@ public final class Auxiliares {
             ArrayList<String> original) {
         String[] nuevo = new String[original.size()];
         Iterator<String> iteradorOriginal = original.iterator();
-
         for (int i = 0; i < nuevo.length; i++) {
-
             nuevo[i] = iteradorOriginal.next();
         }
         Arrays.sort(nuevo);
@@ -29,7 +27,6 @@ public final class Auxiliares {
         Iterator<String> iteradorOriginal = original.iterator();
         nuevo[0] = "";
         for (int i = 1; i < nuevo.length; i++) {
-
             nuevo[i] = iteradorOriginal.next();
         }
         Arrays.sort(nuevo);
@@ -51,7 +48,6 @@ public final class Auxiliares {
         Iterator<String> iteradorOriginal = original.iterator();
         nuevo[0] = " ";
         for (int i = 1; i < nuevo.length; i++) {
-
             nuevo[i] = iteradorOriginal.next();
         }
         return nuevo;
@@ -65,18 +61,15 @@ public final class Auxiliares {
         Collections.sort(original, numerosPrimero);
         Iterator<String> iteradorOriginal = original.iterator();
         for (int i = 0; i < nuevo.length; i++) {
-
             nuevo[i] = iteradorOriginal.next();
         }
         return nuevo;
     }
 
     public static Comparator<String> getComparadorNumerosPrimeroLetrasLuego() {
-
         return new Comparator<String>() {
             @Override
             public int compare(String uno, String dos) {
-
                 boolean unoEmpiezaConLetra = Character.isLetter(uno.charAt(0));
                 boolean dosEmpiezaConLetra = Character.isLetter(dos.charAt(0));
 
