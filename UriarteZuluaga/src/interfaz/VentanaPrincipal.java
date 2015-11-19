@@ -31,6 +31,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public static final String ERR_INGRESO = "Se detectaron errores en los datos "
             + "ingresados, reintente\nError detectado: ";
+    public static final String ERR_SELECCION = "Debe seleccionar un %s válido para utilizar "
+            + "esta operación del programa.";
 
     public static final Color niñoOsc = new Color(60, 154, 40);
     public static final Color niñoClaro = new Color(135, 186, 19);
@@ -108,6 +110,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
         mnuPerimetro = new javax.swing.JMenu();
         opcPerimetro = new javax.swing.JMenuItem();
+        mnuCarneVac = new javax.swing.JMenu();
+        opcCarneVac = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 153, 255));
@@ -356,7 +360,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu1.setText("Carnés");
+        jMenu1.setText("Hijos");
 
         opcRegistrarCarne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         opcRegistrarCarne.setText("Registrar Carné");
@@ -521,6 +525,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(mnuGraficas);
 
+        mnuCarneVac.setText("Carné de Vacunación");
+
+        opcCarneVac.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.SHIFT_MASK));
+        opcCarneVac.setText("Desplegar");
+        opcCarneVac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcCarneVacActionPerformed(evt);
+            }
+        });
+        mnuCarneVac.add(opcCarneVac);
+
+        jMenuBar1.add(mnuCarneVac);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -640,8 +657,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 activarOpcionesModificacionEventos();
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un evento válido para utilizar "
-                    + "esta operación del programa.", "Error", JOptionPane.ERROR_MESSAGE);
+            mostrarErrorSeleccionarEvento();
         }
     }//GEN-LAST:event_opcEliminarEventoActionPerformed
 
@@ -680,11 +696,28 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         mostrarVentanaGraficas(6);
     }//GEN-LAST:event_opcPerimetroActionPerformed
 
+    private void opcCarneVacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcCarneVacActionPerformed
+        int pos = this.getPosHijoSeleccionado();
+        if (pos != -1) {
+            Hijo hijoSeleccionado = modelo.getHijo(pos);
+            VentanaCarneVacunas v;
+            if (hijoSeleccionado.esHombre()) {
+                v = new VentanaCarneVacunas(modelo, hijoSeleccionado, Amarillo, niñoOsc, niñoClaro);
+            } else {
+                v = new VentanaCarneVacunas(modelo, hijoSeleccionado, Amarillo, niñaOsc, niñaClaro);
+            }
+            v.setLocationRelativeTo(this);
+            v.setVisible(true);
+        } else {
+            mostrarErrorSeleccionarHijo();
+        }
+    }//GEN-LAST:event_opcCarneVacActionPerformed
+
     private void mostrarVentanaGraficas(int tipoDeGrafica) {
         Hijo hijoSeleccionado = modelo.getHijo(getPosHijoSeleccionado());
         VentanaGraficas v = new VentanaGraficas(hijoSeleccionado, tipoDeGrafica);
-        v.setVisible(true);
         v.setLocationRelativeTo(this);
+        v.setVisible(true);
     }
 
     private void modificarHijoSeleccionado() {
@@ -695,8 +728,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             v.setLocationRelativeTo(this);
             v.setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un hijo válido para utilizar "
-                    + "esta operación del programa.", "Error", JOptionPane.ERROR_MESSAGE);
+            mostrarErrorSeleccionarHijo();
         }
     }
 
@@ -720,8 +752,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 activarOpcionesQueRequierenHijos();
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un hijo válido para utilizar "
-                    + "esta operación del programa.", "Error", JOptionPane.ERROR_MESSAGE);
+            mostrarErrorSeleccionarHijo();
         }
     }
 
@@ -931,8 +962,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public void activarOpcionesGraficas(Hijo h) {
         int count = 0;
-        boolean aux = h.getListaPesos().isEmpty();
-        if (aux) {
+        boolean noHayPesos = h.getListaPesos().isEmpty();
+        if (noHayPesos) {
             opcPeso.setEnabled(false);
             mnuPeso.setEnabled(false);
             opcPA.setEnabled(false);
@@ -951,7 +982,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             opcPA.setEnabled(false);
             mnuPA.setEnabled(false);
         } else {
-            if (aux) {
+            if (!noHayPesos) {
                 opcPA.setEnabled(true);
                 mnuPA.setEnabled(true);
             }
@@ -999,11 +1030,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         if (cantidadEventosDia > 0) {
             componente.setBackground(Color.orange);
-            componente.setForeground(Color.darkGray);
+            componente.setForeground(Color.black);
             componente.setFont(new Font("Tahoma", Font.BOLD, 24));
         } else if (cantidadEventosCompletadosDia > 0) {
             componente.setBackground(niñoClaro);
-            componente.setForeground(Color.darkGray);
+            componente.setForeground(Color.black);
             componente.setFont(new Font("Tahoma", Font.BOLD, 24));
         } else {
             componente.setBackground(UIManager.getColor("Panel.background"));
@@ -1014,6 +1045,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         componente.repaint();
         componente.setVisible(false);
         componente.setVisible(true);
+    }
+
+    private void mostrarErrorSeleccionarHijo() {
+        JOptionPane.showMessageDialog(this, String.format(ERR_SELECCION, "hijo"),
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void mostrarErrorSeleccionarEvento() {
+        JOptionPane.showMessageDialog(this, String.format(ERR_SELECCION, "evento"),
+                "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1045,6 +1086,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JMenu mnuCarneVac;
     private javax.swing.JMenu mnuEstatura;
     private javax.swing.JMenu mnuEventos;
     private javax.swing.JMenu mnuGraficas;
@@ -1052,6 +1094,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu mnuPerimetro;
     private javax.swing.JMenu mnuPeso;
     private javax.swing.JMenuItem mnuSalir;
+    private javax.swing.JMenuItem opcCarneVac;
     private javax.swing.JMenuItem opcCompletarEvento;
     private javax.swing.JMenuItem opcEliminarCarne;
     private javax.swing.JMenuItem opcEliminarEvento;

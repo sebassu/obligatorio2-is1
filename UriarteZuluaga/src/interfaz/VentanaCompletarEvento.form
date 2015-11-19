@@ -239,7 +239,7 @@
                 <Property name="toolTipText" type="java.lang.String" value="Medido en kilogramos"/>
               </Properties>
               <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPesoKeyPressed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPesoKeyTyped"/>
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtAltura">
@@ -247,7 +247,7 @@
                 <Property name="toolTipText" type="java.lang.String" value="Medida en cent&#xed;metros"/>
               </Properties>
               <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtAlturaKeyPressed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtAlturaKeyTyped"/>
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtPerimetroCefalico">
@@ -255,7 +255,7 @@
                 <Property name="toolTipText" type="java.lang.String" value="Medido en cent&#xed;metros"/>
               </Properties>
               <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPerimetroCefalicoKeyPressed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPerimetroCefalicoKeyTyped"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelPeso">

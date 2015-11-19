@@ -118,22 +118,22 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
 
         txtPeso.setToolTipText("Medido en kilogramos");
         txtPeso.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtPesoKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPesoKeyTyped(evt);
             }
         });
 
         txtAltura.setToolTipText("Medida en centímetros");
         txtAltura.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtAlturaKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtAlturaKeyTyped(evt);
             }
         });
 
         txtPerimetroCefalico.setToolTipText("Medido en centímetros");
         txtPerimetroCefalico.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtPerimetroCefalicoKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPerimetroCefalicoKeyTyped(evt);
             }
         });
 
@@ -265,17 +265,17 @@ public class VentanaCompletarEvento extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButtonCerrarActionPerformed
 
-    private void txtPesoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesoKeyPressed
+    private void txtPesoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesoKeyTyped
         BorrarNoNumeros(evt);
-    }//GEN-LAST:event_txtPesoKeyPressed
+    }//GEN-LAST:event_txtPesoKeyTyped
 
-    private void txtAlturaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAlturaKeyPressed
+    private void txtAlturaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAlturaKeyTyped
         BorrarNoNumeros(evt);
-    }//GEN-LAST:event_txtAlturaKeyPressed
+    }//GEN-LAST:event_txtAlturaKeyTyped
 
-    private void txtPerimetroCefalicoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPerimetroCefalicoKeyPressed
+    private void txtPerimetroCefalicoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPerimetroCefalicoKeyTyped
         BorrarNoNumeros(evt);
-    }//GEN-LAST:event_txtPerimetroCefalicoKeyPressed
+    }//GEN-LAST:event_txtPerimetroCefalicoKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

@@ -13,6 +13,7 @@ import dominio.Vacuna;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -34,15 +35,16 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
         infoCarne = new CarneVacunas(sis.nombreVacunasSistematicasParaCarne(hijoSeleccionado),
                 sis.nombreVacunasNoSistematicasParaCarne(hijoSeleccionado),
                 sis.mesesParaCarneVacunas(hijoSeleccionado), sis.aniosParaCarneVacunas(hijoSeleccionado));
-        formatearPanelVacunasSistematicas(sis, hijoSeleccionado, amarillo, oscuro, claro);
-        formatearPanelVacunasNoSistematicas(sis, hijoSeleccionado, amarillo, oscuro, claro);
+        formatearPanelVacunasSistematicas(amarillo, oscuro, claro);
+        formatearPanelVacunasNoSistematicas(amarillo, oscuro, claro);
         marcarVacunasSistematicasDadas(hijoSeleccionado);
         marcarVacunasNoSistematicasDadas(hijoSeleccionado);
         recomendarNuevasVacunaciones(hijoSeleccionado, sis, oscuro);
         cargarDescripcionesVacunas(hijoSeleccionado, sis);
+        this.pack();
     }
 
-    public void cargarDescripcionesVacunas(Hijo hijoSeleccionado, Sistema sis) {
+    public final void cargarDescripcionesVacunas(Hijo hijoSeleccionado, Sistema sis) {
         Iterator<Par<Vacuna, ArrayList<Calendar>>> iteradorVacunas
                 = hijoSeleccionado.getIteradorHistorialVacunaciones();
         Iterator<Vacuna> vacunasSistema = sis.getVacunas().iterator();
@@ -75,7 +77,7 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
                 int periodoNuevoARecomendar = hijoSeleccionado.
                         mesesDesdeNacimientoAFecha(fechaVacunacion) + Integer.parseInt(
                                 vacunaActual.getPeriodoEntreSiguienteVencimientoYAnteriorEnMeses());
-                int posCol = -1;
+                int posCol;
                 if (periodoNuevoARecomendar > 24) {
                     periodoNuevoARecomendar = periodoNuevoARecomendar / 12;
                     posCol = infoCarne.getPosColumnaAnio(periodoNuevoARecomendar + "");
@@ -88,19 +90,18 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
         }
         while (vacunasSistema.hasNext()) {
             Vacuna vacunaActual = vacunasSistema.next();
-            boolean agregarPeriodoRecomendado = true;
-            if (vacunaActual.esSistematica() 
+            if (vacunaActual.esSistematica()
                     && !hijoSeleccionado.contieneVacunaDeEsteNombre(vacunaActual.getNombre())) {
-                int posCol = -1;
+                int posCol;
                 int posFil = infoCarne.getPosFilVacunaSistematica(vacunaActual.getNombre());
                 ArrayList<String> marcarPeriodosRecomendados = vacunaActual.getVencimientoEnMeses();
-                for (int i = 0; i < marcarPeriodosRecomendados.size(); i++) {
-                    posCol = infoCarne.getPosColumnaMes(marcarPeriodosRecomendados.get(i));
+                for (String s : marcarPeriodosRecomendados) {
+                    posCol = infoCarne.getPosColumnaMes(s);
                     botonesVacunasSistematicas[posFil][posCol].setBackground(oscuro);
                 }
                 marcarPeriodosRecomendados = vacunaActual.getVencimientoEnAnios();
-                for (int i = 0; i < marcarPeriodosRecomendados.size(); i++) {
-                    posCol = infoCarne.getPosColumnaAnio(marcarPeriodosRecomendados.get(i));
+                for (String s : marcarPeriodosRecomendados) {
+                    posCol = infoCarne.getPosColumnaAnio(s);
                     botonesVacunasSistematicas[posFil][posCol].setBackground(oscuro);
                 }
             }
@@ -133,7 +134,8 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
                         botonesVacunasNoSistematicas[posFilaVacuna][posEdad].setBackground(Color.magenta);
                         botonesVacunasNoSistematicas[posFilaVacuna][posFecha].setBackground(Color.magenta);
                     }
-                    botonesVacunasNoSistematicas[posFilaVacuna][posFecha].setText(fecha.toString());
+                    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+                    botonesVacunasNoSistematicas[posFilaVacuna][posFecha].setText(formatoFecha.format(fecha.getTime()));
                     botonesVacunasNoSistematicas[posFilaVacuna][posEdad].setText(edadAImprimir);
                 }
             }
@@ -165,14 +167,14 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
                     } else {
                         botonesVacunasSistematicas[posFil][posCol].setBackground(Color.magenta);
                     }
-                    botonesVacunasSistematicas[posFil][posCol].setText(fechaVacunacion.toString());
+                    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+                    botonesVacunasSistematicas[posFil][posCol].setText(formatoFecha.format(fechaVacunacion.getTime()));
                 }
             }
         }
     }
 
-    private void formatearPanelVacunasSistematicas(Sistema sis, Hijo hijoSeleccionado,
-            Color amarillo, Color oscuro, Color claro) {
+    private void formatearPanelVacunasSistematicas(Color amarillo, Color oscuro, Color claro) {
         String[] nombreVacunas = infoCarne.getListaVacunasSistematicas();
         String[] meses = infoCarne.getListaMeses();
         String[] anios = infoCarne.getListaAnios();
@@ -238,8 +240,7 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
         }
     }
 
-    private void formatearPanelVacunasNoSistematicas(Sistema sis, Hijo hijoSeleccionado,
-            Color amarillo, Color oscuro, Color claro) {
+    private void formatearPanelVacunasNoSistematicas(Color amarillo, Color oscuro, Color claro) {
         String[] nombreVacunas = infoCarne.getListaVacunasNoSistematicas();
         String[] columnas = {"", "Fecha", "Edad"};
         int cantVacunas = nombreVacunas.length;
@@ -284,7 +285,8 @@ public class VentanaCarneVacunas extends javax.swing.JFrame {
         panelBotonesNoSistematicas = new javax.swing.JPanel();
         descripcionesVacunas = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Carné de vacunación");
 
         panelBotonesSistematicas.setToolTipText("Carne de vacunas sistematicas");
         panelBotonesSistematicas.setAutoscrolls(true);

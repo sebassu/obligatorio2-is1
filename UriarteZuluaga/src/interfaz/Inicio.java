@@ -1,11 +1,7 @@
 package interfaz;
 
-import dominio.Hijo;
 import dominio.Sistema;
-import dominio.Vacuna;
-import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -40,11 +36,7 @@ public class Inicio {
                 }
             }
         });
-        elSistema.cargarVacunasDeArchivo("Prueba Cargar Vacunas.txt");
         VentanaPrincipal a = new VentanaPrincipal(elSistema);
         a.setVisible(true);
-        /*VentanaCarneVacunas v = new VentanaCarneVacunas(elSistema, new Hijo(),new Color(233, 224, 40),
-         new Color(60, 154, 40), new Color(135, 186, 19));
-         v.setVisible(true);*/
     }
 }

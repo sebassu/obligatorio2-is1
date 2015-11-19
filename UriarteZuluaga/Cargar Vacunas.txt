@@ -1,14 +1,14 @@
 -SISTEMATICAS-
 
 N: Antitetanica
-M: 2 21 c/10 c/5
-A: c/10
+M: 2 21 c/5
+A: 9
 D: -
 
 N: Polio
 M: 0 10 15 20
 A: 10
-D: -
+D: Descripción Polio
 
 -NO SISTEMATICAS-
 
@@ -16,4 +16,4 @@ N: Alguna 2015
 D: -
 
 N: Otra 1999
-D: Es una caca
+D: La vacuna de 1999

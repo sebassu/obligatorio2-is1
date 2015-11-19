@@ -173,7 +173,7 @@
                                   <Component id="jComboBoxTipo" alignment="0" min="-2" pref="226" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="txtMedico" min="-2" pref="226" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="32767" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="jLabelErrorMedico" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jComboBoxVacunas" alignment="0" min="-2" pref="226" max="-2" attributes="0"/>

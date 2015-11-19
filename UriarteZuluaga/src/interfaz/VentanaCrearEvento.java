@@ -267,7 +267,7 @@ public class VentanaCrearEvento extends javax.swing.JFrame {
                             .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelDatosLayout.createSequentialGroup()
                                 .addComponent(txtMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(jLabelErrorMedico))
                             .addComponent(jComboBoxVacunas, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelDatosLayout.createSequentialGroup()
