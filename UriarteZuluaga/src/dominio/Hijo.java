@@ -230,11 +230,17 @@ public class Hijo implements Serializable, Comparable {
         return pesosEstaturas;
     }
     
-    public double mesesDesdeNacimientoAFecha(Calendar fecha) {
+    public int mesesDesdeNacimientoAFecha(Calendar fecha) {
   
-        return (double) (((fechaNacimiento.get(Calendar.YEAR)) 
+        return ((fechaNacimiento.get(Calendar.YEAR)) 
                 - fecha.get(Calendar.YEAR)) * 12 + 
-                fechaNacimiento.get(Calendar.MONTH) - fecha.get(Calendar.MONTH));
+                fechaNacimiento.get(Calendar.MONTH) - fecha.get(Calendar.MONTH);
+    }
+    
+    public int aniosDesdeNacimientoAFecha(Calendar fecha) {
+  
+        return ((fechaNacimiento.get(Calendar.YEAR)) 
+                - fecha.get(Calendar.YEAR));
     }
     
     @Override

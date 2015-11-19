@@ -43,7 +43,7 @@ public class Inicio {
         elSistema.cargarVacunasDeArchivo("Prueba Cargar Vacunas.txt");
         //VentanaPrincipal a = new VentanaPrincipal(elSistema);
         //a.setVisible(true);
-        CarneVacunas v = new CarneVacunas(elSistema, new Hijo(),new Color(233, 224, 40),
+        VentanaCarneVacunas v = new VentanaCarneVacunas(elSistema, new Hijo(),new Color(233, 224, 40),
                 new Color(60, 154, 40), new Color(135, 186, 19));
         v.setVisible(true);
     }

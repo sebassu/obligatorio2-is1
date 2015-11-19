@@ -26,7 +26,7 @@ import org.jfree.chart.plot.XYPlot;
  *
  * @author Zuluaga
  */
-public class Graficas extends javax.swing.JFrame {
+public class VentanaGraficas extends javax.swing.JFrame {
 
     public JPanel graficar(XYDataset datos,
             String titulo, String labelX, String labelY, int xLow, int xHigh,
